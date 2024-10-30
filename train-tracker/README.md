@@ -33,3 +33,5 @@ Follow this project board to know the latest status of the project: http://...
 # Attributions
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+The train favicon was downloaded from [Train icons created by Smashicons - Flaticon](https://www.flaticon.com/free-icon/train_2855692).
