@@ -23,8 +23,8 @@ const Map = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={[51.505, -0.09]}>
-                <Popup>A popup for this marker!</Popup>
+            <Marker position={[39.9815, -75.1553]}>
+                <Popup>Welcome to Temple University. We're working on the Train Tracker!</Popup>
             </Marker>
         </MapContainer>
     );
