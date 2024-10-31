@@ -18,7 +18,7 @@ L.Icon.Default.mergeOptions({
 
 const Map = () => {
     return (
-        <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
+        <MapContainer center={[39.8283, -98.5795]} zoom={4} style={{ height: "100vh", width: "100%" }}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
