@@ -1,9 +1,9 @@
 //Client-Side Objects and Functions for reading/manipulating decoded data returned from server
 function Station() {
     this.stationCode = null;
-    this.getStationName = function(){
+    // this.getStationName = function(){
         //use table to convert from 3-letter codes
-    }
+    // }
 
     this.hasArrived = false;
     this.hasDeparted = false;
@@ -29,7 +29,8 @@ function Train() {
     this.toString = function() {
         return this.routeName + " Train #" + this.number +
             "\nGoing " + Math.trunc(this.speed) + " Mph Heading " + this.heading + " from " + this.from + " to " + this.to +
-            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation + "\n";
+            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation + 
+            "\nStation List: " + this.stations.map(station => station.stationCode).join(", ");
     }
 }
 
@@ -79,6 +80,21 @@ async function getTrainList() {
             lastStationReport = currentStation;
         }
 
+        let stations = [];
+        for(let stationNum = 1; stationNum <= 40; stationNum++) {
+            let currentStation = train["Station"+stationNum];
+            currentStation = JSON.parse(currentStation);
+            if(currentStation == null) break;
+
+            let station = new Station();
+            station.stationCode = currentStation.code;
+            station.hasArrived = currentStation.postarr != null;
+            station.hasDeparted = currentStation.postdep != null;
+            station.arrivalTime = currentStation.postarr;
+            station.departureTime = currentStation.postdep;
+            stations.push(station);
+        }
+
         if(lastStationReport == null) {
             lastStationReport = nextStationReport
         }
@@ -96,6 +112,7 @@ async function getTrainList() {
         tempTrain.punctuality = lastStationReport.postcmnt;
         tempTrain.lastVisitedStation = lastStationIndex;
         tempTrain.state = train.TrainState;
+        tempTrain.stations = stations;
 
         trainList[i] = tempTrain;
     }
@@ -108,3 +125,7 @@ module.exports = {
     Train,
     TrainData
 }
+
+getApiJSONData().then(data => {
+    console.log(data.features[0]);
+});
