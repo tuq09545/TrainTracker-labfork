@@ -1,4 +1,10 @@
 //Client-Side Objects and Functions for reading/manipulating decoded data returned from server
+
+/**
+ * Represents a Station as seen by a Train
+ * found in a train's {@link Train.stations} member
+ * @constructor
+ * */
 function Station() {
     this.stationCode = null;
     // this.getStationName = function(){
@@ -14,6 +20,20 @@ function Station() {
     this.departureTime = null;
 
 }
+
+/**
+ * Information about a train, including:
+ * list of scheduled [stations]{@link Station}
+ * train number
+ * speed,
+ * heading,
+ * punctuality,
+ * route name,
+ * etc.
+ *
+ * will include helper functions to determine gps coords, eta for a given station name, etc.
+ * @constructor
+ */
 function Train() {
     this.number = null;
     this.routeName = null;
@@ -34,9 +54,17 @@ function Train() {
     }
 }
 
-function TrainData() {
+/**
+ * For managing data from amtrak api
+ * includes functions like getting filtered lists of trains, updating data
+ * @constructor
+ */
+function APIInstance() {
     this.lastUpdate = null;
     this.trains = null;
+    /**
+     * user-defined function gets called when dataset is updated
+     */
     this.onUpdated = function(){};
     this.update = function() {
         getTrainList().then(data => {
@@ -123,7 +151,7 @@ async function getTrainList() {
 module.exports = {
     Station,
     Train,
-    TrainData
+    APIInstance
 }
 
 getApiJSONData().then(data => {

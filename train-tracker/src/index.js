@@ -13,7 +13,7 @@ root.render(
 
 
 //example use of API
-const trainData = new Amtrak.TrainData()
+const trainData = new Amtrak.APIInstance()
 trainData.onUpdated = function () {
     for(let train of trainData.trains) {
         console.log(train.toString());
