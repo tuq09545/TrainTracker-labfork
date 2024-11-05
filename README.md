@@ -1,28 +1,53 @@
-# Project Name
-Put here a short paragraph describing your project. 
-Adding an screenshot or a mockup of your application in action would be nice.  
+# Train Tracker
 
-![This is a screenshot.](images.png)
+This is a web application that allows for easy access to Amtrak Services. Information about all active Amtrak trains, including destination, line, number, and lateness, can be easily obtained through it. Station information is also available to users.
+
+![image](https://github.com/user-attachments/assets/44646c9f-de57-460b-8ac0-ded3e2c4c9ca)
+
 # How to run
-Provide here instructions on how to use your application.   
-- Download the latest binary from the Release section on the right on GitHub.  
-- On the command line uncompress using
-```
-tar -xzf  
-```
-- On the command line run with
-```
-./hello
-```
-- You will see Hello World! on your terminal. 
+
+Binary file goes here: 
+
+Decompression instructions go here: 
+
+In the project directory, navigate to the folder 'train-tracker', then you can run:
+
+### `npm install`
+
+and then
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 # How to contribute
-Follow this project board to know the latest status of the project: [http://...]([http://...])  
 
-### How to build
-- Use this github repository: ... 
-- Specify what branch to use for a more stable release or for cutting edge development.  
-- Use InteliJ 11
-- Specify additional library to download if needed 
-- What file and target to compile and run. 
-- What is expected to happen when the app start. 
+Follow this [project board](https://github.com/orgs/cis3296f24/projects/105/views/1) to know the latest status of the project.
+## How to build
+
+Use this [github repository](https://github.com/cis3296f24/TrainTracker/)
+- Use branch 'main' for the most up-to-date code  
+- Use any environment you are comfortable with for using JavaScript
+- Navigate to folder train-tracker
+- Run npm install, and then npm start
+- A development server will launch, and the web application will launch at [http://localhost:3000](http://localhost:3000) in your browser.
+
+# Attributions
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+The train favicon was downloaded from [Train icons created by Smashicons - Flaticon](https://www.flaticon.com/free-icon/train_2855692).
