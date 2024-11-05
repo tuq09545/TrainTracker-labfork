@@ -1,32 +1,47 @@
 import Amtrak from './AmtrakAPI';
+import React from 'react';
 
 function TrainList(){
     // simple component just to test stuff
     function MakeTrain({
         train = new Amtrak.Train()
     }){
-        console.log(train)
+        var lastAt = ""
+        if (train.stations[train.lastVisitedStation]){
+            lastAt = ", last at " + train.stations[train.lastVisitedStation].stationCode;
+        }
         return (
             <div className = 'train'>
-                <h2>{train.routeName} Train #{train.number}</h2>
+                <h2>{train.routeName} #{train.number}</h2>
+                <p>{train.from} to {train.to}{lastAt}</p>
             </div>
         )
     } // end MakeTrain
 
+    const [trainList, setTrainList] = React.useState([]);
     const trainData = new Amtrak.APIInstance();
 
-    // can only access information within the onUpdated function
-    /*trainData.onUpdated = function() {
-        console.log(this)
-        
-        this.trains.map(t =>
-            console.log(t)
-        ) 
-    }*/
-
-    trainData.update();
-    // this is the weird null stuff I was talking about
-    console.log(trainData);
+    // use once pattern
+    React.useEffect(() => {
+        trainData.onUpdated = function() {
+            setTrainList(this.trains);
+        }
+        trainData.update();
+    },[])
+    
+    console.log(trainList);
+    
+    if (trainList.length != 0){
+        return (
+            <div>
+                {
+                    trainList.map(t =>
+                        <MakeTrain train = {t}/>
+                    )
+                }
+            </div>
+        )
+    }
 
     const testTrain = new Amtrak.Train();
     testTrain.routeName = "Northeast Regional";
@@ -37,19 +52,6 @@ function TrainList(){
             <MakeTrain train = {testTrain}/>
         </div>
     )
-
-    // if I could actually get the trainlist I could just do this
-    
-    return (
-        <div>
-            {
-                trainData.trains.map(t =>
-                    <MakeTrain train = {t}/>
-                )
-            }
-        </div>
-    )
-    
 
 } // end TrainList
 
