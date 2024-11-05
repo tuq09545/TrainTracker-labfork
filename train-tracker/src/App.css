@@ -3,13 +3,23 @@
 }
 
 .header {
-  display: inline-flex;
-  text-align: center;
-  margin: 0 auto;
-  width: 100%;
+  display: flex;
+  justify-content: left;
+  padding: 20px;
+}
+
+.heading-box {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border: 5px solid black;
+  border-radius: 15px;
+  background-color: #FFF;
 }
 
 .train_icon {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
 }
+
