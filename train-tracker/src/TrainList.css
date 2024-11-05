@@ -1,0 +1,17 @@
+.trainList .spacing {
+    justify-content: left;
+    padding: 20px;
+  }
+
+.trainList .train {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: 5px solid black;
+    border-radius: 15px;
+    background-color: #FFF;
+  }
+
+.trainList p {
+    padding: 5px;
+  }
