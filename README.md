@@ -6,9 +6,13 @@ This is a web application that allows for easy access to Amtrak Services. Inform
 
 # How to run
 
-Binary file goes here: 
+Download the .tar file of this repository's most recent release from 'Releases'.
 
-Decompression instructions go here: 
+Move the file to wherever you would like to build this project on your local machine.
+
+Inside the folder that has the .tar file, run the following command:
+
+### `tar -xvzf TrainTracker-[version].tar.gz`
 
 In the project directory, navigate to the folder 'train-tracker', then you can run:
 
