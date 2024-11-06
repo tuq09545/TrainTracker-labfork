@@ -1,5 +1,3 @@
-const http = require("http")
-
 const MAP_HEX = {
     0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6,
     7: 7, 8: 8, 9: 9, a: 10, b: 11, c: 12, d: 13,
@@ -115,19 +113,28 @@ async function getApiData() {
         .then(m => new TextDecoder().decode(m));
 }
 
-http.createServer(async (req, res) => {
-    try{
-        console.log(req.url)
-        if (req.url === "/getTrainsData") {
-
-            res.writeHead(200, {
-                'Content-Type': 'text/json',
-                'Access-Control-Allow-Origin': '*'
-            });
-            res.write(await getApiData());
-            res.end();
+export default {
+    async fetch(req, env, ctx) {
+        let res = new Response("",{
+            status: 404,
+            statusText: "not found"
+        })
+        try{
+            console.log(req.url.split("/").at(-1))
+            if (req.url.split("/").at(-1) === "getTrainsData") {
+                console.log("req receiveed!!")
+                res = new Response(await getApiData(), {
+                    status: 200,
+                    statusText: "",
+                    headers: {
+                        "Content-Type": "text/json",
+                        "Access-Control-Allow-Origin": "*"
+                    }
+                })
+            }
+        } catch(err) {
+            console.error(err);
         }
-    } catch(err) {
-        console.error(err);
-    }
-}).listen(3001);
+        return res;
+    },
+};
