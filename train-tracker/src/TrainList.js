@@ -31,7 +31,7 @@ function TrainList(){
             </div>
             
         )
-    } // end MakeTrain
+    } 
 
     const [trainList, setTrainList] = React.useState([]);
     const trainData = new Amtrak.APIInstance();
@@ -43,8 +43,6 @@ function TrainList(){
         }
         trainData.update();
     },[])
-    
-    //console.log(trainList);
     
     if (trainList.length != 0){
         return (
@@ -68,6 +66,6 @@ function TrainList(){
         </div>
     )
 
-} // end TrainList
+}
 
 export default TrainList;
