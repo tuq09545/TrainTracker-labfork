@@ -40,6 +40,13 @@ function TrainList({trains}){
             </div>
         )
     }
+    else{
+        return (
+            <div>
+                <h1>No results.</h1>
+            </div>
+        )
+    }
 
 }
 

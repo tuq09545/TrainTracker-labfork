@@ -1,12 +1,21 @@
 .App {
   text-align: center;
-  display: inline;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f9;
 }
 
 .header {
   display: flex;
-  justify-content: left;
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-top: 2rem;
 }
 
 .heading-box {
@@ -16,6 +25,7 @@
   border: 5px solid black;
   border-radius: 15px;
   background-color: #FFF;
+  width: 90%;
 }
 
 .train_icon {
@@ -24,3 +34,17 @@
   margin-right: 10px;
 }
 
+.Search, .TrainList, .Map {
+  min-height: 10%;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f0f0f5;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}

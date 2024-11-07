@@ -1,7 +1,8 @@
+import './styles/Search.css';
+
 function Search({searchChange, selectChange, searchVal, searchByVal}){
     return (
-        <form>
-                <input onChange={searchChange} type="text" value={searchVal}></input>
+        <form className='form'>
                 <label>
                     Search by: 
                     <select onChange={selectChange} value={searchByVal}>
@@ -9,6 +10,7 @@ function Search({searchChange, selectChange, searchVal, searchByVal}){
                         <option value="2">Line Name</option>
                     </select>
                 </label>
+                <input onChange={searchChange} type="text" value={searchVal}></input>
               </form>
     );
     
