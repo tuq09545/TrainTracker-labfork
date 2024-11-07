@@ -9,7 +9,7 @@ import Search from './Search';
 function App() {
     const api = new Amtrak.APIInstance();
 
-    const [searchBy, setSearchBy] = useState(1);
+    const [searchBy, setSearchBy] = useState('1');
     const [searchKey, setSearchKey] = useState("Enter train line or number");
     const [allTrains, setAllTrains] = useState([]);
 
