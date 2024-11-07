@@ -77,7 +77,7 @@ function APIInstance() {
 
 
 async function getApiJSONData() {
-    return fetch("http://localhost:3001/getTrainsData").then(
+    return fetch("https://amtrak-proxy.nick-rehac.workers.dev/getTrainsData").then(
         res => res.json()
     )
 }
