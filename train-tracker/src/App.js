@@ -20,16 +20,21 @@ function App() {
         api.update();
     },[])
 
-    function handleFormSubmit(e){
-        e.preventDefault();
-    }
-
     function handleFormChange(e){
         setSearchKey(e.target.value);
     }
 
     function handleSelectChange(e){
         setSearchBy(e.target.value);
+    }
+    console.log(allTrains);
+    const sortTrains = () => {
+        if (searchBy === 1){
+            return allTrains.filter(t => t.number == searchKey);
+        }
+        else {
+            return allTrains.filter(t => t.routeName === searchKey);
+        }
     }
 
   return (
@@ -39,9 +44,9 @@ function App() {
                   <img src={train_icon} alt="Train Icon" className="train_icon" />
                   <h1>TrainTracker</h1>
               </div>
-              <Search searchSubmit={handleFormSubmit} searchChange={handleFormChange} selectChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}/>
+              <Search searchChange={handleFormChange} selectChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}/>
               <Map/>
-                <TrainList trains={allTrains}/>
+                <TrainList trains={sortTrains()}/>
           </div>
       </div>
   );

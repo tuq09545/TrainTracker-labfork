@@ -1,6 +1,6 @@
-function Search({searchSubmit, searchChange, selectChange, searchVal, searchByVal}){
+function Search({searchChange, selectChange, searchVal, searchByVal}){
     return (
-        <form onSubmit={searchSubmit}>
+        <form>
                 <input onChange={searchChange} type="text" value={searchVal}></input>
                 <label>
                     Search by: 
@@ -9,7 +9,6 @@ function Search({searchSubmit, searchChange, selectChange, searchVal, searchByVa
                         <option value="2">Line Name</option>
                     </select>
                 </label>
-                <button type="submit">Submit</button>
               </form>
     );
     
