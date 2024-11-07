@@ -153,7 +153,3 @@ module.exports = {
     Train,
     APIInstance
 }
-
-getApiJSONData().then(data => {
-    console.log(data.features[0]);
-});

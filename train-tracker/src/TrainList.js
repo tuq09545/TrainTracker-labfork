@@ -1,12 +1,8 @@
-import Amtrak from './AmtrakAPI';
 import React from 'react';
-import './TrainList.css';
+import './styles/TrainList.css';
 
-function TrainList(){
-    // simple component just to test stuff
-    function MakeTrain({
-        train = new Amtrak.Train()
-    }){
+function TrainList({trains}){
+    function MakeTrain({train}){
         var lastAt = "";
         var dir = "";
         var status = "";
@@ -32,39 +28,25 @@ function TrainList(){
             
         )
     } 
-
-    const [trainList, setTrainList] = React.useState([]);
-    const trainData = new Amtrak.APIInstance();
-
-    // use once pattern
-    React.useEffect(() => {
-        trainData.onUpdated = function() {
-            setTrainList(this.trains);
-        }
-        trainData.update();
-    },[])
     
-    if (trainList.length != 0){
+    if (trains.length != 0){
         return (
             <div className = 'trainList'>
                 {
-                    trainList.map(t =>
-                        <MakeTrain train = {t}/>
+                    trains.map(t =>
+                        <MakeTrain train = {t} key={`${t.heading} ${t.number} ${t.lastVisitedStation}`}/>
                     )
                 }
             </div>
         )
     }
-
-    const testTrain = new Amtrak.Train();
-    testTrain.routeName = "Northeast Regional";
-    testTrain.number = 5;
-
-    return (
-        <div>
-            <MakeTrain train = {testTrain}/>
-        </div>
-    )
+    else{
+        return (
+            <div>
+                <h1>No results.</h1>
+            </div>
+        )
+    }
 
 }
 
