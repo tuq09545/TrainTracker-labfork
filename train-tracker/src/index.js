@@ -23,5 +23,8 @@ trainData.onUpdated = function () {
     for(let train of trainData.trains) {
         console.log(train.toString());
     }
+    for(let route of trainData.routes) {
+        console.log(route.toString());
+    }
 }
 trainData.update()

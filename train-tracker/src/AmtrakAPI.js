@@ -62,11 +62,16 @@ function Train() {
 function APIInstance() {
     this.lastUpdate = null;
     this.trains = null;
+    this.routes = null;
+
     /**
      * user-defined function gets called when dataset is updated
      */
     this.onUpdated = function(){};
     this.update = function() {
+        getRoutesJSONData().then(data => {
+            this.routes = data;
+        })
         getTrainList().then(data => {
             this.trains = data;
             this.lastUpdate = Date.now();
@@ -76,15 +81,21 @@ function APIInstance() {
 }
 
 
-async function getApiJSONData() {
-    return fetch("https://amtrak-proxy.nick-rehac.workers.dev/getTrainsData").then(
+async function getTrainsJSONData() {
+    return fetch("https://amtrak-proxy.nick-rehac.workers.dev/getTrains").then(
+        res => res.json()
+    )
+}
+
+async function getRoutesJSONData() {
+    return fetch("https://amtrak-proxy.nick-rehac.workers.dev/getRoutes").then(
         res => res.json()
     )
 }
 
 
 async function getTrainList() {
-    let apiData = await getApiJSONData();
+    let apiData = await getTrainsJSONData();
 
     let trainList = new Array(apiData.features.length);
 
@@ -154,6 +165,17 @@ module.exports = {
     APIInstance
 }
 
-getApiJSONData().then(data => {
+getTrainsJSONData().then(data => {
     console.log(data.features[0]);
 });
+
+const trainData = new APIInstance()
+trainData.onUpdated = function () {
+    for(let train of trainData.trains) {
+        console.log(train.toString());
+    }
+    for(let route of trainData.routes) {
+        console.log(route);
+    }
+}
+trainData.update()
