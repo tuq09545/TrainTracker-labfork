@@ -122,7 +122,7 @@ export default {
         try{
             console.log(req.url.split("/").at(-1))
             if (req.url.split("/").at(-1) === "getTrainsData") {
-                console.log("req receiveed!!")
+                console.log("req received!!")
                 res = new Response(await getApiData(), {
                     status: 200,
                     statusText: "",
