@@ -62,8 +62,6 @@ function Train() {
 function APIInstance() {
     this.lastUpdate = null;
     this.trains = null;
-    this.routes = null;
-
     /**
      * user-defined function gets called when dataset is updated
      */
