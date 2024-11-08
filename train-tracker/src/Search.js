@@ -3,26 +3,26 @@ import './styles/Search.css';
 function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal, endVal, startChange, endChange, stations}){
     return (
         <form className='form'>
-                <label>
+                <div className='top-label'>
                     Search by: 
                     <select onChange={criteriaChange} value={searchByVal}>
                         <option value="1">Train Number</option>
                         <option value="2">Line Name</option>
                     </select>
-                </label>
+                </div>
                 <input onChange={searchChange} type="text" value={searchVal}></input>
-                <label>
+                <label className="optional-criteria-label">
                     Optional criteria:
-                    <label>
+                    <span className="select-label">
                         From:
                         <select value={startVal} onChange={startChange} children={stations}>
                         </select>
-                    </label>
-                    <label>
+                    </span>
+                    <span className="select-label">
                         To:
                         <select value={endVal} onChange={endChange} children={stations}>
                         </select>
-                    </label>
+                    </span>
                 </label>
               </form>
     );
