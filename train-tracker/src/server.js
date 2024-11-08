@@ -21,7 +21,7 @@ function fromHex(hexString) {
 const PASSWORD_LENGTH = 88;
 let cryptoParams = null;
 
-async function getApiData() {
+async function getTrainsJSONData() {
     const rawDataBase64 = await fetch("https://maps.amtrak.com/services/MapDataService/trains/getTrainsData")
         .then(
             res => res.text()
@@ -113,6 +113,12 @@ async function getApiData() {
         .then(m => new TextDecoder().decode(m));
 }
 
+async function getRoutesJSONData() {
+    return fetch("https://maps.amtrak.com/rttl/js/RoutesList.json").then(
+        res => res.text()
+    )
+}
+
 export default {
     async fetch(req, env, ctx) {
         let res = new Response("",{
@@ -120,10 +126,19 @@ export default {
             statusText: "not found"
         })
         try{
-            console.log(req.url.split("/").at(-1))
-            if (req.url.split("/").at(-1) === "getTrainsData") {
-                console.log("req received!!")
-                res = new Response(await getApiData(), {
+            const page = req.url.split("/").at(-1)
+            if (page === "getTrains") {
+                res = new Response(await getTrainsJSONData(), {
+                    status: 200,
+                    statusText: "",
+                    headers: {
+                        "Content-Type": "text/json",
+                        "Access-Control-Allow-Origin": "*"
+                    }
+                })
+            }
+            if(page === "getRoutes") {
+                res = new Response(await getRoutesJSONData(), {
                     status: 200,
                     statusText: "",
                     headers: {
