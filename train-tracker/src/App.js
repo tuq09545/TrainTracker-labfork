@@ -15,6 +15,8 @@ function App() {
     const [endStation, setEndStation] = useState("");
     const [allTrains, setAllTrains] = useState([]);
     const [currentTrains, setCurrentTrains] = useState([]);
+    const [selectedStation, setSelectedStation] = useState("");
+    const [upcomingOnly, setUpcomingOnly] = useState(false);
 
      useEffect(() => {
         api.onUpdated = function() {
@@ -25,7 +27,7 @@ function App() {
 
     useEffect(() => {
         setCurrentTrains(sortTrains());
-    },[searchBy, searchKey, startStation, endStation, allTrains]);
+    },[searchBy, searchKey, startStation, endStation, allTrains, selectedStation, upcomingOnly]);
 
     function handleFormChange(e){
         setSearchKey(e.target.value);
@@ -43,19 +45,53 @@ function App() {
         setEndStation(e.target.value);
     }
 
+    function handleSelectedStationChange(e){
+        setSelectedStation(e.target.value);
+    }
+
+    function handleUpcomingOnlyChange(e){
+        setUpcomingOnly(e.target.checked);   
+    }
+
     const sortTrains = () => {
-        let trains;
-        if (searchBy === '1'){ 
-            trains = allTrains.filter(t => t.number === searchKey);
+        let defaultSearch = "Enter train line or number";
+        let trains = [];
+        if (selectedStation){
+            trains = allTrains.filter((t,index) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
+            if (upcomingOnly){
+                trains = trains.filter((t, index) => {
+                    let station = t.stations.find((station) => station.stationCode === selectedStation);
+                    if (station.stationCode === t.from && station.hasDeparted){
+                        return;
+                    }
+                    if (!station.hasArrived || !station.hasDeparted){
+                        return t;
+                    }
+                })
+            }
         }
-        else {
-            trains = allTrains.filter(t => t.routeName === searchKey);
+        if (searchBy === '1' && searchKey && searchKey !== defaultSearch){ 
+            if (selectedStation){
+                trains = trains.filter(t => t.number === searchKey);
+            }
+            else{
+                trains = allTrains.filter(t => t.number === searchKey);
+            }
+        }
+        else if (searchBy === '2' && searchKey && searchKey !== defaultSearch){
+            if (selectedStation){
+                trains = trains.filter(t => t.routeName === searchKey);
+            }
+            else{
+                trains = allTrains.filter(t => t.routeName === searchKey);
+            }
         }
         if (startStation && endStation){
             trains = trains.filter((t, index) =>{
-                return t.stations.findIndex((station) => station === startStation) < t.stations.findIndex((station) => station === endStation);
+                return t.stations.findIndex((station) => station.stationCode === startStation) < t.stations.findIndex((station) => station.stationCode === endStation);
             })
         }
+        console.log(trains);
         return trains;
     }
 
@@ -80,7 +116,9 @@ function App() {
               </div>
               <div className='content'>
               <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
-              startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}/>
+              startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
+                station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
+              />
               <TrainList className = 'TrainList' trains={currentTrains}/>
               <Map className = 'Map' />
               </div> 
