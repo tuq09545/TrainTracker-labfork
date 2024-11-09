@@ -164,18 +164,3 @@ module.exports = {
     Train,
     APIInstance
 }
-
-getTrainsJSONData().then(data => {
-    console.log(data.features[0]);
-});
-
-const trainData = new APIInstance()
-trainData.onUpdated = function () {
-    for(let train of trainData.trains) {
-        console.log(train.toString());
-    }
-    for(let route of trainData.routes) {
-        console.log(route);
-    }
-}
-trainData.update()

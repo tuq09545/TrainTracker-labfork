@@ -5,6 +5,7 @@ import React, {useState, useEffect} from 'react'
 import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
+import PopupPage from './PopupPage';
 
 function App() {
     const api = new Amtrak.APIInstance();
@@ -121,6 +122,7 @@ function App() {
               />
               <TrainList className = 'TrainList' trains={currentTrains}/>
               <Map className = 'Map' />
+              <PopupPage/>
               </div> 
           </div>
       </div>
