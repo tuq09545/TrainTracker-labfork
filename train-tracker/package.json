@@ -12,10 +12,11 @@
     "react-leaflet": "^4.2.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "wrangler": "^3.86.0"
+    "wrangler": "^3.86.0",
+    "concurrently": "^9.1.0"
   },
   "scripts": {
-    "start": "react-scripts start & npm run start-server",
+    "start": "concurrently \"react-scripts start\" \"npm run start-server\"",
     "start-server": "npx wrangler -c src/backend/wrangler.toml dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
