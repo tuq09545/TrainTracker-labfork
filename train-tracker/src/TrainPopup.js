@@ -1,8 +1,9 @@
 import ReactDOM from "react-dom";
 import {useEffect} from 'react';
 import './styles/TrainPopup.css'
+import TrainInfo from "./TrainInfo";
 
-function TrainPopup({onClose, children, actionBar}){
+function TrainPopup({onClose, children, actionBar, train}){
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
 
@@ -12,13 +13,14 @@ function TrainPopup({onClose, children, actionBar}){
     }, []);
 
     return ReactDOM.createPortal(<div>
-        <div onClick={onClose} className='overlay' ></div>
+        <div onClick={onClose} className='overlay' ></div> 
         <div className='inner-modal-container'>
+        <div className='action-bar'>
+            {actionBar}
+        </div> 
             <div className='modal-content'>
                 {children}
-                <div className='action-bar'>
-                    {actionBar}
-                </div>     
+                <TrainInfo train={train}/>   
             </div>  
         </div>
     </div>,

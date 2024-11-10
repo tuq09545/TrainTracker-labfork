@@ -1,7 +1,8 @@
 import React from 'react';
 import './styles/TrainList.css';
 
-function TrainList({trains}){
+function TrainList({trains, handleTrainClick}){
+
     function MakeTrain({train}){
         var lastAt = "";
         var dir = "";
@@ -16,8 +17,12 @@ function TrainList({trains}){
             status = " (" + train.punctuality + ")";
         }
 
+        const handleClick = () => {
+            handleTrainClick(train);
+        }
+
         return (
-            <div className = 'spacing'>
+            <div className = 'spacing' onClick={handleClick}>
                 <div className = 'train'>
                     <h2>#{train.number} {train.routeName}{dir} </h2>
                     <p>
