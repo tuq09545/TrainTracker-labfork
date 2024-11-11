@@ -15,7 +15,6 @@ function App() {
     // api data
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
-    const [rawStations, setRawStations] = useState([]);
     const [allStations, setAllStations] = useState([]);
 
     const [searchBy, setSearchBy] = useState('1');
@@ -41,42 +40,25 @@ function App() {
         api.onUpdated = function() {
             setAllTrains(this.trains);
             setAllRoutes(this.routes);
-            // TEMPORARY - stations API call isn't cleaned up
-            setRawStations(this.stations.StationsDataResponse.features);
+            setAllStations(this.stations);
             
         }
         api.update();
     },[]);
 
-    /*useEffect(() => {
+    useEffect(() => {
         if(allRoutes.length > 0){
             console.log("Printing routes on next line");
             console.log(allRoutes);
         }
-    }, [allRoutes])*/
+    }, [allRoutes])
 
-    // TEMPORARY - stations API call isn't cleaned up
     useEffect(() => {
-        if (rawStations.length > 0){
-            console.log("Printing stations on next line");
-            console.log(rawStations);
-
-            // station data cleanup
-            let tempStations = new Array(rawStations.length);
-            for(let i=0; i < rawStations.length; i++){
-                let temp = rawStations[i].properties;
-                tempStations[i] = temp;
-            }
-            setAllStations(tempStations);
-        }
-    }, [rawStations])
-
-    /*useEffect(() => {
         if(allStations.length > 0){
-            console.log("Printing cleaned stations on next line");
+            console.log("Printing stations on next line");
             console.log(allStations);
         }
-    }, [allStations])*/
+    }, [allStations])
 
     useEffect(() => {
         setCurrentTrains(sortTrains());
@@ -158,6 +140,14 @@ function App() {
     }
 
     const getStationOptions = () => {
+        let stations = [];
+        allStations.map(station => {
+            //console.log(station.stationCode + " - " + station.name);
+            stations.push(<option value={station.stationCode}>{station.stationCode} - {station.name}</option>)
+        })
+        stations.push(<option value={""} key={""}>{}</option>);
+        return stations;
+        /*
         let stations = allTrains.flatMap(train => train.stations);
         stations = stations.filter((s, index) => {
             return index === stations.findIndex(station => station.stationCode === s.stationCode);
@@ -166,7 +156,16 @@ function App() {
             <option value={station.stationCode}>{station.stationCode}</option>
         );
         renderedStations.push(<option value={""} key={""}>{}</option>);
-        return renderedStations;
+        return renderedStations;*/
+    }
+
+    const getRouteOptions = () => {
+        let routes = [];
+        allRoutes.map(route => {
+            routes.push(<option value={route.Name}>{route.Name}</option>)
+        });
+        routes.push(<option value={""} key={""}>{}</option>);
+        return routes;
     }
 
     const actionBar = (<div>
@@ -186,7 +185,7 @@ function App() {
               <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
               startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
                 station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
-                update={update} updateChange={handleUpdateChange}
+                update={update} updateChange={handleUpdateChange} routes={getRouteOptions()}
               />
               <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
               <Map className = 'Map' />

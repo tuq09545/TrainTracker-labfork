@@ -1,7 +1,7 @@
 import './styles/Search.css';
 
 function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal, endVal, startChange, endChange, stations, station, stationChange,
-    upcomingOnlyValue, upcomingOnlyChange, update, updateChange
+    upcomingOnlyValue, upcomingOnlyChange, update, updateChange, routes
 }){
     return (
         <form className='form'>
@@ -10,7 +10,7 @@ function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal,
                 </div>
                 <span className="select-label">
                         Route:
-                        <select value={startVal} onChange={startChange} children={stations}>
+                        <select value={startVal} onChange={startChange} children={routes}>
                         </select>
                     </span>
                 <span className="select-label">Train Number: </span>
