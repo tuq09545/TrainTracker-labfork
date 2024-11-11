@@ -6,13 +6,25 @@ function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal,
     return (
         <form className='form'>
                 <div className='top-label'>
-                    Search by: 
+                    Search options: 
                 </div>
-                <select onChange={criteriaChange} value={searchByVal}>
-                        <option value="1">Train Number</option>
-                        <option value="2">Line Name</option>
+                <span className="select-label">
+                        Route:
+                        <select value={startVal} onChange={startChange} children={stations}>
+                        </select>
+                    </span>
+                <span className="select-label">Train Number: </span>
+                <span className="select-label">
+                        <input onChange={searchChange} type="text" placeholder={searchVal}>
+                        </input>
+                    </span>
+                <span className="select-label">By station: </span>
+                    <select value={station} onChange={stationChange} children={stations}>
                     </select>
-                <input onChange={searchChange} type="text" placeholder={searchVal}></input>
+                    <span className="select-label">
+                        Upcoming trains only: 
+                        <input onChange={upcomingOnlyChange} type="checkbox" checked={upcomingOnlyValue}></input>
+                    </span>
                 <button type="button" onClick={updateChange}>Search</button>
                 <label className="optional-criteria-label">
                     Optional criteria:
@@ -27,16 +39,6 @@ function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal,
                         </select>
                     </span>
                 </label>
-                <div className='top-label'>
-                    Or search by station:
-                    <span className="select-label">Trains passing through: </span>
-                    <select value={station} onChange={stationChange} children={stations}>
-                    </select>
-                    <span className="select-label">
-                        Upcoming trains only: 
-                        <input onChange={upcomingOnlyChange} type="checkbox" checked={upcomingOnlyValue}></input>
-                    </span>
-                </div>
               </form>
     );
     

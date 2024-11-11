@@ -19,7 +19,7 @@ function App() {
     const [allStations, setAllStations] = useState([]);
 
     const [searchBy, setSearchBy] = useState('1');
-    const [searchKey, setSearchKey] = useState("Enter train line or number");
+    const [searchKey, setSearchKey] = useState("");
     const [startStation, setStartStation] = useState("");
     const [endStation, setEndStation] = useState("");
     
@@ -57,7 +57,7 @@ function App() {
 
     // TEMPORARY - stations API call isn't cleaned up
     useEffect(() => {
-        if (rawStations.length > 0 && !rawStations.includes("clean")){
+        if (rawStations.length > 0){
             console.log("Printing stations on next line");
             console.log(rawStations);
 
@@ -117,7 +117,7 @@ function App() {
     }
 
     const sortTrains = () => {
-        let defaultSearch = "Enter train line or number";
+        let defaultSearch = "";
         let trains = [];
         if (selectedStation){
             trains = allTrains.filter((t,index) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
