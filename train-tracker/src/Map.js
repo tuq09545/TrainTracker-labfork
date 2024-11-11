@@ -30,10 +30,30 @@ const Map = () => {
         fetch("/geojson/amtrak-stations.geojson")
             .then(response => response.json())
             .then(data => setStations(data));
+        // Recalculate map size when window is resized
+        const handleResize = () => {
+            if (mapRef.current) {
+                mapRef.current.invalidateSize();  // Forces Leaflet to recalculate map size
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        // Cleanup resize listener
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
 
+    const mapRef = React.createRef();
+
     return (
-        <MapContainer center={[39.8283, -98.5795]} zoom={4} style={{ height: "100vh", width: "50%" }}>
+        <MapContainer
+            ref={mapRef}
+            center={[39.8283, -98.5795]}
+            zoom={4}
+            style={{ width: "100%", height: "100%" }} // Take full width and height of the container
+        >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
