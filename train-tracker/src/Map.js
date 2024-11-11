@@ -21,25 +21,22 @@ const Map = () => {
     const [stations, setStations] = useState(null);
 
     useEffect(() => {
-        // Fetch rail lines GeoJSON
         fetch("/geojson/amtrak-track.geojson")
             .then(response => response.json())
             .then(data => setRailLines(data));
 
-        // Fetch stations GeoJSON
         fetch("/geojson/amtrak-stations.geojson")
             .then(response => response.json())
             .then(data => setStations(data));
-        // Recalculate map size when window is resized
+
         const handleResize = () => {
             if (mapRef.current) {
-                mapRef.current.invalidateSize();  // Forces Leaflet to recalculate map size
+                mapRef.current.invalidateSize();
             }
         };
 
         window.addEventListener("resize", handleResize);
 
-        // Cleanup resize listener
         return () => {
             window.removeEventListener("resize", handleResize);
         };
@@ -52,7 +49,7 @@ const Map = () => {
             ref={mapRef}
             center={[39.8283, -98.5795]}
             zoom={4}
-            style={{ width: "100%", height: "100%" }} // Take full width and height of the container
+            style={{ width: "100%", height: "100%" }}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

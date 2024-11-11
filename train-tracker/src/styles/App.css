@@ -43,7 +43,7 @@
 
 .search-container {
   width: 25%;
-  height: 100vh;
+  height: 80vh;
   padding: 1rem;
   background-color: #f0f0f5;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -52,7 +52,7 @@
 
 .train-list-container {
   width: 25%;
-  height: 100vh;
+  height: 80vh;
   padding: 1rem;
   background-color: #f0f0f5;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -62,7 +62,7 @@
 .map-container {
   flex: 1;
   width: 50%;
-  height: 100vh;
+  height: 80vh;
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
