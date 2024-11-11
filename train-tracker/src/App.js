@@ -12,11 +12,17 @@ import { IoClose } from "react-icons/io5";
 function App() {
     const api = new Amtrak.APIInstance();
 
+    // api data
+    const [allTrains, setAllTrains] = useState([]);
+    const [allRoutes, setAllRoutes] = useState([]);
+    const [rawStations, setRawStations] = useState([]);
+    const [allStations, setAllStations] = useState([]);
+
     const [searchBy, setSearchBy] = useState('1');
     const [searchKey, setSearchKey] = useState("Enter train line or number");
     const [startStation, setStartStation] = useState("");
     const [endStation, setEndStation] = useState("");
-    const [allTrains, setAllTrains] = useState([]);
+    
     const [currentTrains, setCurrentTrains] = useState([]);
     const [selectedStation, setSelectedStation] = useState("");
     const [upcomingOnly, setUpcomingOnly] = useState(false);
@@ -31,12 +37,46 @@ function App() {
         setShowModal(false);
     };
 
-     useEffect(() => {
+    useEffect(() => {
         api.onUpdated = function() {
             setAllTrains(this.trains);
+            setAllRoutes(this.routes);
+            // TEMPORARY - stations API call isn't cleaned up
+            setRawStations(this.stations.StationsDataResponse.features);
+            
         }
         api.update();
     },[]);
+
+    /*useEffect(() => {
+        if(allRoutes.length > 0){
+            console.log("Printing routes on next line");
+            console.log(allRoutes);
+        }
+    }, [allRoutes])*/
+
+    // TEMPORARY - stations API call isn't cleaned up
+    useEffect(() => {
+        if (rawStations.length > 0 && !rawStations.includes("clean")){
+            console.log("Printing stations on next line");
+            console.log(rawStations);
+
+            // station data cleanup
+            let tempStations = new Array(rawStations.length);
+            for(let i=0; i < rawStations.length; i++){
+                let temp = rawStations[i].properties;
+                tempStations[i] = temp;
+            }
+            setAllStations(tempStations);
+        }
+    }, [rawStations])
+
+    /*useEffect(() => {
+        if(allStations.length > 0){
+            console.log("Printing cleaned stations on next line");
+            console.log(allStations);
+        }
+    }, [allStations])*/
 
     useEffect(() => {
         setCurrentTrains(sortTrains());
