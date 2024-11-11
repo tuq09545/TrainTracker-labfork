@@ -136,16 +136,24 @@ function App() {
                   <h1>TrainTracker</h1>
               </div>
               <div className='content'>
-              <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
-              startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
-                station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
-              />
-              <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
-              <Map className = 'Map' />
+                  <div className='search-container'>
+
+                      <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
+                              startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
+                              station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
+                      />
+                  </div>
+                  <div className='train-list-container'>
+                      <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
+                  </div>
+                  <div className='map-container'>
+                      <Map className = 'Map' />
+                  </div>
+              </div>
               <div>
                 {showModal && modal}
                 </div>
-              </div> 
+
           </div>
       </div>
   );
