@@ -21,6 +21,8 @@ function App() {
     const [selectedStation, setSelectedStation] = useState("");
     const [upcomingOnly, setUpcomingOnly] = useState(false);
 
+    const [update, setUpdate] = useState(0);
+
     const [selectedTrain, setSelectedTrain] = useState({});
 
     const [showModal, setShowModal] = useState(false);
@@ -38,7 +40,7 @@ function App() {
 
     useEffect(() => {
         setCurrentTrains(sortTrains());
-    },[searchBy, searchKey, startStation, endStation, allTrains, selectedStation, upcomingOnly]);
+    },[update]);
 
     function handleFormChange(e){
         setSearchKey(e.target.value);
@@ -62,6 +64,11 @@ function App() {
 
     function handleUpcomingOnlyChange(e){
         setUpcomingOnly(e.target.checked);   
+    }
+
+    function handleUpdateChange(){
+        setUpdate(update + 1);   
+        console.log(update);
     }
 
     function handleTrainClick(train){
@@ -139,6 +146,7 @@ function App() {
               <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
               startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
                 station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
+                update={update} updateChange={handleUpdateChange}
               />
               <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
               <Map className = 'Map' />

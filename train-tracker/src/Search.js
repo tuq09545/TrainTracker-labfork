@@ -1,7 +1,7 @@
 import './styles/Search.css';
 
 function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal, endVal, startChange, endChange, stations, station, stationChange,
-    upcomingOnlyValue, upcomingOnlyChange
+    upcomingOnlyValue, upcomingOnlyChange, update, updateChange
 }){
     return (
         <form className='form'>
@@ -12,7 +12,8 @@ function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal,
                         <option value="1">Train Number</option>
                         <option value="2">Line Name</option>
                     </select>
-                <input onChange={searchChange} type="text" value={searchVal}></input>
+                <input onChange={searchChange} type="text" placeholder={searchVal}></input>
+                <button type="button" onClick={updateChange}>Search</button>
                 <label className="optional-criteria-label">
                     Optional criteria:
                     <span className="select-label">
