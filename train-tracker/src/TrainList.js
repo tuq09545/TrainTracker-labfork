@@ -6,6 +6,8 @@ function TrainList({trains, handleTrainClick}){
     function MakeTrain({train}){
         const status = train.punctuality ? " (" + train.punctuality + ")" : "";
 
+        let punctualityClassName = train.punctuality == 'ON TIME' ? 'ontime' : 'late';
+
         const handleClick = () => {
             handleTrainClick(train);
         }
@@ -16,7 +18,7 @@ function TrainList({trains, handleTrainClick}){
                 <td>{train.routeName}</td>
                 <td>{train.from}</td>
                 <td>{train.to}</td>
-                <td>{status}</td>
+                <td className={punctualityClassName}>{status}</td>
             </tr>
         );
     }
