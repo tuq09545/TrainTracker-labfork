@@ -5,6 +5,9 @@ import React, {useState, useEffect} from 'react'
 import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
+import TrainPopup from './TrainPopup';
+
+import { IoClose } from "react-icons/io5";
 
 function App() {
     const api = new Amtrak.APIInstance();
@@ -17,6 +20,14 @@ function App() {
     const [currentTrains, setCurrentTrains] = useState([]);
     const [selectedStation, setSelectedStation] = useState("");
     const [upcomingOnly, setUpcomingOnly] = useState(false);
+
+    const [selectedTrain, setSelectedTrain] = useState({});
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModalClose = () => {
+        setShowModal(false);
+    };
 
      useEffect(() => {
         api.onUpdated = function() {
@@ -51,6 +62,11 @@ function App() {
 
     function handleUpcomingOnlyChange(e){
         setUpcomingOnly(e.target.checked);   
+    }
+
+    function handleTrainClick(train){
+        setShowModal(true);
+        setSelectedTrain(train);
     }
 
     const sortTrains = () => {
@@ -91,7 +107,6 @@ function App() {
                 return t.stations.findIndex((station) => station.stationCode === startStation) < t.stations.findIndex((station) => station.stationCode === endStation);
             })
         }
-        console.log(trains);
         return trains;
     }
 
@@ -107,6 +122,12 @@ function App() {
         return renderedStations;
     }
 
+    const actionBar = (<div>
+        <div onClick={handleModalClose}><IoClose size={'3rem'}/></div>
+    </div>);
+
+    const modal = <TrainPopup onClose={handleModalClose} actionBar={actionBar} train={selectedTrain}/>
+
   return (
       <div className="App">
           <div className="header">
@@ -119,8 +140,11 @@ function App() {
               startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
                 station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
               />
-              <TrainList className = 'TrainList' trains={currentTrains}/>
+              <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
               <Map className = 'Map' />
+              <div>
+                {showModal && modal}
+                </div>
               </div> 
           </div>
       </div>

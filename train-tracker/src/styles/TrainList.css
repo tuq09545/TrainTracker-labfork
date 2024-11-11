@@ -12,6 +12,17 @@
     background-color: #FFF;
   }
 
+.train:hover {
+    border: 5px solid #97ccf0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.train:active {
+    background-color: #92989b;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
 .trainList p {
     padding: 5px;
   }
