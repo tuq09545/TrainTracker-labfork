@@ -1,5 +1,5 @@
-import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -17,6 +17,21 @@ L.Icon.Default.mergeOptions({
 });
 
 const Map = () => {
+    const [railLines, setRailLines] = useState(null);
+    const [stations, setStations] = useState(null);
+
+    useEffect(() => {
+        // Fetch rail lines GeoJSON
+        fetch("/geojson/amtrak-track.geojson")
+            .then(response => response.json())
+            .then(data => setRailLines(data));
+
+        // Fetch stations GeoJSON
+        fetch("/geojson/amtrak-stations.geojson")
+            .then(response => response.json())
+            .then(data => setStations(data));
+    }, []);
+
     return (
         <MapContainer center={[39.8283, -98.5795]} zoom={4} style={{ height: "100vh", width: "50%" }}>
             <TileLayer
@@ -26,6 +41,17 @@ const Map = () => {
             <Marker position={[39.9815, -75.1553]}>
                 <Popup>Welcome to Temple University. We're working on the Train Tracker!</Popup>
             </Marker>
+            {railLines && (
+                <GeoJSON data={railLines} style={{ color: "blue", weight: 1 }} />
+            )}
+            {stations && (
+                <GeoJSON
+                    data={stations}
+                    pointToLayer={(feature, latlng) =>
+                        L.circleMarker(latlng, { radius: 1.5, color: "red" })
+                    }
+                />
+            )}
         </MapContainer>
     );
 };
