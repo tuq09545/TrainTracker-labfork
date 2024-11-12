@@ -21,6 +21,8 @@ function Stop() {
     this.arrivalTime = null;
     this.departureTime = null;
 
+    this.arrivalPunctuality = null;
+    this.departurePunctuality = null;
 }
 
 /**
@@ -191,8 +193,18 @@ async function getTrainList() {
             station.stationCode = currentStation.code;
             station.hasArrived = currentStation.postarr != null;
             station.hasDeparted = currentStation.postdep != null;
-            station.arrivalTime = currentStation.postarr;
-            station.departureTime = currentStation.postdep;
+            if(station.hasArrived) {
+                station.arrivalTime = currentStation.postarr;
+            } else {
+                station.arrivalTime = currentStation.estarr;
+                station.arrivalPunctuality = currentStation.estarrcmnt
+            }
+            if(station.hasDeparted) {
+                station.departureTime = currentStation.postdep;
+            } else {
+                station.departureTime = currentStation.estdep;
+                station.departurePunctuality = currentStation.estdepcmnt;
+            }
             stations.push(station);
         }
 

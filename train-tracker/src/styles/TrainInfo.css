@@ -73,3 +73,18 @@ td:first-child {
     font-weight: bold;
     color: #2c3e50;
 }
+
+td.ontime {
+    color: green;
+    font-weight: normal;
+}
+
+td.late {
+    color: red;
+    font-weight: normal;
+}
+
+td.ontime, td.late {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
