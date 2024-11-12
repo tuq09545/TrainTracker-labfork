@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
 
 // Fix default icon issue
@@ -19,6 +20,9 @@ L.Icon.Default.mergeOptions({
 const Map = () => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
+    const [trains, setTrains] = useState([]);
+    const apiInstance = useRef(new APIInstance());
+    const mapRef = useRef();
 
     useEffect(() => {
         fetch("/geojson/amtrak-track.geojson")
@@ -42,7 +46,18 @@ const Map = () => {
         };
     }, []);
 
-    const mapRef = React.createRef();
+    const updateTrainData = () => {
+        apiInstance.current.update();
+        setTrains(apiInstance.current.trains || []);
+    };
+
+    useEffect(() => {
+        apiInstance.current.onUpdated = updateTrainData;
+        updateTrainData();
+        const intervalId = setInterval(updateTrainData, 60000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <MapContainer
@@ -65,10 +80,23 @@ const Map = () => {
                 <GeoJSON
                     data={stations}
                     pointToLayer={(feature, latlng) =>
-                        L.circleMarker(latlng, { radius: 1.5, color: "red" })
+                        L.circleMarker(latlng, { radius: 1, color: "red" })
                     }
                 />
             )}
+            {trains.map((train, index) => (
+                <Marker key={index} position={[train.lat, train.lon]}>
+                    <Popup>
+                        <strong>{train.routeName}</strong> - Train #{train.number}
+                        <br />
+                        Speed: {train.speed} mph
+                        <br />
+                        Punctuality: {train.punctuality}
+                        <br />
+                        Last update: {new Date(train.lastUpdate).toLocaleString()}
+                    </Popup>
+                </Marker>
+            ))}
         </MapContainer>
     );
 };
