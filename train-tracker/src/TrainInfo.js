@@ -15,8 +15,8 @@ function TrainInfo({train}){
 
         return <tr>
                 <td>{s.stationCode}</td>
-                <td className={arrivalStyle}>{s.arrivalTime ? s.arrivalTime + (s.hasArrived ? "" : " (EST)") : ""}</td>
-                <td className={departureStyle}>{s.departureTime ? s.departureTime + ((s.hasDeparted) ? "" : " (EST)") : ""}</td>
+                <td className={arrivalStyle}>{s.arrivalTime ? (s.hasArrived ? "" : "Estimated: ") + s.arrivalTime : ""}</td>
+                <td className={departureStyle}>{s.departureTime ? ((s.hasDeparted) ? "" : "Estimated: ") + s.departureTime : ""}</td>
             </tr>
         })
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
