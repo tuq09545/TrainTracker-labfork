@@ -65,21 +65,19 @@ function App() {
     }
 
     const getStationOptions = () => {
-        let stations = [];
-        allStations.map(station => {
-            stations.push(<option value={station.stationCode}>{station.stationCode} - {station.name}</option>)
+        let renderedStations = allStations.map(station => {
+            return <option value={station.stationCode} key={station.stationCode}>{station.stationCode} - {station.name}</option>
         })
-        stations.push(<option value={""} key={""}>{}</option>);
-        return stations;
+        renderedStations.push(<option value={""} key={""}>{}</option>);
+        return renderedStations;
     }
 
     const getRouteOptions = () => {
-        let routes = [];
-        allRoutes.map(route => {
-            routes.push(<option value={route.Name}>{route.Name}</option>)
+        let renderedRoutes = allRoutes.map(route => {
+            return <option value={route.Name} key={route.Name}>{route.Name}</option>
         });
-        routes.push(<option value={""} key={""}>{}</option>);
-        return routes;
+        renderedRoutes.push(<option value={""} key={""}>{}</option>);
+        return renderedRoutes;
     }
 
     // Modal Functions
@@ -92,11 +90,11 @@ function App() {
         setShowModal(false);
     };
 
-    const actionBar = (<div>
+    const closeButton = (<div>
         <div onClick={handleModalClose}><IoClose size={'3rem'}/></div>
     </div>);
 
-    const modal = <TrainPopup onClose={handleModalClose} actionBar={actionBar} train={selectedTrain}/>
+    const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
 
   return (
       <div className="App">

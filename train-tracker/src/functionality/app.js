@@ -10,7 +10,7 @@ export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedS
             trains = trains.filter((t) => {
                 let station = t.stations.find((station) => station.stationCode === selectedStation);
                 if (station.stationCode === t.from && station.hasDeparted){
-                    return;
+                    return undefined;
                 }
                 if (!station.hasArrived || !station.hasDeparted){
                     return t;
