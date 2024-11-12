@@ -51,7 +51,7 @@ function App() {
     function handleToStation(e){ setToStation(e.target.value); }
 
     function saveButton(){
-        setToCache(searchKey)
+        setToCache(selectedRoute, selectedNumber, selectedStation)
     }
 
     const sortTrains = () => {

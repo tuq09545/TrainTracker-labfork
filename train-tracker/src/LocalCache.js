@@ -20,16 +20,18 @@ const getLocalCache=()=>{
     return localCache
 }
 
-export const setToCache=(value)=>{
+export const setToCache=(selectedRoute, selectedNumber, selectedStation)=>{
 
     const localCache=getLocalCache()
     let data=localCache.data
 
     const item={
-        local:value
+        route:selectedRoute,
+        number: selectedNumber,
+        station: selectedStation
     }
 
-    data[value]=item
+    data[selectedRoute]=item
 
     try{
         localStorage.setItem(LOCAL_CACHE,JSON.stringify(localCache))

@@ -33,6 +33,7 @@ function Search({
                 <span>
                     <button type="button" onClick={searchFun}>Search</button>
                     <button type="button" onClick={clearFun}>Clear</button>
+                    <button type="button" onClick={saveButton}>Save Search</button>
                 </span>
                 
 
