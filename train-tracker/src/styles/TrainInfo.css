@@ -69,7 +69,6 @@ td {
     color: #34495e;
 }
 
-th:first-child,
 td:first-child {
     font-weight: bold;
     color: #2c3e50;
