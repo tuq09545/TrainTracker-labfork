@@ -36,7 +36,7 @@ function Search({searchFun, routes, stations}){
                 </div>
                 <span className="select-label">
                         Train Number:
-                        <input value={selectedNumber} onChange={handleNumber} type="number" placeholder="Enter Train Number"></input>
+                        <input className="select-box" value={selectedNumber} onChange={handleNumber} type="number" placeholder="Enter Train Number"></input>
                     </span>
                 <span className="select-label">
                         Route:
