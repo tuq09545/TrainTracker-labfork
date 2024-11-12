@@ -43,7 +43,6 @@ function App() {
 
     function handleFormChange(e){
         setSearchKey(e.target.value);
-        setToCache(e.target.value)
     }
 
     function handleSelectChange(e){
@@ -69,6 +68,10 @@ function App() {
     function handleTrainClick(train){
         setShowModal(true);
         setSelectedTrain(train);
+    }
+
+    function saveButton(){
+        setToCache(searchKey)
     }
 
     const sortTrains = () => {
@@ -140,7 +143,7 @@ function App() {
               <div className='content'>
               <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
               startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
-                station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
+                station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange} saveButton={saveButton}
               />
               <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
               <Map className = 'Map' />

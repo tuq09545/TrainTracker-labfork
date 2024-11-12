@@ -1,7 +1,7 @@
 import './styles/Search.css';
 
 function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal, endVal, startChange, endChange, stations, station, stationChange,
-    upcomingOnlyValue, upcomingOnlyChange
+    upcomingOnlyValue, upcomingOnlyChange, saveButton
 }){
     return (
         <form className='form'>
@@ -36,6 +36,7 @@ function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal,
                         <input onChange={upcomingOnlyChange} type="checkbox" checked={upcomingOnlyValue}></input>
                     </span>
                 </div>
+                <button className='saveForLater' onClick={saveButton}>Save Train</button>
               </form>
     );
     
