@@ -27,8 +27,6 @@ function Search({searchFun, routes, stations}){
         setUpcoming(false);
         setFromStation("");
         setToStation("");
-
-        searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
     }
 
     return (
