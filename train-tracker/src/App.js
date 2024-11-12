@@ -129,6 +129,7 @@ function App() {
                   <h1>TrainTracker</h1>
               </div>
               <div className='content'>
+              <div className='search-container'>
               <Search className='Search'
                 number = {selectedNumber} setNumber = {handleNumber}
                 route = {selectedRoute} setRoute = {handleRoute} routes = {getRouteOptions()}
@@ -138,8 +139,9 @@ function App() {
                 fromStation = {fromStation} setFromStation = {handleFromStation}
                 toStation = {toStation} setToStation = {handleToStation}
               />
-              <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
-              <Map className = 'Map' />
+              </div>
+              <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>
+              <div className='map-container'><Map className = 'Map' /></div>
               <div>
                 {showModal && modal}
                 </div>
