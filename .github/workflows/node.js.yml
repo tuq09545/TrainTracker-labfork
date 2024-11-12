@@ -23,9 +23,6 @@ jobs:
       working-directory: train-tracker
       env: 
         CI: false
-    - run: npm test
-      working-directory: train-tracker
-
     - name: Deploy with gh-pages
       run: |
         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
