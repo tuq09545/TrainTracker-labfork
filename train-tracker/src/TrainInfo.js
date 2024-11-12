@@ -3,8 +3,21 @@ import './styles/TrainInfo.css'
 function TrainInfo({train}){
     console.log(train);
     const renderedStops = train.stations.map((s) => {
-            return <tr><td>{s.stationCode}</td><td>{s.arrivalTime}</td>
-            <td>{s.departureTime}</td></tr>
+        let arrivalStyle = "";
+        let departureStyle = "";
+
+        if(!s.hasArrived) {
+            arrivalStyle = s.arrivalPunctuality?.endsWith("LATE") ? "late" : "ontime";
+        }
+        if(!s.hasDeparted) {
+            departureStyle = s.departurePunctuality?.endsWith("LATE") ? "late" : "ontime";
+        }
+
+        return <tr>
+                <td>{s.stationCode}</td>
+                <td className={arrivalStyle}>{s.arrivalTime ? (s.hasArrived ? "" : "Estimated: ") + s.arrivalTime : ""}</td>
+                <td className={departureStyle}>{s.departureTime ? ((s.hasDeparted) ? "" : "Estimated: ") + s.departureTime : ""}</td>
+            </tr>
         })
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
     return(
