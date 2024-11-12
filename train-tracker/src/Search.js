@@ -40,10 +40,10 @@ function Search({searchFun, routes, stations}){
                     </span>
                 <span className="select-label">
                         Route:
-                        <select value={selectedRoute} onChange={handleRoute} children={routes}></select>
+                        <select className="select-box" value={selectedRoute} onChange={handleRoute} children={routes}></select>
                     </span>
                 <span className="select-label">By station: </span>
-                    <select value={selectedStation} onChange={handleStation} children={stations}></select>
+                    <select className='select-box' value={selectedStation} onChange={handleStation} children={stations}></select>
                     <span className="select-label">
                         Upcoming trains only: 
                         <input checked={upcoming} onChange={handleUpcoming} type="checkbox" ></input>
@@ -58,11 +58,11 @@ function Search({searchFun, routes, stations}){
                     Optional criteria:
                     <span className="select-label">
                         From:
-                        <select value={fromStation} onChange={handleFromStation} children={stations}></select>
+                        <select className="select-box" value={fromStation} onChange={handleFromStation} children={stations}></select>
                     </span>
                     <span className="select-label">
                         To:
-                        <select value={toStation} onChange={handleToStation} children={stations}></select>
+                        <select className="select-box" value={toStation} onChange={handleToStation} children={stations}></select>
                     </span>
                 </label>
               </form>

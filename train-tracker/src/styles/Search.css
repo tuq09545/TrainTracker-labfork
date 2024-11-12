@@ -49,6 +49,11 @@
     padding: 0.3rem;
 }
 
+.select-box {
+    width: 90%;
+    max-width: 100%;
+}
+
 .form select {
     padding: 0.5rem;
     border: 1px solid #ccc;
