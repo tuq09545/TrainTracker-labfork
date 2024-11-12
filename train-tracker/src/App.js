@@ -6,7 +6,7 @@ import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
-import {sortTrains} from './functionality/app.js'
+import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
@@ -51,7 +51,7 @@ function App() {
     function handleToStation(e){ setToStation(e.target.value); }
 
     const searchTrains = () => {
-        let trains = sortTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
         setCurrentTrains(trains);
     }
 
