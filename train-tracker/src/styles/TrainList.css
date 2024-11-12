@@ -51,11 +51,3 @@
 .trainList p {
     padding: 5px;
   }
-
-.ontime {
-    color: green;
-}
-
-.late {
-    color: red;
-}
