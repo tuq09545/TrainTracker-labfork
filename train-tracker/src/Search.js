@@ -1,6 +1,9 @@
 import './styles/Search.css';
 import {useState} from 'react'
 
+import { IoSearch } from "react-icons/io5";
+import { MdClear } from "react-icons/md";
+
 function Search({searchFun, routes, stations}){
     const [selectedNumber, setSelectedNumber] = useState("");
     const [selectedRoute, setSelectedRoute] = useState("");
@@ -36,7 +39,7 @@ function Search({searchFun, routes, stations}){
                 </div>
                 <span className="select-label">
                         Train Number:
-                        <input className="select-box" value={selectedNumber} onChange={handleNumber} type="number" placeholder="Enter Train Number"></input>
+                        <input className="select-box" value={selectedNumber} onChange={handleNumber} type="number"></input>
                     </span>
                 <span className="select-label">
                         Route:
@@ -49,11 +52,6 @@ function Search({searchFun, routes, stations}){
                         <input checked={upcoming} onChange={handleUpcoming} type="checkbox" ></input>
                     </span>
                 
-                <span>
-                    <button type="button" onClick={search}>Search</button>
-                    <button type="button" onClick={clearSearch}>Clear</button>
-                </span>
-                
                 <label className="optional-criteria-label">
                     Optional criteria:
                     <span className="select-label">
@@ -65,6 +63,11 @@ function Search({searchFun, routes, stations}){
                         <select className="select-box" value={toStation} onChange={handleToStation} children={stations}></select>
                     </span>
                 </label>
+
+                <span className='button-container'>
+                    <div onClick={search} className='form-button'>Search <IoSearch/></div>
+                    <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
+                </span>
               </form>
     );
     
