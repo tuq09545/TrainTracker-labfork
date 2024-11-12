@@ -228,6 +228,8 @@ async function getTrainList() {
         tempTrain.punctuality = lastStationReport.postcmnt;
         tempTrain.lastVisitedStation = lastStationIndex;
         tempTrain.state = train.TrainState;
+        tempTrain.lat = apiData.features[i].geometry.coordinates[1]; //Flipped because AmtrakAPI has flipped lat-long
+        tempTrain.lon = apiData.features[i].geometry.coordinates[0]; //Flipped because AmtrakAPI has flipped lat-long
         tempTrain.stations = stations;
 
         trainList[i] = tempTrain;
