@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
+import { IoTrainOutline } from "react-icons/io5";
+import { renderToString } from "react-dom/server";
 
 // Fix default icon issue
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -59,6 +61,16 @@ const Map = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    const createTrainIcon = () => {
+        const trainIconHTML = renderToString(<IoTrainOutline style={{ fontSize: "24px", color: "blue" }} />);
+        return L.divIcon({
+            className: "custom-train-icon",
+            html: `<div>${trainIconHTML}</div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+        });
+    };
+
     return (
         <MapContainer
             ref={mapRef}
@@ -85,11 +97,15 @@ const Map = () => {
                 />
             )}
             {trains.map((train, index) => (
-                <Marker key={index} position={[train.lat, train.lon]}>
+                <Marker
+                    key={index}
+                    position={[train.lat, train.lon]}
+                    icon={createTrainIcon()}
+                >
                     <Popup>
                         <strong>{train.routeName}</strong> - Train #{train.number}
                         <br />
-                        Speed: {train.speed} mph
+                        Speed: {Math.round(train.speed)} mph
                         <br />
                         Punctuality: {train.punctuality}
                         <br />
