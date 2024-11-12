@@ -19,7 +19,8 @@ function Search({searchFun, routes, stations}){
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
 
-    const search = () =>{
+    const search = (event) =>{
+        event.preventDefault();
         searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
     }
 
@@ -33,7 +34,7 @@ function Search({searchFun, routes, stations}){
     }
 
     return (
-        <form className='form'>
+        <form className='form' onSubmit={search}>
                 <div className='top-label'>
                     Search options: 
                 </div>
