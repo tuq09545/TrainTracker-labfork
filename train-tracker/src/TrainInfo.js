@@ -20,12 +20,13 @@ function TrainInfo({train}){
             </tr>
         })
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
+    let punctualityToDisplay = train.punctuality.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
     return(
         <div className='train-info'>
             <h2 className='route'>{train.routeName} (#{train.number})</h2>
             <h3 className='direction'>From: {train.from}</h3>
             <h3 className='direction'>To: {train.to}</h3>
-            <div className={punctualityClassName} >{train.punctuality}</div>
+            <div className={punctualityClassName} >{punctualityToDisplay}</div>
             <div>Last updated: {train.lastUpdate}</div>
             <table>
                 <thead><tr><th>Station</th><th>Arrived</th><th>Departed</th></tr></thead>
