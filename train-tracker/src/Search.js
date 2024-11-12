@@ -1,41 +1,51 @@
 import './styles/Search.css';
 
-function Search({searchChange, criteriaChange, searchVal, searchByVal, startVal, endVal, startChange, endChange, stations, station, stationChange,
-    upcomingOnlyValue, upcomingOnlyChange
+function Search({
+    number = "", setNumber = function(){},
+    route = "", setRoute = function(){}, routes = <option value={""}>{}</option>,
+    station = "", setStation = function(){}, stations = <option value={""}>{}</option>,
+    upcoming = false, setUpcoming = function(){},
+    searchFun = function(){}, clearFun = function (){},
+    fromStation = "", setFromStation = function(){},
+    toStation = "", setToStation = function(){}
 }){
     return (
         <form className='form'>
                 <div className='top-label'>
-                    Search by: 
+                    Search options: 
                 </div>
-                <select onChange={criteriaChange} value={searchByVal}>
-                        <option value="1">Train Number</option>
-                        <option value="2">Line Name</option>
-                    </select>
-                <input onChange={searchChange} type="text" value={searchVal}></input>
+                <span className="select-label">
+                        Train Number:
+                        <input value={number} onChange={setNumber} type="number" placeholder="Enter Train Number"></input>
+                    </span>
+                <span className="select-label">
+                        Route:
+                        <select value={route} onChange={setRoute} children={routes}></select>
+                    </span>
+                <span className="select-label">By station: </span>
+                    <select value={station} onChange={setStation} children={stations}></select>
+                    <span className="select-label">
+                        Upcoming trains only: 
+                        <input checked={upcoming} onChange={setUpcoming} type="checkbox" ></input>
+                    </span>
+                
+                <span>
+                    <button type="button" onClick={searchFun}>Search</button>
+                    <button type="button" onClick={clearFun}>Clear</button>
+                </span>
+                
+
                 <label className="optional-criteria-label">
                     Optional criteria:
                     <span className="select-label">
                         From:
-                        <select value={startVal} onChange={startChange} children={stations}>
-                        </select>
+                        <select value={fromStation} onChange={setFromStation} children={stations}></select>
                     </span>
                     <span className="select-label">
                         To:
-                        <select value={endVal} onChange={endChange} children={stations}>
-                        </select>
+                        <select value={toStation} onChange={setToStation} children={stations}></select>
                     </span>
                 </label>
-                <div className='top-label'>
-                    Or search by station:
-                    <span className="select-label">Trains passing through: </span>
-                    <select value={station} onChange={stationChange} children={stations}>
-                    </select>
-                    <span className="select-label">
-                        Upcoming trains only: 
-                        <input onChange={upcomingOnlyChange} type="checkbox" checked={upcomingOnlyValue}></input>
-                    </span>
-                </div>
               </form>
     );
     

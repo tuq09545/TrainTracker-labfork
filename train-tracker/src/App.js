@@ -12,69 +12,52 @@ import { IoClose } from "react-icons/io5";
 function App() {
     const api = new Amtrak.APIInstance();
 
-    const [searchBy, setSearchBy] = useState('1');
-    const [searchKey, setSearchKey] = useState("Enter train line or number");
-    const [startStation, setStartStation] = useState("");
-    const [endStation, setEndStation] = useState("");
+    // api data
     const [allTrains, setAllTrains] = useState([]);
-    const [currentTrains, setCurrentTrains] = useState([]);
+    const [allRoutes, setAllRoutes] = useState([]);
+    const [allStations, setAllStations] = useState([]);
+
+    // search
+    const [selectedNumber, setSelectedNumber] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
     const [selectedStation, setSelectedStation] = useState("");
-    const [upcomingOnly, setUpcomingOnly] = useState(false);
+    const [upcoming, setUpcoming] = useState(false);
+    const [fromStation, setFromStation] = useState("");
+    const [toStation, setToStation] = useState("");
 
+    // sorted trains
+    const [currentTrains, setCurrentTrains] = useState([]);
+
+    // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
-
     const [showModal, setShowModal] = useState(false);
 
-    const handleModalClose = () => {
-        setShowModal(false);
-    };
-
-     useEffect(() => {
+    useEffect(() => {
         api.onUpdated = function() {
             setAllTrains(this.trains);
+            setAllRoutes(this.routes);
+            setAllStations(this.stations);
         }
         api.update();
     },[]);
 
-    useEffect(() => {
-        setCurrentTrains(sortTrains());
-    },[searchBy, searchKey, startStation, endStation, allTrains, selectedStation, upcomingOnly]);
-
-    function handleFormChange(e){
-        setSearchKey(e.target.value);
-    }
-
-    function handleSelectChange(e){
-        setSearchBy(e.target.value);
-    }
-
-    function handleStartStationChange(e){
-        setStartStation(e.target.value);
-    }
-
-    function handleEndStationChange(e){
-        setEndStation(e.target.value);
-    }
-
-    function handleSelectedStationChange(e){
-        setSelectedStation(e.target.value);
-    }
-
-    function handleUpcomingOnlyChange(e){
-        setUpcomingOnly(e.target.checked);   
-    }
-
-    function handleTrainClick(train){
-        setShowModal(true);
-        setSelectedTrain(train);
-    }
+    // Search functions
+    function handleNumber(e){ setSelectedNumber(e.target.value); }
+    function handleRoute(e){ setSelectedRoute(e.target.value); }
+    function handleStation(e){ setSelectedStation(e.target.value); }
+    function handleUpcoming(e){ setUpcoming(e.target.checked); }
+    function handleFromStation(e){ setFromStation(e.target.value); }
+    function handleToStation(e){ setToStation(e.target.value); }
 
     const sortTrains = () => {
-        let defaultSearch = "Enter train line or number";
-        let trains = [];
-        if (selectedStation){
-            trains = allTrains.filter((t,index) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
-            if (upcomingOnly){
+        let trains = allTrains;
+        if (selectedNumber > 0){
+            trains = trains.filter(t => t.number === selectedNumber)
+        } if (selectedRoute){
+            trains = trains.filter(t => t.routeName === selectedRoute)
+        } if (selectedStation){
+            trains = trains.filter((t,index) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
+            if (upcoming){
                 trains = trains.filter((t, index) => {
                     let station = t.stations.find((station) => station.stationCode === selectedStation);
                     if (station.stationCode === t.from && station.hasDeparted){
@@ -85,42 +68,52 @@ function App() {
                     }
                 })
             }
-        }
-        if (searchBy === '1' && searchKey && searchKey !== defaultSearch){ 
-            if (selectedStation){
-                trains = trains.filter(t => t.number === searchKey);
-            }
-            else{
-                trains = allTrains.filter(t => t.number === searchKey);
-            }
-        }
-        else if (searchBy === '2' && searchKey && searchKey !== defaultSearch){
-            if (selectedStation){
-                trains = trains.filter(t => t.routeName === searchKey);
-            }
-            else{
-                trains = allTrains.filter(t => t.routeName === searchKey);
-            }
-        }
-        if (startStation && endStation){
+        } if (fromStation && toStation){
             trains = trains.filter((t, index) =>{
-                return t.stations.findIndex((station) => station.stationCode === startStation) < t.stations.findIndex((station) => station.stationCode === endStation);
+                return t.stations.findIndex((station) => station.stationCode === fromStation) < t.stations.findIndex((station) => station.stationCode === toStation);
             })
         }
-        return trains;
+        // sort results by number
+        trains.sort((a,b) => a.number - b.number);
+        setCurrentTrains(trains);
+    }
+
+    const clearSearch = () => {
+        setSelectedNumber("");
+        setSelectedRoute("");
+        setSelectedStation("");
+        setUpcoming(false);
+        setFromStation("");
+        setToStation("");
     }
 
     const getStationOptions = () => {
-        let stations = allTrains.flatMap(train => train.stations);
-        stations = stations.filter((s, index) => {
-            return index === stations.findIndex(station => station.stationCode === s.stationCode);
-        });
-        let renderedStations = stations.sort((a,b) => a.stationCode.localeCompare(b.stationCode)).map(station => 
-            <option value={station.stationCode}>{station.stationCode}</option>
-        );
-        renderedStations.push(<option value={""} key={""}>{}</option>);
-        return renderedStations;
+        let stations = [];
+        allStations.map(station => {
+            stations.push(<option value={station.stationCode}>{station.stationCode} - {station.name}</option>)
+        })
+        stations.push(<option value={""} key={""}>{}</option>);
+        return stations;
     }
+
+    const getRouteOptions = () => {
+        let routes = [];
+        allRoutes.map(route => {
+            routes.push(<option value={route.Name}>{route.Name}</option>)
+        });
+        routes.push(<option value={""} key={""}>{}</option>);
+        return routes;
+    }
+
+    // Modal Functions
+    function handleTrainClick(train){
+        setShowModal(true);
+        setSelectedTrain(train);
+    }
+
+    const handleModalClose = () => {
+        setShowModal(false);
+    };
 
     const actionBar = (<div>
         <div onClick={handleModalClose}><IoClose size={'3rem'}/></div>
@@ -136,24 +129,23 @@ function App() {
                   <h1>TrainTracker</h1>
               </div>
               <div className='content'>
-                  <div className='search-container'>
-
-                      <Search className='Search' searchChange={handleFormChange} criteriaChange={handleSelectChange} searchVal={searchKey} searchByVal={searchBy}
-                              startVal={startStation} endVal={endStation} startChange={handleStartStationChange} endChange={handleEndStationChange} stations={getStationOptions()}
-                              station={selectedStation} stationChange={handleSelectedStationChange} upcomingOnlyValue={upcomingOnly} upcomingOnlyChange={handleUpcomingOnlyChange}
-                      />
-                  </div>
-                  <div className='train-list-container'>
-                      <TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/>
-                  </div>
-                  <div className='map-container'>
-                      <Map className = 'Map' />
-                  </div>
+              <div className='search-container'>
+              <Search className='Search'
+                number = {selectedNumber} setNumber = {handleNumber}
+                route = {selectedRoute} setRoute = {handleRoute} routes = {getRouteOptions()}
+                station = {selectedStation} setStation = {handleStation} stations = {getStationOptions()}
+                upcoming = {upcoming} setUpcoming = {handleUpcoming}
+                searchFun = {sortTrains} clearFun = {clearSearch}
+                fromStation = {fromStation} setFromStation = {handleFromStation}
+                toStation = {toStation} setToStation = {handleToStation}
+              />
               </div>
+              <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>
+              <div className='map-container'><Map className = 'Map' /></div>
               <div>
                 {showModal && modal}
                 </div>
-
+              </div> 
           </div>
       </div>
   );
