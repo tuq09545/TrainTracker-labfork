@@ -66,15 +66,16 @@ function Train() {
     this.lastUpdate = null;
     this.lastVisitedStation = null;
     this.punctuality = null;
+    this.lat = null;
+    this.lon = null;
     this.state = null;
     this.stations = [];//of type Stop[]
     this.toString = function() {
         return this.routeName + " Train #" + this.number +
             "\nGoing " + Math.trunc(this.speed) + " Mph Heading " + this.heading + " from " + this.from + " to " + this.to +
-            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation + 
+            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation +
+            "\nLat: " + this.lat + " Lon: " + this.lon +
             "\nStation List: " + this.stations.map(station => station.stationCode).join(", ");
-    }
-}
 
 function stationFromRaw(data) {
     const station = new Station();
@@ -225,6 +226,8 @@ async function getTrainList() {
         tempTrain.punctuality = lastStationReport.postcmnt;
         tempTrain.lastVisitedStation = lastStationIndex;
         tempTrain.state = train.TrainState;
+        tempTrain.lat = apiData.features[i].geometry.coordinates[0];
+        tempTrain.lon = apiData.features[i].geometry.coordinates[1];
         tempTrain.stations = stations;
 
         trainList[i] = tempTrain;
