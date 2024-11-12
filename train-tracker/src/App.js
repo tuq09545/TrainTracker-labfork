@@ -18,14 +18,6 @@ function App() {
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
 
-    // search
-    const [selectedNumber, setSelectedNumber] = useState("");
-    const [selectedRoute, setSelectedRoute] = useState("");
-    const [selectedStation, setSelectedStation] = useState("");
-    const [upcoming, setUpcoming] = useState(false);
-    const [fromStation, setFromStation] = useState("");
-    const [toStation, setToStation] = useState("");
-
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -42,26 +34,9 @@ function App() {
         api.update();
     },[]);
 
-    // Search functions
-    function handleNumber(e){ setSelectedNumber(e.target.value); }
-    function handleRoute(e){ setSelectedRoute(e.target.value); }
-    function handleStation(e){ setSelectedStation(e.target.value); }
-    function handleUpcoming(e){ setUpcoming(e.target.checked); }
-    function handleFromStation(e){ setFromStation(e.target.value); }
-    function handleToStation(e){ setToStation(e.target.value); }
-
-    const searchTrains = () => {
+    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
         let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
         setCurrentTrains(trains);
-    }
-
-    const clearSearch = () => {
-        setSelectedNumber("");
-        setSelectedRoute("");
-        setSelectedStation("");
-        setUpcoming(false);
-        setFromStation("");
-        setToStation("");
     }
 
     const getStationOptions = () => {
@@ -106,13 +81,9 @@ function App() {
               <div className='content'>
               <div className='search-container'>
               <Search className='Search'
-                number = {selectedNumber} setNumber = {handleNumber}
-                route = {selectedRoute} setRoute = {handleRoute} routes = {getRouteOptions()}
-                station = {selectedStation} setStation = {handleStation} stations = {getStationOptions()}
-                upcoming = {upcoming} setUpcoming = {handleUpcoming}
-                searchFun = {searchTrains} clearFun = {clearSearch}
-                fromStation = {fromStation} setFromStation = {handleFromStation}
-                toStation = {toStation} setToStation = {handleToStation}
+                routes = {getRouteOptions()}
+                stations = {getStationOptions()}
+                searchFun = {searchTrains}
               />
               </div>
               <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>
