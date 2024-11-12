@@ -6,6 +6,7 @@ import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
+import {setToCache} from './LocalCache'
 
 import { IoClose } from "react-icons/io5";
 
@@ -42,6 +43,7 @@ function App() {
 
     function handleFormChange(e){
         setSearchKey(e.target.value);
+        setToCache(e.target.value)
     }
 
     function handleSelectChange(e){
