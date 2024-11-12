@@ -3,11 +3,11 @@
 const API_HOST = process.env.REACT_APP_API_HOST;
 
 /**
- * Represents a Station as seen by a Train
+ * Represents a Stop as seen by a Train
  * found in a train's {@link Train.stations} member
  * @constructor
  * */
-function Station() {
+function Stop() {
     this.stationCode = null;
     // this.getStationName = function(){
         //use table to convert from 3-letter codes
@@ -24,8 +24,26 @@ function Station() {
 }
 
 /**
+ * represents a station
+ * @constructor
+ */
+function Station() {
+    this.stationCode = null;
+    this.name = null;
+
+    this.addr1 = null;
+    this.addr2 = null;
+    this.city = null;
+    this.state = null;
+    this.zip = null;
+
+    this.lat = null;
+    this.lon = null;
+}
+
+/**
  * Information about a train, including:
- * list of scheduled [stations]{@link Station}
+ * list of scheduled [stops]{@link Stop}
  * train number
  * speed,
  * heading,
@@ -47,13 +65,29 @@ function Train() {
     this.lastVisitedStation = null;
     this.punctuality = null;
     this.state = null;
-    this.stations = [];//of type StationInfo[]
+    this.stations = [];//of type Stop[]
     this.toString = function() {
         return this.routeName + " Train #" + this.number +
             "\nGoing " + Math.trunc(this.speed) + " Mph Heading " + this.heading + " from " + this.from + " to " + this.to +
             "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation + 
             "\nStation List: " + this.stations.map(station => station.stationCode).join(", ");
     }
+}
+
+function stationFromRaw(data) {
+    const station = new Station();
+
+    station.stationCode = data.Code;
+    station.name = data.StationName;
+    station.addr1 = data.Address1;
+    station.addr2 = data.Address2;
+    station.city = data.City;
+    station.state = data.State;
+    station.zip = data.Zipcode;
+    station.lon = data.lon;
+    station.lat = data.lat;
+
+    return station;
 }
 
 /**
@@ -75,18 +109,30 @@ function APIInstance() {
         if(this.routes === null) {
             getRoutesJSONData().then(data => {
                 this.routes = data;
+                if(this.trains !== null && this.stations !== null) {
+                    this.onUpdated()
+                }
             })
         }
         if(this.stations === null) {
             getStationsJSONData().then(data => {
-                this.stations = data;
+                this.stations = data.StationsDataResponse.features.map(m => stationFromRaw(m.properties));
+                if(this.trains !== null && this.routes !== null) {
+                    this.onUpdated()
+                }
             })
         }
         getTrainList().then(data => {
             this.trains = data;
             this.lastUpdate = Date.now();
-            this.onUpdated();
+            if(this.routes !== null && this.stations !== null) {
+                this.onUpdated();
+            }
         })
+    }
+
+    this.getStationInfo = function(stationCode) {
+        return this.stations.find(station => station.Code === stationCode);
     }
 }
 
@@ -141,7 +187,7 @@ async function getTrainList() {
             currentStation = JSON.parse(currentStation);
             if(currentStation == null) break;
 
-            let station = new Station();
+            let station = new Stop();
             station.stationCode = currentStation.code;
             station.hasArrived = currentStation.postarr != null;
             station.hasDeparted = currentStation.postdep != null;
@@ -177,6 +223,7 @@ async function getTrainList() {
 
 module.exports = {
     Station,
+    Stop,
     Train,
     APIInstance
 }
