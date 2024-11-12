@@ -62,19 +62,20 @@ const Map = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
 
-    const trainIconHTML = renderToString(
-        <div className="custom-icon-container">
-            <IoTrainOutline size={20} color="#000" />
+    const TrainIcon = ({ color }) => (
+        <div className="custom-icon-container" style={{ color: color }}>
+            <IoTrainOutline size={20} />
         </div>
     );
-
-    const trainIcon = new L.DivIcon({
-        html: trainIconHTML,
-        className: "custom-div-icon",
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-    });
 
     return (
         <MapContainer
@@ -87,11 +88,8 @@ const Map = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={[39.9815, -75.1553]}>
-                <Popup>Welcome to Temple University. We're working on the Train Tracker!</Popup>
-            </Marker>
             {railLines && (
-                <GeoJSON data={railLines} style={{ color: "blue", weight: 1 }} />
+                <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
             )}
             {stations && (
                 <GeoJSON
@@ -105,7 +103,12 @@ const Map = () => {
                 <Marker
                     key={index}
                     position={[train.lat, train.lon]}
-                    icon={trainIcon}
+                    icon={L.divIcon({
+                        html: renderToString(<TrainIcon color={getRandomColor()} />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}
                 >
                     <Popup>
                         <strong>{train.routeName}</strong> - Train #{train.number}
