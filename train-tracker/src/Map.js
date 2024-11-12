@@ -5,6 +5,7 @@ import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
 import { renderToString } from "react-dom/server";
+import './styles/Map.css';
 
 // Fix default icon issue
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -61,15 +62,19 @@ const Map = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    const createTrainIcon = () => {
-        const trainIconHTML = renderToString(<IoTrainOutline style={{ fontSize: "24px", color: "blue" }} />);
-        return L.divIcon({
-            className: "custom-train-icon",
-            html: `<div>${trainIconHTML}</div>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12],
-        });
-    };
+
+    const trainIconHTML = renderToString(
+        <div className="custom-icon-container">
+            <IoTrainOutline size={20} color="#000" />
+        </div>
+    );
+
+    const trainIcon = new L.DivIcon({
+        html: trainIconHTML,
+        className: "custom-div-icon",
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+    });
 
     return (
         <MapContainer
@@ -100,7 +105,7 @@ const Map = () => {
                 <Marker
                     key={index}
                     position={[train.lat, train.lon]}
-                    icon={createTrainIcon()}
+                    icon={trainIcon}
                 >
                     <Popup>
                         <strong>{train.routeName}</strong> - Train #{train.number}
