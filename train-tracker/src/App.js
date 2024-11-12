@@ -24,7 +24,7 @@ function App() {
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
-    
+
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -74,8 +74,17 @@ function App() {
             })
         }
         // sort results by number
-        trains.sort((a,b) => a.number - b.number)
+        trains.sort((a,b) => a.number - b.number);
         setCurrentTrains(trains);
+    }
+
+    const clearSearch = () => {
+        setSelectedNumber("");
+        setSelectedRoute("");
+        setSelectedStation("");
+        setUpcoming(false);
+        setFromStation("");
+        setToStation("");
     }
 
     const getStationOptions = () => {
@@ -125,7 +134,7 @@ function App() {
                 route = {selectedRoute} setRoute = {handleRoute} routes = {getRouteOptions()}
                 station = {selectedStation} setStation = {handleStation} stations = {getStationOptions()}
                 upcoming = {upcoming} setUpcoming = {handleUpcoming}
-                searchFun = {sortTrains}
+                searchFun = {sortTrains} clearFun = {clearSearch}
                 fromStation = {fromStation} setFromStation = {handleFromStation}
                 toStation = {toStation} setToStation = {handleToStation}
               />

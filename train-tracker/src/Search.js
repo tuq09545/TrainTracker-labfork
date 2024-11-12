@@ -5,7 +5,7 @@ function Search({
     route = "", setRoute = function(){}, routes = <option value={""}>{}</option>,
     station = "", setStation = function(){}, stations = <option value={""}>{}</option>,
     upcoming = false, setUpcoming = function(){},
-    searchFun = function(){},
+    searchFun = function(){}, clearFun = function (){},
     fromStation = "", setFromStation = function(){},
     toStation = "", setToStation = function(){}
 }){
@@ -29,7 +29,11 @@ function Search({
                         <input checked={upcoming} onChange={setUpcoming} type="checkbox" ></input>
                     </span>
                 
-                <button type="button" onClick={searchFun}>Search</button>
+                <span>
+                    <button type="button" onClick={searchFun}>Search</button>
+                    <button type="button" onClick={clearFun}>Clear</button>
+                </span>
+                
 
                 <label className="optional-criteria-label">
                     Optional criteria:
