@@ -17,6 +17,8 @@
     "concurrently": "^9.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "concurrently \"react-scripts start\" \"npm run start-server\"",
     "start-server": "npx wrangler -c src/backend/wrangler.toml dev",
     "build": "react-scripts build",
