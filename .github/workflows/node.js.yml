@@ -11,7 +11,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'frontend-deploy-skip') == false
+    if: contains(github.event.pull_request.labels.*.name, 'frontend-deploy-skip') == false
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 22.11.0
