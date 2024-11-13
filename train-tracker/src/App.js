@@ -90,7 +90,7 @@ function App() {
               />
               </div>
               <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>
-              <div className='map-container'><Map className = 'Map' /></div>
+              <div className='map-container'><Map className = 'Map' trains={currentTrains}/></div>
               <div>
                 {showModal && modal}
                 </div>
