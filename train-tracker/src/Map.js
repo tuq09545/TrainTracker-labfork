@@ -20,20 +20,20 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const Map = () => {
+const Map = ({trains}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
-    const [trains, setTrains] = useState([]);
+    // const [trains, setTrains] = useState([]);
     // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
-    const apiInstance = useRef(new APIInstance());
+    // const apiInstance = useRef(new APIInstance());
     const mapRef = useRef();
 
     useEffect(() => {
-        fetch("/geojson/amtrak-track.geojson")
+        fetch("/TrainTracker/geojson/amtrak-track.geojson")
             .then(response => response.json())
             .then(data => setRailLines(data));
 
-        fetch("/geojson/amtrak-stations.geojson")
+        fetch("/TrainTracker/geojson/amtrak-stations.geojson")
             .then(response => response.json())
             .then(data => setStations(data));
 
@@ -48,8 +48,9 @@ const Map = () => {
     }, []);
 
     const updateTrainData = () => {
-        apiInstance.current.update();
-        setTrains(apiInstance.current.trains || []);
+        // removed update button functionality temporarily
+        //apiInstance.current.update();
+        //setTrains(apiInstance.current.trains || []);
     };
 
         // Commented out the logic for assigning random colors
@@ -92,6 +93,40 @@ const Map = () => {
         </div>
     );
 
+    function TrainMarkers() { 
+        console.log(trains);
+        if(trains.length !== 0){
+            return(
+                <div>
+                    {trains.map((train,index) =>
+                        <Marker
+                            key={index}
+                            position={[train.lat, train.lon]}
+                            icon={L.divIcon({
+                                html: renderToString(<TrainIcon />),
+                                className: 'custom-icon',
+                                iconSize: [30, 30],
+                                iconAnchor: [15, 15]
+                            })}
+                        >
+                            <Popup>
+                                <strong>{train.routeName}</strong> - Train #{train.number}
+                                <br />
+                                Speed: {Math.round(train.speed)} mph
+                                <br />
+                                Punctuality: {train.punctuality}
+                                <br />
+                                Last update: {new Date(train.lastUpdate).toLocaleString()}
+                            </Popup>
+                        </Marker>
+                    )}
+                </div>
+            )
+        } else {
+            return <div></div>;
+        }   
+    }
+
     return (
         <>
         <button onClick={updateTrainData}>Refresh Trains</button>
@@ -116,28 +151,7 @@ const Map = () => {
                     }
                 />
             )}
-            {trains.map((train, index) => (
-                <Marker
-                    key={index}
-                    position={[train.lat, train.lon]}
-                    icon={L.divIcon({
-                        html: renderToString(<TrainIcon />),
-                        className: 'custom-icon',
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15]
-                    })}
-                >
-                    <Popup>
-                        <strong>{train.routeName}</strong> - Train #{train.number}
-                        <br />
-                        Speed: {Math.round(train.speed)} mph
-                        <br />
-                        Punctuality: {train.punctuality}
-                        <br />
-                        Last update: {new Date(train.lastUpdate).toLocaleString()}
-                    </Popup>
-                </Marker>
-            ))}
+            <TrainMarkers/>
         </MapContainer>
      </>
     );

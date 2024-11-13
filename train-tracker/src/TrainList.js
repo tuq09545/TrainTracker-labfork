@@ -4,7 +4,7 @@ import './styles/TrainList.css';
 function TrainList({trains, handleTrainClick}){
 
     function MakeTrain({train}){
-        const status = train.punctuality.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
+        const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
         let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
 
