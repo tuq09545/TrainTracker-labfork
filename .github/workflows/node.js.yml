@@ -30,3 +30,4 @@ jobs:
       working-directory: train-tracker
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CI: false
