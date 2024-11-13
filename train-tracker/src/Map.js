@@ -44,15 +44,13 @@ const Map = () => {
         };
 
         window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const updateTrainData = () => {
         apiInstance.current.update();
-        const newTrains = apiInstance.current.trains || [];
+        setTrains(apiInstance.current.trains || []);
+    };
 
         // Commented out the logic for assigning random colors
         /*
@@ -67,16 +65,13 @@ const Map = () => {
         });
         */
 
-        setTrains(newTrains);
-    };
-
-    useEffect(() => {
+    /*useEffect(() => {
         apiInstance.current.onUpdated = updateTrainData;
         updateTrainData();
         const intervalId = setInterval(updateTrainData, 600000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, []);*/
 
     // Commented out getRandomColor function
     /*
@@ -98,6 +93,8 @@ const Map = () => {
     );
 
     return (
+        <>
+        <button onClick={updateTrainData}>Refresh Trains</button>
         <MapContainer
             ref={mapRef}
             center={[39.8283, -98.5795]}
@@ -142,6 +139,7 @@ const Map = () => {
                 </Marker>
             ))}
         </MapContainer>
+     </>
     );
 };
 
