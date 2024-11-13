@@ -24,6 +24,7 @@ const Map = () => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     const [trains, setTrains] = useState([]);
+    const [trainColors, setTrainColors] = useState({});
     const apiInstance = useRef(new APIInstance());
     const mapRef = useRef();
 
@@ -51,7 +52,18 @@ const Map = () => {
 
     const updateTrainData = () => {
         apiInstance.current.update();
-        setTrains(apiInstance.current.trains || []);
+        const newTrains = apiInstance.current.trains || [];
+        setTrainColors(prevColors => {
+            const updatedColors = { ...prevColors };
+            newTrains.forEach(train => {
+                if (!updatedColors[train.number]) {
+                    updatedColors[train.number] = getRandomColor();
+                }
+            });
+            return updatedColors;
+        });
+
+        setTrains(newTrains);
     };
 
     useEffect(() => {
@@ -104,7 +116,7 @@ const Map = () => {
                     key={index}
                     position={[train.lat, train.lon]}
                     icon={L.divIcon({
-                        html: renderToString(<TrainIcon color={getRandomColor()} />),
+                        html: renderToString(<TrainIcon color={trainColors[train.number]} />),
                         className: 'custom-icon',
                         iconSize: [30, 30],
                         iconAnchor: [15, 15]
