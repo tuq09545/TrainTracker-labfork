@@ -37,6 +37,7 @@ export const setToCache=(selectedRoute, selectedNumber, selectedStation)=>{
         localStorage.setItem(LOCAL_CACHE,JSON.stringify(localCache))
     }
     catch(e){
+        alert("Unable to Save to Favorites");
     }
 
 }

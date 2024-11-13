@@ -7,8 +7,6 @@ import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
 
-import {setToCache} from './LocalCache'
-
 import {filterTrains} from './functionality/app.js'
 
 
@@ -89,7 +87,6 @@ function App() {
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
                 searchFun = {searchTrains}
-                saveButton = {saveButton}
               />
               </div>
               <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>

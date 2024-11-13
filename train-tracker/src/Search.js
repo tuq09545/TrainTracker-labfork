@@ -3,6 +3,7 @@ import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import { setToCache } from './LocalCache';
 
 function Search({searchFun, routes, stations}){
     const [selectedNumber, setSelectedNumber] = useState("");
@@ -18,6 +19,9 @@ function Search({searchFun, routes, stations}){
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
+    function setToFavorites(){
+        setToCache(selectedRoute,selectedNumber, selectedStation);
+    }
 
     const search = (event) =>{
         event.preventDefault();
@@ -67,6 +71,7 @@ function Search({searchFun, routes, stations}){
                 <span className='button-container'>
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
                     <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
+                    <div onClick={setToFavorites} className='form-button'>Set to Favorites</div>
                 </span>
               </form>
     );
