@@ -3,6 +3,7 @@ import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import { MdFavoriteBorder } from "react-icons/md";
 import { setToCache } from './LocalCache';
 
 function Search({searchFun, routes, stations}){
@@ -71,7 +72,7 @@ function Search({searchFun, routes, stations}){
                 <span className='button-container'>
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
                     <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
-                    <div onClick={setToFavorites} className='form-button'>Set to Favorites</div>
+                    <div onClick={setToFavorites} className='form-button'>Favorite <MdFavoriteBorder/></div>
                 </span>
               </form>
     );
