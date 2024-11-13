@@ -66,7 +66,7 @@ function App() {
     };
 
     const closeButton = (<div>
-        <div onClick={handleModalClose}><IoClose size={'3rem'}/></div>
+        <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
     </div>);
 
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
