@@ -51,7 +51,7 @@ function App() {
     }
 
     const getRouteOptions = () => {
-        let renderedRoutes = allRoutes.map(route => {
+        let renderedRoutes = allRoutes.sort((a, b) => (a.Name).localeCompare(b.Name)).map(route => {
             return <option value={route.Name} key={route.Name}>{route.Name}</option>
         });
         renderedRoutes.push(<option value={""} key={""}>{}</option>);
