@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
+import { IoTrainOutline } from "react-icons/io5";
+import { renderToString } from "react-dom/server";
+import './styles/Map.css';
 
 // Fix default icon issue
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -19,6 +23,10 @@ L.Icon.Default.mergeOptions({
 const Map = () => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
+    const [trains, setTrains] = useState([]);
+    // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
+    const apiInstance = useRef(new APIInstance());
+    const mapRef = useRef();
 
     useEffect(() => {
         fetch("/geojson/amtrak-track.geojson")
@@ -36,15 +44,57 @@ const Map = () => {
         };
 
         window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const mapRef = React.createRef();
+    const updateTrainData = () => {
+        apiInstance.current.update();
+        setTrains(apiInstance.current.trains || []);
+    };
+
+        // Commented out the logic for assigning random colors
+        /*
+        setTrainColors(prevColors => {
+            const updatedColors = { ...prevColors };
+            newTrains.forEach(train => {
+                if (!updatedColors[train.number]) {
+                    updatedColors[train.number] = getRandomColor();
+                }
+            });
+            return updatedColors;
+        });
+        */
+
+    /*useEffect(() => {
+        apiInstance.current.onUpdated = updateTrainData;
+        updateTrainData();
+        const intervalId = setInterval(updateTrainData, 600000);
+
+        return () => clearInterval(intervalId);
+    }, []);*/
+
+    // Commented out getRandomColor function
+    /*
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+    */
+
+    // Apply a static blue color to TrainIcon
+    const TrainIcon = () => (
+        <div className="custom-icon-container" style={{ color: "blue" }}>
+            <IoTrainOutline size={20} />
+        </div>
+    );
 
     return (
+        <>
+        <button onClick={updateTrainData}>Refresh Trains</button>
         <MapContainer
             ref={mapRef}
             center={[39.8283, -98.5795]}
@@ -55,21 +105,41 @@ const Map = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={[39.9815, -75.1553]}>
-                <Popup>Welcome to Temple University. We're working on the Train Tracker!</Popup>
-            </Marker>
             {railLines && (
-                <GeoJSON data={railLines} style={{ color: "blue", weight: 1 }} />
+                <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
             )}
             {stations && (
                 <GeoJSON
                     data={stations}
                     pointToLayer={(feature, latlng) =>
-                        L.circleMarker(latlng, { radius: 1.5, color: "red" })
+                        L.circleMarker(latlng, { radius: 1, color: "red" })
                     }
                 />
             )}
+            {trains.map((train, index) => (
+                <Marker
+                    key={index}
+                    position={[train.lat, train.lon]}
+                    icon={L.divIcon({
+                        html: renderToString(<TrainIcon />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}
+                >
+                    <Popup>
+                        <strong>{train.routeName}</strong> - Train #{train.number}
+                        <br />
+                        Speed: {Math.round(train.speed)} mph
+                        <br />
+                        Punctuality: {train.punctuality}
+                        <br />
+                        Last update: {new Date(train.lastUpdate).toLocaleString()}
+                    </Popup>
+                </Marker>
+            ))}
         </MapContainer>
+     </>
     );
 };
 

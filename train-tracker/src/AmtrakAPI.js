@@ -21,6 +21,8 @@ function Stop() {
     this.arrivalTime = null;
     this.departureTime = null;
 
+    this.arrivalPunctuality = null;
+    this.departurePunctuality = null;
 }
 
 /**
@@ -64,12 +66,15 @@ function Train() {
     this.lastUpdate = null;
     this.lastVisitedStation = null;
     this.punctuality = null;
+    this.lat = null;
+    this.lon = null;
     this.state = null;
     this.stations = [];//of type Stop[]
-    this.toString = function() {
+    this.toString = function () {
         return this.routeName + " Train #" + this.number +
             "\nGoing " + Math.trunc(this.speed) + " Mph Heading " + this.heading + " from " + this.from + " to " + this.to +
-            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation + 
+            "\nReported running " + this.punctuality + " by most recently visited stop " + this.lastVisitedStation +
+            "\nLat: " + this.lat + " Lon: " + this.lon +
             "\nStation List: " + this.stations.map(station => station.stationCode).join(", ");
     }
 }
@@ -191,8 +196,18 @@ async function getTrainList() {
             station.stationCode = currentStation.code;
             station.hasArrived = currentStation.postarr != null;
             station.hasDeparted = currentStation.postdep != null;
-            station.arrivalTime = currentStation.postarr;
-            station.departureTime = currentStation.postdep;
+            if(station.hasArrived) {
+                station.arrivalTime = currentStation.postarr;
+            } else {
+                station.arrivalTime = currentStation.estarr;
+                station.arrivalPunctuality = currentStation.estarrcmnt
+            }
+            if(station.hasDeparted) {
+                station.departureTime = currentStation.postdep;
+            } else {
+                station.departureTime = currentStation.estdep;
+                station.departurePunctuality = currentStation.estdepcmnt;
+            }
             stations.push(station);
         }
 
@@ -213,6 +228,8 @@ async function getTrainList() {
         tempTrain.punctuality = lastStationReport.postcmnt;
         tempTrain.lastVisitedStation = lastStationIndex;
         tempTrain.state = train.TrainState;
+        tempTrain.lat = apiData.features[i].geometry.coordinates[1]; //Flipped because AmtrakAPI has flipped lat-long
+        tempTrain.lon = apiData.features[i].geometry.coordinates[0]; //Flipped because AmtrakAPI has flipped lat-long
         tempTrain.stations = stations;
 
         trainList[i] = tempTrain;

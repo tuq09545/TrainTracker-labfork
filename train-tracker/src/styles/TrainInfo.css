@@ -26,11 +26,13 @@
 .ontime {
     color: green;
     font-weight: bold;
+    text-transform: capitalize;
 }
 
 .late {
     color: red;
     font-weight: bold;
+    text-transform: capitalize;
 }
 
 .ontime, .late {
@@ -72,4 +74,9 @@ td {
 td:first-child {
     font-weight: bold;
     color: #2c3e50;
+}
+
+td.ontime, td.late {
+    font-size: 1em;
+    margin-bottom: 10px;
 }

@@ -2,10 +2,13 @@
   "name": "train-tracker",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cis3296f24.github.io/TrainTracker/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "concurrently": "^9.1.0",
+    "gh-pages": "^6.2.0",
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -13,10 +16,11 @@
     "react-leaflet": "^4.2.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "wrangler": "^3.86.0",
-    "concurrently": "^9.1.0"
+    "wrangler": "^3.86.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "concurrently \"react-scripts start\" \"npm run start-server\"",
     "start-server": "npx wrangler -c src/backend/wrangler.toml dev",
     "build": "react-scripts build",

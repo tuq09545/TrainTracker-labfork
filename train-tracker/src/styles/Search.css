@@ -26,7 +26,8 @@
 }
 
 .top-label {
-    font-size: 2.1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
     color: #333;
     display: flex;
     flex-direction: column;
@@ -47,6 +48,12 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.3rem;
+    text-align: left;
+}
+
+.select-box {
+    width: 90%;
+    max-width: 100%;
 }
 
 .form select {
@@ -64,4 +71,29 @@
 
 .optional-criteria-label {
     text-align: left;
+}
+
+.form-button {
+    border: 1px solid #808080;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 3px;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-button:hover {
+    border-color: #83bcf9;
+    background-color: #a7c8eb;
+    cursor: pointer;
+}
+
+.form-button:active {
+    border-color: #5fa8f5;
+    background-color: #85b6eb;
+    cursor: pointer;
+}
+
+.button-container {
+    display: inline-flex;
 }
