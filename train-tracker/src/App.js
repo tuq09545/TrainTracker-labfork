@@ -6,7 +6,9 @@ import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
+
 import {filterTrains} from './functionality/app.js'
+
 
 import { IoClose } from "react-icons/io5";
 
@@ -33,9 +35,10 @@ function App() {
         }
         api.update();
     },[]);
-
+  
     const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
         let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+
         setCurrentTrains(trains);
     }
 
