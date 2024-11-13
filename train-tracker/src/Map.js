@@ -24,7 +24,7 @@ const Map = () => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     const [trains, setTrains] = useState([]);
-    const [trainColors, setTrainColors] = useState({});
+    // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
     const apiInstance = useRef(new APIInstance());
     const mapRef = useRef();
 
@@ -53,6 +53,9 @@ const Map = () => {
     const updateTrainData = () => {
         apiInstance.current.update();
         const newTrains = apiInstance.current.trains || [];
+
+        // Commented out the logic for assigning random colors
+        /*
         setTrainColors(prevColors => {
             const updatedColors = { ...prevColors };
             newTrains.forEach(train => {
@@ -62,6 +65,7 @@ const Map = () => {
             });
             return updatedColors;
         });
+        */
 
         setTrains(newTrains);
     };
@@ -69,11 +73,13 @@ const Map = () => {
     useEffect(() => {
         apiInstance.current.onUpdated = updateTrainData;
         updateTrainData();
-        const intervalId = setInterval(updateTrainData, 60000);
+        const intervalId = setInterval(updateTrainData, 600000);
 
         return () => clearInterval(intervalId);
     }, []);
 
+    // Commented out getRandomColor function
+    /*
     const getRandomColor = () => {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -82,9 +88,11 @@ const Map = () => {
         }
         return color;
     };
+    */
 
-    const TrainIcon = ({ color }) => (
-        <div className="custom-icon-container" style={{ color: color }}>
+    // Apply a static blue color to TrainIcon
+    const TrainIcon = () => (
+        <div className="custom-icon-container" style={{ color: "blue" }}>
             <IoTrainOutline size={20} />
         </div>
     );
@@ -116,7 +124,7 @@ const Map = () => {
                     key={index}
                     position={[train.lat, train.lon]}
                     icon={L.divIcon({
-                        html: renderToString(<TrainIcon color={trainColors[train.number]} />),
+                        html: renderToString(<TrainIcon />),
                         className: 'custom-icon',
                         iconSize: [30, 30],
                         iconAnchor: [15, 15]
