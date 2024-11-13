@@ -20,7 +20,7 @@ function TrainInfo({train}){
             </tr>
         })
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
-    let punctualityToDisplay = train.punctuality.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
+    let punctualityToDisplay = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
     return(
         <div className='train-info'>
             <h2 className='route'>{train.routeName} (#{train.number})</h2>
