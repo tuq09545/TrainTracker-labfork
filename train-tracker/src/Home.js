@@ -30,7 +30,7 @@ function Home({
         let renderedStations = allStations.map(station => {
             return <option value={station.stationCode} key={station.stationCode}>{station.stationCode} - {station.name}</option>
         })
-        renderedStations.push(<option value={""} key={""}>{}</option>);
+        renderedStations.unshift(<option value={""} key={""}>{}</option>);
         return renderedStations;
     }
 
@@ -38,7 +38,7 @@ function Home({
         let renderedRoutes = allRoutes.sort((a, b) => (a.Name).localeCompare(b.Name)).map(route => {
             return <option value={route.Name} key={route.Name}>{route.Name}</option>
         });
-        renderedRoutes.push(<option value={""} key={""}>{}</option>);
+        renderedRoutes.unshift(<option value={""} key={""}>All routes</option>);
         return renderedRoutes;
     }
 
