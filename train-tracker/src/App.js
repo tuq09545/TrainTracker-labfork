@@ -2,6 +2,7 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
+import { Link, Routes, Route, HashRouter } from 'react-router-dom';
 import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
@@ -75,12 +76,20 @@ function App() {
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
 
   return (
-      <div className="App">
+    <HashRouter>
+        <div className="App">
           <div className="header">
               <div className="heading-box">
                   <img src={train_icon} alt="Train Icon" className="train_icon" />
                   <h1>TrainTracker</h1>
               </div>
+              <Link to="/home">Home</Link>
+              <Link to="/train">Train</Link>
+              <Routes>
+                    <Route path="/" element={<h2>This is the home page</h2>}/>
+                    <Route path="/home" element={<h2>This is the home page</h2>}/>
+                    <Route path="/train" element={<h2>This is the train page</h2>}/>
+              </Routes>
               <div className='content'>
               <div className='search-container'>
               <Search className='Search'
@@ -97,6 +106,7 @@ function App() {
               </div> 
           </div>
       </div>
+    </HashRouter>
   );
 }
 
