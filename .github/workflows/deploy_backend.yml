@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'backend-deploy-skip') == false
     name: Deploy
     steps:
       - uses: actions/checkout@v4
