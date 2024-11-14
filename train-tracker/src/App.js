@@ -5,7 +5,7 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, Link, Routes, Route, HashRouter } from 'react-router-dom';
 
 import Home from './Home';
-import TrainPage from './TrainPage';
+import TrainPage, {TrainForm} from './TrainPage';
 
 function App() {
     // load api data
@@ -23,26 +23,6 @@ function App() {
         }
         api.update();
     },[]);
-
-    function TrainForm(){
-        const [selectedNumber, setSelectedNumber] = useState("");
-
-        const navigate = useNavigate();
-
-        function handleNumber(e){ setSelectedNumber(e.target.value); }
-
-        function search(event){
-            event.preventDefault();
-            navigate("/train/"+selectedNumber);
-        }
-
-        return (
-            <form onSubmit={search}>
-                <input className="select-box" value={selectedNumber} placeholder="Search by Number" onChange={handleNumber} type="number" min='1'></input>
-            </form>
-        )
-    }
-  
     
   return (
     <HashRouter>
