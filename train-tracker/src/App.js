@@ -5,6 +5,7 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, Link, Routes, Route, HashRouter } from 'react-router-dom';
 
 import Home from './Home';
+import TrainPage from './TrainPage';
 
 function App() {
     // load api data
@@ -64,7 +65,12 @@ function App() {
                         allRoutes={allRoutes}
                         allStations={allStations}
                     />}/>
-                    <Route path="/train/*" element={<h2>This is the train page</h2>}/>
+                    <Route path="/home" element={<Home
+                        allTrains={allTrains}
+                        allRoutes={allRoutes}
+                        allStations={allStations}
+                    />}/>
+                    <Route path="/train/:trainInfo" element={<TrainPage/>}/>
                 </Routes>
               </div> 
           </div>
