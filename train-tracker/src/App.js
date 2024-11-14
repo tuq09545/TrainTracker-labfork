@@ -2,31 +2,17 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Link, Routes, Route, HashRouter } from 'react-router-dom';
-import Map from './Map';
-import TrainList from './TrainList';
-import Search from './Search';
-import TrainPopup from './TrainPopup';
+import { useNavigate, Link, Routes, Route, HashRouter } from 'react-router-dom';
 
-import {filterTrains} from './functionality/app.js'
-
-
-import { IoClose } from "react-icons/io5";
+import Home from './Home';
 
 function App() {
+    // load api data
     const api = new Amtrak.APIInstance();
 
-    // api data
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
-
-    // sorted trains
-    const [currentTrains, setCurrentTrains] = useState([]);
-
-    // popup modal
-    const [selectedTrain, setSelectedTrain] = useState({});
-    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         api.onUpdated = function() {
@@ -36,76 +22,52 @@ function App() {
         }
         api.update();
     },[]);
+
+    function TrainForm(){
+        const [selectedNumber, setSelectedNumber] = useState("");
+
+        const navigate = useNavigate();
+
+        function handleNumber(e){ setSelectedNumber(e.target.value); }
+
+        function search(event){
+            event.preventDefault();
+            navigate("/train/"+selectedNumber);
+        }
+
+        return (
+            <form onSubmit={search}>
+                <input className="select-box" value={selectedNumber} placeholder="Search by Number" onChange={handleNumber} type="number" min='1'></input>
+            </form>
+        )
+    }
   
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-    }
-
-    const getStationOptions = () => {
-        let renderedStations = allStations.map(station => {
-            return <option value={station.stationCode} key={station.stationCode}>{station.stationCode} - {station.name}</option>
-        })
-        renderedStations.push(<option value={""} key={""}>{}</option>);
-        return renderedStations;
-    }
-
-    const getRouteOptions = () => {
-        let renderedRoutes = allRoutes.sort((a, b) => (a.Name).localeCompare(b.Name)).map(route => {
-            return <option value={route.Name} key={route.Name}>{route.Name}</option>
-        });
-        renderedRoutes.push(<option value={""} key={""}>{}</option>);
-        return renderedRoutes;
-    }
-
-    // Modal Functions
-    function handleTrainClick(train){
-        setShowModal(true);
-        setSelectedTrain(train);
-    }
-
-    const handleModalClose = () => {
-        setShowModal(false);
-    };
-
-    const closeButton = (<div>
-        <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
-    </div>);
-
-    const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
-
+    
   return (
     <HashRouter>
         <div className="App">
           <div className="header">
-              <div className="heading-box">
-                  <img src={train_icon} alt="Train Icon" className="train_icon" />
-                  <h1>TrainTracker</h1>
-              </div>
-              <Link to="/home">Home</Link>
-              <Link to="/train">Train</Link>
-              <Routes>
-                    <Route path="/" element={<h2>This is the home page</h2>}/>
-                    <Route path="/home" element={<h2>This is the home page</h2>}/>
-                    <Route path="/train" element={<h2>This is the train page</h2>}/>
-              </Routes>
-              <div className='content'>
-              <div className='search-container'>
-              <Search className='Search'
-                routes = {getRouteOptions()}
-                stations = {getStationOptions()}
-                searchFun = {searchTrains}
-              />
-              </div>
-              <div className='app-train-list-container'><TrainList className = 'TrainList' trains={currentTrains} handleTrainClick={handleTrainClick}/></div>
-              <div className='map-container'><Map className = 'Map' trains={currentTrains}/></div>
-              <div>
-                {showModal && modal}
+              <Link to="/">
+                <div className="heading-box">
+                    <img src={train_icon} alt="Train Icon" className="train_icon" />
+                    <h1>TrainTracker</h1>
                 </div>
+              </Link>
+              
+              <TrainForm/>
+          </div>
+              
+          <div className='content'>
+                <Routes>
+                    <Route path="/" element={<Home
+                        allTrains={allTrains}
+                        allRoutes={allRoutes}
+                        allStations={allStations}
+                    />}/>
+                    <Route path="/train/*" element={<h2>This is the train page</h2>}/>
+                </Routes>
               </div> 
           </div>
-      </div>
     </HashRouter>
   );
 }
