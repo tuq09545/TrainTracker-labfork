@@ -3,6 +3,8 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+    paths-ignore: 
+        - 'train-tracker/src/backend/**'
     
 permissions:
   contents: write
@@ -11,7 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'frontend-deploy-skip') == false
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 22.11.0
