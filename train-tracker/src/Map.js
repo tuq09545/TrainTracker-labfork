@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
+import { FaBuildingUser } from "react-icons/fa6";
 import { renderToString } from "react-dom/server";
 import './styles/Map.css';
 
@@ -20,7 +21,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const Map = ({trains, userLocation}) => {
+const Map = ({trains, userLocation, selectedStation}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     // const [trains, setTrains] = useState([]);
@@ -99,6 +100,12 @@ const Map = ({trains, userLocation}) => {
         </div>
     );
 
+    const SelectedStationIcon = () => (
+        <div className="custom-icon-container" style={{ color: "black" }}>
+            <FaBuildingUser size={20} />
+        </div>
+    );
+
     function UserLocationMarker(){
         if (userLocation){
             return (
@@ -114,6 +121,27 @@ const Map = ({trains, userLocation}) => {
 
                     <Popup>
                         <p>Your location.</p>
+                    </Popup>
+                </Marker>)
+        }
+    }
+
+    function SelectedStationMarker(){
+        if (selectedStation){
+            return (
+                <Marker
+                    key={'selectedStation'}
+                    position={[selectedStation.lat, selectedStation.lon]}
+                    icon={L.divIcon({
+                        html: renderToString(<SelectedStationIcon />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}>
+
+                    <Popup>
+                        <strong>Selected Station</strong>
+                        <p>{selectedStation.stationCode} - {selectedStation.stationName ? selectedStation.stationName : selectedStation.name}</p>
                     </Popup>
                 </Marker>)
         }
@@ -178,6 +206,7 @@ const Map = ({trains, userLocation}) => {
             )}
             <TrainMarkers/>
             <UserLocationMarker/>
+            <SelectedStationMarker/>
         </MapContainer>
      </>
     );

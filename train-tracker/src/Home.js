@@ -1,5 +1,7 @@
 import './styles/Home.css';
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+
+import {convertStationCodeToStation} from './functionality/app.js';
 
 import Map from './Map';
 import TrainList from './TrainList';
@@ -10,7 +12,7 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation}){
+function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -36,7 +38,7 @@ function Home({allTrains, allRoutes, allStations, userLocation}){
         let renderedRoutes = allRoutes.sort((a, b) => (a.Name).localeCompare(b.Name)).map(route => {
             return <option value={route.Name} key={route.Name}>{route.Name}</option>
         });
-        renderedRoutes.unshift(<option value={""} key={""}>All routes</option>);
+        renderedRoutes.unshift(<option value={""} key={""}></option>);
         return renderedRoutes;
     }
 
@@ -55,7 +57,6 @@ function Home({allTrains, allRoutes, allStations, userLocation}){
     </div>);
 
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
-
     return (
         <div className='home-page'>
             <div className='search-container'>
@@ -63,6 +64,8 @@ function Home({allTrains, allRoutes, allStations, userLocation}){
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
                 searchFun = {searchTrains}
+                setSelectedStation={setSelectedStation}
+                selectedStation={selectedStation}
               />
               </div>
               <div className='app-train-list-container'>
@@ -75,6 +78,7 @@ function Home({allTrains, allRoutes, allStations, userLocation}){
                 <Map className = 'Map' 
                     trains={currentTrains}
                     userLocation={userLocation}
+                    selectedStation={convertStationCodeToStation(allStations, selectedStation)}
                 />
               </div>
               <div>
