@@ -10,9 +10,7 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({
-    allTrains, allRoutes, allStations
-}){
+function Home({allTrains, allRoutes, allStations, userLocation}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -76,6 +74,7 @@ function Home({
               <div className='map-container'>
                 <Map className = 'Map' 
                     trains={currentTrains}
+                    userLocation={userLocation}
                 />
               </div>
               <div>

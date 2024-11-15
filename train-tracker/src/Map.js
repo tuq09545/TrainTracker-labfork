@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
 import { renderToString } from "react-dom/server";
 import './styles/Map.css';
 
@@ -20,7 +20,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const Map = ({trains}) => {
+const Map = ({trains, userLocation}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     // const [trains, setTrains] = useState([]);
@@ -93,8 +93,33 @@ const Map = ({trains}) => {
         </div>
     );
 
+    const UserLocationIcon = () => (
+        <div className="custom-icon-container" style={{ color: "red" }}>
+            <FaLocationDot size={20} />
+        </div>
+    );
+
+    function UserLocationMarker(){
+        if (userLocation){
+            return (
+                <Marker
+                    key={'userLocation'}
+                    position={[userLocation.coords.latitude, userLocation.coords.longitude]}
+                    icon={L.divIcon({
+                        html: renderToString(<UserLocationIcon />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}>
+
+                    <Popup>
+                        <p>Your location.</p>
+                    </Popup>
+                </Marker>)
+        }
+    }
+
     function TrainMarkers() { 
-        console.log(trains);
         if(trains.length !== 0){
             return(
                 <div>
@@ -152,6 +177,7 @@ const Map = ({trains}) => {
                 />
             )}
             <TrainMarkers/>
+            <UserLocationMarker/>
         </MapContainer>
      </>
     );

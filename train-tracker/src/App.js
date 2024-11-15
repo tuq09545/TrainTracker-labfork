@@ -11,6 +11,8 @@ function App() {
     // load api data
     const api = new Amtrak.APIInstance();
 
+    const [userLocation, setUserLocation] = useState(null);
+
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
@@ -22,7 +24,20 @@ function App() {
             setAllStations(this.stations);
         }
         api.update();
+
     },[]);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(recordLocation, 
+            (error) => console.log('error' + error));
+        }
+        console.log(userLocation);
+    }, [allStations]);
+
+    function recordLocation(position) {
+        setUserLocation(position);
+    }
 
     function TrainForm(){
         const [selectedNumber, setSelectedNumber] = useState("");
@@ -64,11 +79,13 @@ function App() {
                         allTrains={allTrains}
                         allRoutes={allRoutes}
                         allStations={allStations}
+                        userLocation={userLocation}
                     />}/>
                     <Route path="/home" element={<Home
                         allTrains={allTrains}
                         allRoutes={allRoutes}
                         allStations={allStations}
+                        userLocation={userLocation}
                     />}/>
                     <Route path="/train/:trainInfo" element={<TrainPage/>}/>
                 </Routes>
