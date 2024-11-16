@@ -14,7 +14,8 @@ function App() {
     const api = new Amtrak.APIInstance();
 
     const [userLocation, setUserLocation] = useState(null);
-    const [selectedStation, setselectedStation] = useState("");
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -35,7 +36,7 @@ function App() {
             navigator.geolocation.getCurrentPosition((pos)=>{
                 setUserLocation(pos);
                 if (allStations.length > 0 && pos){
-                    setselectedStation(getClosestStation(allStations, pos).stationCode);
+                    setSelectedStation(getClosestStation(allStations, pos).stationCode);
                 }
             }, 
             (error) => console.log('error' + error));
@@ -63,6 +64,16 @@ function App() {
         )
     }
   
+    const homePage = <Home
+        allTrains={allTrains}
+        allRoutes={allRoutes}
+        allStations={allStations}
+        userLocation={userLocation}
+        selectedStation={selectedStation}
+        setSelectedStation={setSelectedStation}
+        selectedRoute={selectedRoute}
+        setSelectedRoute={setSelectedRoute}
+    />;
     
   return (
     <HashRouter>
@@ -80,22 +91,8 @@ function App() {
               
           <div className='content'>
                 <Routes>
-                    <Route path="/" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                        userLocation={userLocation}
-                        selectedStation={selectedStation}
-                        setSelectedStation={setselectedStation}
-                    />}/>
-                    <Route path="/home" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                        userLocation={userLocation}
-                        selectedStation={selectedStation}
-                        setSelectedStation={setselectedStation}
-                    />}/>
+                    <Route path="/" element={homePage}/>
+                    <Route path="/home" element={homePage}/>
                     <Route path="/train/:trainInfo" element={<TrainPage/>}/>
                 </Routes>
               </div> 

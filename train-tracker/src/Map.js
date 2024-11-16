@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBuildingUser } from "react-icons/fa6";
 import { renderToString } from "react-dom/server";
+import hash from 'object-hash';
 import './styles/Map.css';
 
 // Fix default icon issue
@@ -21,9 +22,11 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const Map = ({trains, userLocation, selectedStation}) => {
+const Map = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
+    const [routes, setRoutes] = useState(null);
+    const [routeData, setRouteData] = useState(null);
     // const [trains, setTrains] = useState([]);
     // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
     // const apiInstance = useRef(new APIInstance());
@@ -38,6 +41,11 @@ const Map = ({trains, userLocation, selectedStation}) => {
             .then(response => response.json())
             .then(data => setStations(data));
 
+
+        fetch("/TrainTracker/geojson/NTAD_Amtrak_Routes_1353580322365094927.geojson")
+            .then(response => response.json())
+            .then(data => setRoutes(data));
+
         const handleResize = () => {
             if (mapRef.current) {
                 mapRef.current.invalidateSize();
@@ -47,6 +55,21 @@ const Map = ({trains, userLocation, selectedStation}) => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {
+         if (selectedRoute){
+            setRouteData(filterRouteJson());
+         }
+         else{
+            setRouteData(null);
+         }
+        
+    }, [selectedRoute]);
+
+    function filterRouteJson(){
+        let features = routes.features.filter((feature) => feature.properties.name === selectedRoute);
+        return {'crs': routes.crs, 'type':routes.type, 'features': features};
+    }
 
     const updateTrainData = () => {
         // removed update button functionality temporarily
@@ -203,6 +226,9 @@ const Map = ({trains, userLocation, selectedStation}) => {
                         L.circleMarker(latlng, { radius: 1, color: "red" })
                     }
                 />
+            )}
+            {routes && (
+                <GeoJSON data={routeData} style={{ color: "dodgerblue", weight: 5 }} key={hash(routeData)} />
             )}
             <TrainMarkers/>
             <UserLocationMarker/>

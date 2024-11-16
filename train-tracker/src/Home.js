@@ -12,7 +12,7 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation}){
+function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -66,6 +66,8 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                 searchFun = {searchTrains}
                 setSelectedStation={setSelectedStation}
                 selectedStation={selectedStation}
+                selectedRoute={selectedRoute}
+                setSelectedRoute={setSelectedRoute}
               />
               </div>
               <div className='app-train-list-container'>
@@ -79,6 +81,7 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                     trains={currentTrains}
                     userLocation={userLocation}
                     selectedStation={convertStationCodeToStation(allStations, selectedStation)}
+                    selectedRoute={selectedRoute}
                 />
               </div>
               <div>

@@ -1,14 +1,13 @@
 import './styles/Search.css';
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
 import { MdFavoriteBorder } from "react-icons/md";
 import { setToCache } from './LocalCache';
 
-function Search({searchFun, routes, stations, setSelectedStation, selectedStation}){
+function Search({searchFun, routes, stations, setSelectedStation, selectedStation, selectedRoute, setSelectedRoute}){
     const [selectedNumber, setSelectedNumber] = useState("");
-    const [selectedRoute, setSelectedRoute] = useState("");
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
@@ -27,10 +26,6 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         event.preventDefault();
         searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
     }
-
-    useEffect(()=>{
-        searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-    }, [selectedStation]);
 
     const clearSearch = () => {
         setSelectedNumber("");
