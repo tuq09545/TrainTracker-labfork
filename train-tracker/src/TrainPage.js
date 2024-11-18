@@ -15,6 +15,8 @@ function TrainPage({allTrains}){
     // wait for allTrains to load
     if(isLoading){
         if(allTrains.length > 0){
+            let trains = filterTrainPage(allTrains,number,date);
+            setSelectedTrains(trains);
             setIsLoading(false);
         }
     }
@@ -35,14 +37,13 @@ function TrainPage({allTrains}){
         }
     },[location])
 
-    // updates on number or date change once allTrains is loaded
+    // updates on number or date change
     useEffect(() => {
         if(!isLoading){
             let trains = filterTrainPage(allTrains,number,date);
-            console.log(trains);
             setSelectedTrains(trains);
         } 
-    },[isLoading,number,date])
+    },[number,date])
 
     if(isLoading){
         return(
@@ -54,11 +55,7 @@ function TrainPage({allTrains}){
 
     // Multiple Results
     if (selectedTrains.length > 1){
-        return(
-            <div>
-                <h2>Multiple Results</h2>
-            </div>
-        )
+        return <Tiebreaker trains={selectedTrains}/>
     } 
     
     if (selectedTrains.length == 1){
@@ -68,6 +65,26 @@ function TrainPage({allTrains}){
     return(
         <div>
             <h2>No Trains Found</h2>
+        </div>
+    )
+}
+
+function Tiebreaker(t){
+    const navigate = useNavigate();
+
+    console.log("Tiebreaker: printing trains on next line:")
+    console.log(t.trains)
+
+    return(
+        <div>
+            <h2>Multiple Results:</h2>
+            {t.trains.map((train) => {
+                return(
+                    <div className='train-info'>
+                        <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
+                    </div>
+                )
+            })}
         </div>
     )
 }
