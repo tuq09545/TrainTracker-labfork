@@ -23,6 +23,12 @@ function App() {
         }
         api.update();
     },[]);
+
+    const HomePage = <Home
+            allTrains={allTrains}
+            allRoutes={allRoutes}
+            allStations={allStations}
+        />
     
   return (
     <HashRouter>
@@ -40,17 +46,9 @@ function App() {
               
           <div className='content'>
                 <Routes>
-                    <Route path="/" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                    />}/>
-                    <Route path="/home" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                    />}/>
-                    <Route path="/train/:trainInfo" element={<TrainPage/>}/>
+                    <Route path="/" element={HomePage}/>
+                    <Route path="/home" element={HomePage}/>
+                    <Route path="/train/:trainInfo" element={<TrainPage allTrains={allTrains}/>}/>
                 </Routes>
               </div> 
           </div>

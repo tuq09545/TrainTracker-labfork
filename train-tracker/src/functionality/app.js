@@ -27,6 +27,17 @@ export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedS
     return trains;
 }
 
+// very lazy alternative filter for train page (will refactor later)
+export function filterTrainPage(allTrains, selectedNumber, selectedDate){
+    let trains = allTrains ?? [];
+    if(selectedNumber > 0){
+        trains = trains.filter(t => t.number === selectedNumber)
+    } if (selectedDate){
+        trains = trains.filter(t => t.scheduledDeparture === selectedDate)
+    }
+    return trains
+}
+
 function sortTrains(trains, sortingCriteria){
     return trains.sort(sortingCriteria);
 }
