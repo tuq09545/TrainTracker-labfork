@@ -241,7 +241,7 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
         <button onClick={updateTrainData}>Refresh Trains</button>
         <MapContainer
             ref={mapRef}
-            center={userLocation == null ? [39.8283, -98.5795] : [userLocation.coords.latitude, userLocation.coords.longitude]}
+            center={[39.8283, -98.5795]}
             zoom={4}
             style={{ width: "100%", height: "100%" }}
         >
