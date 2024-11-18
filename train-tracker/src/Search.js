@@ -13,7 +13,7 @@ function Search({searchFun, routes, stations}){
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
-    const [favoriteOptions, addToFavList] = useState(["-----"])
+    const [favoriteOptions, addToFavList] = useState(populateFavDrop)
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){ setSelectedRoute(e.target.value); }
@@ -21,14 +21,20 @@ function Search({searchFun, routes, stations}){
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
+    
+    function handleFavoriteSelection(e){ 
+        e.preventDefault();
+        searchFun("", e.target.value, "", "", "", "")
+    }
 
     function populateFavDrop(){
-        let favNames = []
+        let favNames = ["---"]
         const cachedTrains = getLocalCache()
-        favNames = Object.keys(cachedTrains.data)
-        addToFavList(favNames)
-    
+        favNames.push(Object.keys(cachedTrains.data))
+        return favNames
     }
+
+    
 
     const search = (event) =>{
         event.preventDefault();
@@ -76,7 +82,10 @@ function Search({searchFun, routes, stations}){
                 </label>
 
                 <label className="favorites-dropdown-selection">
-                    <select className="favorites-dropdown" onClick={populateFavDrop} placeholder="Favorites">{ favoriteOptions.map((element, index) => <option key={index}>{element}</option>) }</select>
+                Favorites:
+                    <span className="select-box">
+                    <select className="favorites-dropdown" onClick={handleFavoriteSelection} defaultValue={{value:"hello", key:"Hello"}}>{ favoriteOptions.map((element, index) => <option value={element} key={index}>{element}</option>) }</select>
+                    </span>
                 </label>
 
                 <span className='button-container'>
