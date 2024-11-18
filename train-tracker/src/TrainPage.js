@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {Link, useNavigate, useLocation} from 'react-router-dom';
 import { filterTrainPage } from './functionality/app';
 import TrainInfo from './TrainInfo';
 
@@ -11,6 +11,9 @@ function TrainPage({allTrains}){
     const [date,setDate] = useState("");
 
     const [selectedTrains,setSelectedTrains] = useState([]);
+
+    //console.log(encodeURIComponent("11/16/2024 2:00:00 PM"))
+    //console.log(decodeURIComponent("11%2F16%2F2024%202%3A00%3A00%20PM"))
 
     // wait for allTrains to load
     if(isLoading){
@@ -30,7 +33,7 @@ function TrainPage({allTrains}){
         if (params.includes("?date=")){
             let [n,d] = params.split("?date=");
             setNumber(n);
-            setDate(d);
+            setDate(decodeURIComponent(d));
         } else {
             setNumber(params);
             setDate("");
@@ -72,17 +75,20 @@ function TrainPage({allTrains}){
 function Tiebreaker(t){
     const navigate = useNavigate();
 
-    console.log("Tiebreaker: printing trains on next line:")
-    console.log(t.trains)
+    /*function GoToTrain(train){
+        navigate("/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture));
+    }*/
 
     return(
         <div>
             <h2>Multiple Results:</h2>
             {t.trains.map((train) => {
                 return(
-                    <div className='train-info'>
-                        <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
-                    </div>
+                    <Link to={"/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
+                        <div className='train-info'>
+                            <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
+                        </div>
+                    </Link>
                 )
             })}
         </div>
