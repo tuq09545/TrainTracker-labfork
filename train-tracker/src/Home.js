@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 
 import {convertStationCodeToStation} from './functionality/app.js';
 
-import Map from './Map';
+import TrainMap from './TrainMap';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
@@ -77,7 +77,7 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                 />
               </div>
               <div className='map-container'>
-                <Map className = 'Map' 
+                <TrainMap className = 'Map' 
                     trains={currentTrains}
                     userLocation={userLocation}
                     selectedStation={convertStationCodeToStation(allStations, selectedStation)}
