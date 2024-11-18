@@ -1,6 +1,19 @@
 import './styles/TrainInfo.css'
+import { setToCache, removeFromCache } from './LocalCache';
+import { MdFavoriteBorder } from "react-icons/md";
 
 function TrainInfo({train}){
+
+    function setToFavorites(e){
+        if(e.target.style.backgroundColor === "red"){
+            removeFromCache(train)
+            e.target.style.backgroundColor = "white"
+        } else {
+            setToCache(train);
+            e.target.style.backgroundColor = "red"
+        }
+    }
+
     console.log(train);
     const renderedStops = train.stations.map((s) => {
         let arrivalStyle = "";
@@ -28,6 +41,7 @@ function TrainInfo({train}){
             <h3 className='direction'>To: {train.to}</h3>
             <div className={punctualityClassName} >{punctualityToDisplay}</div>
             <div>Last updated: {train.lastUpdate}</div>
+            <div onClick={setToFavorites} className='form-button'>Favorite <MdFavoriteBorder/></div>
             <table>
                 <thead><tr><th>Station</th><th>Arrived</th><th>Departed</th></tr></thead>
                 <tbody>{renderedStops}</tbody>
