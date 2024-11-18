@@ -12,9 +12,6 @@ function TrainPage({allTrains}){
 
     const [selectedTrains,setSelectedTrains] = useState([]);
 
-    //console.log(encodeURIComponent("11/16/2024 2:00:00 PM"))
-    //console.log(decodeURIComponent("11%2F16%2F2024%202%3A00%3A00%20PM"))
-
     // wait for allTrains to load
     if(isLoading){
         if(allTrains.length > 0){
@@ -73,12 +70,6 @@ function TrainPage({allTrains}){
 }
 
 function Tiebreaker(t){
-    const navigate = useNavigate();
-
-    /*function GoToTrain(train){
-        navigate("/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture));
-    }*/
-
     return(
         <div>
             <h2>Multiple Results:</h2>
