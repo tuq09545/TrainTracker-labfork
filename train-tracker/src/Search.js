@@ -3,6 +3,7 @@ import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import { getLocalCache } from './LocalCache';
 
 
 function Search({searchFun, routes, stations}){
@@ -12,6 +13,7 @@ function Search({searchFun, routes, stations}){
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
+    const [favoriteOptions, addToFavList] = useState(["-----"])
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){ setSelectedRoute(e.target.value); }
@@ -19,6 +21,14 @@ function Search({searchFun, routes, stations}){
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
+
+    function populateFavDrop(){
+        let favNames = []
+        const cachedTrains = getLocalCache()
+        favNames = Object.keys(cachedTrains.data)
+        addToFavList(favNames)
+    
+    }
 
     const search = (event) =>{
         event.preventDefault();
@@ -63,6 +73,10 @@ function Search({searchFun, routes, stations}){
                         To:
                         <select className="select-box" value={toStation} onChange={handleToStation} children={stations}></select>
                     </span>
+                </label>
+
+                <label className="favorites-dropdown-selection">
+                    <select className="favorites-dropdown" onClick={populateFavDrop} placeholder="Favorites">{ favoriteOptions.map((element, index) => <option key={index}>{element}</option>) }</select>
                 </label>
 
                 <span className='button-container'>

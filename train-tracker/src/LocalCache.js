@@ -1,6 +1,6 @@
 const LOCAL_CACHE="LOCAL"
 
-const getLocalCache=()=>{
+export const getLocalCache=()=>{
 
     let localCache={
         data:{},
