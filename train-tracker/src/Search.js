@@ -22,7 +22,8 @@ function Search({searchFun, routes, stations}){
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
     
-    function handleFavoriteSelection(e){ 
+    function handleFavoriteSelection(e){
+        addToFavList(populateFavDrop())
         e.preventDefault();
         searchFun("", e.target.value, "", "", "", "")
     }
@@ -30,8 +31,11 @@ function Search({searchFun, routes, stations}){
     function populateFavDrop(){
         let favNames = ["---"]
         const cachedTrains = getLocalCache()
-        favNames.push(Object.keys(cachedTrains.data))
-        return favNames
+        Object.keys(cachedTrains.data).forEach(trainName => {
+            favNames.push(trainName)
+        });
+        const mapping = favNames.map((element, index) => <option value={element} key={index}>{element}</option>)
+        return mapping
     }
 
     
@@ -49,6 +53,7 @@ function Search({searchFun, routes, stations}){
         setFromStation("");
         setToStation("");
     }
+
     return (
         <form className='form' onSubmit={search}>
                 <div className='top-label'>
@@ -84,7 +89,7 @@ function Search({searchFun, routes, stations}){
                 <label className="favorites-dropdown-selection">
                 Favorites:
                     <span className="select-box">
-                    <select className="favorites-dropdown" onClick={handleFavoriteSelection} defaultValue={{value:"hello", key:"Hello"}}>{ favoriteOptions.map((element, index) => <option value={element} key={index}>{element}</option>) }</select>
+                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions}</select>
                     </span>
                 </label>
 

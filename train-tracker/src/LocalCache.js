@@ -52,12 +52,11 @@ export const setToCache=(train)=>{
 
 }
 
-export const handleCache=(train)=>{}
-
-// const confirmCheckIn = (username, password) =>{
-//     const localUser = localStorage.getItem("USERNAME");
-//     const localPass = localStorage.getItem("PASSWORD");
-//     if(localUser===null||localPass===null){
-//         alert("No current user detected for this device, please sign in or create a new account");
-//     }
-// }
+export const isFavorited=(train)=>{
+    const localCache = getLocalCache();
+    const data = localCache.data;
+    if(train.routeName in data){
+        return "red";
+    }
+    return "white"
+}
