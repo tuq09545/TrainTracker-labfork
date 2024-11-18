@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { APIInstance } from "./AmtrakAPI";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaBuildingUser } from "react-icons/fa6";
 import { renderToString } from "react-dom/server";
+import hash from 'object-hash';
 import './styles/Map.css';
 
 // Fix default icon issue
@@ -20,9 +22,11 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const Map = ({trains}) => {
+const Map = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
+    const [routes, setRoutes] = useState(null);
+    const [routeData, setRouteData] = useState(null);
     // const [trains, setTrains] = useState([]);
     // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
     // const apiInstance = useRef(new APIInstance());
@@ -37,6 +41,11 @@ const Map = ({trains}) => {
             .then(response => response.json())
             .then(data => setStations(data));
 
+
+        fetch("/TrainTracker/geojson/NTAD_Amtrak_Routes_1353580322365094927.geojson")
+            .then(response => response.json())
+            .then(data => setRoutes(data));
+
         const handleResize = () => {
             if (mapRef.current) {
                 mapRef.current.invalidateSize();
@@ -46,6 +55,21 @@ const Map = ({trains}) => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {
+         if (selectedRoute){
+            setRouteData(filterRouteJson());
+         }
+         else{
+            setRouteData(null);
+         }
+        
+    }, [selectedRoute]);
+
+    function filterRouteJson(){
+        let features = routes.features.filter((feature) => feature.properties.name === selectedRoute);
+        return {'crs': routes.crs, 'type':routes.type, 'features': features};
+    }
 
     const updateTrainData = () => {
         // removed update button functionality temporarily
@@ -93,8 +117,60 @@ const Map = ({trains}) => {
         </div>
     );
 
+    const UserLocationIcon = () => (
+        <div className="custom-icon-container" style={{ color: "red" }}>
+            <FaLocationDot size={20} />
+        </div>
+    );
+
+    const SelectedStationIcon = () => (
+        <div className="custom-icon-container" style={{ color: "black" }}>
+            <FaBuildingUser size={20} />
+        </div>
+    );
+
+    function UserLocationMarker(){
+        if (userLocation){
+            return (
+                <Marker
+                    key={'userLocation'}
+                    position={[userLocation.coords.latitude, userLocation.coords.longitude]}
+                    icon={L.divIcon({
+                        html: renderToString(<UserLocationIcon />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}>
+
+                    <Popup>
+                        <p>Your location.</p>
+                    </Popup>
+                </Marker>)
+        }
+    }
+
+    function SelectedStationMarker(){
+        if (selectedStation){
+            return (
+                <Marker
+                    key={'selectedStation'}
+                    position={[selectedStation.lat, selectedStation.lon]}
+                    icon={L.divIcon({
+                        html: renderToString(<SelectedStationIcon />),
+                        className: 'custom-icon',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })}>
+
+                    <Popup>
+                        <strong>Selected Station</strong>
+                        <p>{selectedStation.stationCode} - {selectedStation.stationName ? selectedStation.stationName : selectedStation.name}</p>
+                    </Popup>
+                </Marker>)
+        }
+    }
+
     function TrainMarkers() { 
-        console.log(trains);
         if(trains.length !== 0){
             return(
                 <div>
@@ -151,7 +227,12 @@ const Map = ({trains}) => {
                     }
                 />
             )}
+            {routes && (
+                <GeoJSON data={routeData} style={{ color: "dodgerblue", weight: 5 }} key={hash(routeData)} />
+            )}
             <TrainMarkers/>
+            <UserLocationMarker/>
+            <SelectedStationMarker/>
         </MapContainer>
      </>
     );

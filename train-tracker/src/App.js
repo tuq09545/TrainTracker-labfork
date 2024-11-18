@@ -7,9 +7,15 @@ import { useNavigate, Link, Routes, Route, HashRouter } from 'react-router-dom';
 import Home from './Home';
 import TrainPage from './TrainPage';
 
+import { getClosestStation } from './functionality/app';
+
 function App() {
     // load api data
     const api = new Amtrak.APIInstance();
+
+    const [userLocation, setUserLocation] = useState(null);
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -22,7 +28,22 @@ function App() {
             setAllStations(this.stations);
         }
         api.update();
+
     },[]);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                setUserLocation(pos);
+                if (allStations.length > 0 && pos){
+                    setSelectedStation(getClosestStation(allStations, pos).stationCode);
+                }
+            }, 
+            (error) => console.log('error' + error));
+        }
+        
+    }, [allStations]);
+
 
     function TrainForm(){
         const [selectedNumber, setSelectedNumber] = useState("");
@@ -43,6 +64,16 @@ function App() {
         )
     }
   
+    const homePage = <Home
+        allTrains={allTrains}
+        allRoutes={allRoutes}
+        allStations={allStations}
+        userLocation={userLocation}
+        selectedStation={selectedStation}
+        setSelectedStation={setSelectedStation}
+        selectedRoute={selectedRoute}
+        setSelectedRoute={setSelectedRoute}
+    />;
     
   return (
     <HashRouter>
@@ -60,16 +91,8 @@ function App() {
               
           <div className='content'>
                 <Routes>
-                    <Route path="/" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                    />}/>
-                    <Route path="/home" element={<Home
-                        allTrains={allTrains}
-                        allRoutes={allRoutes}
-                        allStations={allStations}
-                    />}/>
+                    <Route path="/" element={homePage}/>
+                    <Route path="/home" element={homePage}/>
                     <Route path="/train/:trainInfo" element={<TrainPage/>}/>
                 </Routes>
               </div> 
