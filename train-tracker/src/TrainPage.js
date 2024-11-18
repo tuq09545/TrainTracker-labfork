@@ -1,14 +1,40 @@
-import {useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 
-function TrainPage(){
-    const url = window.location.href;
-    const split = url.split("/");
-    const params = split[split.length -1];
+function TrainPage({
+    allTrains
+}){
+    const location = useLocation();
+    const [number,setNumber] = useState("");
+    const [date,setDate] = useState("");
+
+    // updates on location change
+    useEffect(() =>{
+        let url = window.location.href;
+        let split = url.split("/");
+        let params = split[split.length -1];
+
+        if (params.includes("?date=")){
+            let [n,d] = params.split("?date=");
+            setNumber(n);
+            setDate(d);
+        } else {
+            setNumber(params);
+            setDate("");
+        }
+    },[location])
+
+    if(allTrains){
+        return(
+            <div>
+                <h2>No train found</h2>
+            </div>
+        )
+    }
 
     return(
         <div>
-            <h2>This is the train page</h2>
-            <p>Params = {params}</p>
+            <h2>Loading...</h2>
         </div>
     )
 }
