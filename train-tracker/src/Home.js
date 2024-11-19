@@ -1,7 +1,9 @@
 import './styles/Home.css';
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
-import Map from './Map';
+import {convertStationCodeToStation} from './functionality/app.js';
+
+import TrainMap from './TrainMap';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
@@ -10,9 +12,7 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({
-    allTrains, allRoutes, allStations
-}){
+function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
 
@@ -30,7 +30,7 @@ function Home({
         let renderedStations = allStations.map(station => {
             return <option value={station.stationCode} key={station.stationCode}>{station.stationCode} - {station.name}</option>
         })
-        renderedStations.push(<option value={""} key={""}>{}</option>);
+        renderedStations.unshift(<option value={""} key={""}>{}</option>);
         return renderedStations;
     }
 
@@ -38,7 +38,7 @@ function Home({
         let renderedRoutes = allRoutes.sort((a, b) => (a.Name).localeCompare(b.Name)).map(route => {
             return <option value={route.Name} key={route.Name}>{route.Name}</option>
         });
-        renderedRoutes.push(<option value={""} key={""}>{}</option>);
+        renderedRoutes.unshift(<option value={""} key={""}></option>);
         return renderedRoutes;
     }
 
@@ -57,7 +57,6 @@ function Home({
     </div>);
 
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
-
     return (
         <div className='home-page'>
             <div className='search-container'>
@@ -65,6 +64,10 @@ function Home({
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
                 searchFun = {searchTrains}
+                setSelectedStation={setSelectedStation}
+                selectedStation={selectedStation}
+                selectedRoute={selectedRoute}
+                setSelectedRoute={setSelectedRoute}
               />
               </div>
               <div className='app-train-list-container'>
@@ -74,8 +77,11 @@ function Home({
                 />
               </div>
               <div className='map-container'>
-                <Map className = 'Map' 
+                <TrainMap className = 'Map' 
                     trains={currentTrains}
+                    userLocation={userLocation}
+                    selectedStation={convertStationCodeToStation(allStations, selectedStation)}
+                    selectedRoute={selectedRoute}
                 />
               </div>
               <div>

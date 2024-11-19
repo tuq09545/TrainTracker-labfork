@@ -7,9 +7,15 @@ import { Link, Routes, Route, HashRouter } from 'react-router-dom';
 import Home from './Home';
 import TrainPage, {TrainForm} from './TrainPage';
 
+import { getClosestStation } from './functionality/app';
+
 function App() {
     // load api data
     const api = new Amtrak.APIInstance();
+
+    const [userLocation, setUserLocation] = useState(null);
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -22,6 +28,7 @@ function App() {
             setAllStations(this.stations);
         }
         api.update();
+
     },[]);
 
     const HomePage = <Home
@@ -29,6 +36,50 @@ function App() {
             allRoutes={allRoutes}
             allStations={allStations}
         />
+              
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                setUserLocation(pos);
+                if (allStations.length > 0 && pos){
+                    setSelectedStation(getClosestStation(allStations, pos).stationCode);
+                }
+            }, 
+            (error) => console.log('error' + error));
+        }
+        
+    }, [allStations]);
+
+
+    function TrainForm(){
+        const [selectedNumber, setSelectedNumber] = useState("");
+
+        const navigate = useNavigate();
+
+        function handleNumber(e){ setSelectedNumber(e.target.value); }
+
+        function search(event){
+            event.preventDefault();
+            navigate("/train/"+selectedNumber);
+        }
+
+        return (
+            <form onSubmit={search}>
+                <input className="select-box" value={selectedNumber} placeholder="Search by Number" onChange={handleNumber} type="number" min='1'></input>
+            </form>
+        )
+    }
+  
+    const homePage = <Home
+        allTrains={allTrains}
+        allRoutes={allRoutes}
+        allStations={allStations}
+        userLocation={userLocation}
+        selectedStation={selectedStation}
+        setSelectedStation={setSelectedStation}
+        selectedRoute={selectedRoute}
+        setSelectedRoute={setSelectedRoute}
+    />;
     
   return (
     <HashRouter>
@@ -49,6 +100,7 @@ function App() {
                     <Route path="/" element={HomePage}/>
                     <Route path="/home" element={HomePage}/>
                     <Route path="/train/:trainInfo" element={<TrainPage allTrains={allTrains}/>}/>
+
                 </Routes>
               </div> 
           </div>
