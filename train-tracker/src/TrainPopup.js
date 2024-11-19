@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import './styles/TrainPopup.css'
 import TrainInfo from "./TrainInfo";
 
@@ -20,6 +21,7 @@ function TrainPopup({onClose, children, actionBar, train}){
         </div> 
             <div className='modal-content'>
                 {children}
+                <Link to={"/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)} target="_blank">Open in New Tab</Link>
                 <TrainInfo train={train}/>   
             </div>  
         </div>

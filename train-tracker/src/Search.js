@@ -6,10 +6,8 @@ import { MdClear } from "react-icons/md";
 import { getLocalCache } from './LocalCache';
 
 
-function Search({searchFun, routes, stations}){
+function Search({searchFun, routes, stations, setSelectedStation, selectedStation, selectedRoute, setSelectedRoute}){
     const [selectedNumber, setSelectedNumber] = useState("");
-    const [selectedRoute, setSelectedRoute] = useState("");
-    const [selectedStation, setSelectedStation] = useState("");
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
@@ -17,7 +15,7 @@ function Search({searchFun, routes, stations}){
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){ setSelectedRoute(e.target.value); }
-    function handleStation(e){ setSelectedStation(e.target.value); }
+    function handleStation(e){ setSelectedStation(e.target.value)}
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }

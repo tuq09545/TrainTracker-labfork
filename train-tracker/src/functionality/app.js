@@ -27,6 +27,43 @@ export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedS
     return trains;
 }
 
+// very lazy alternative filter for train page (will refactor later)
+export function filterTrainPage(allTrains, selectedNumber, selectedDate){
+    let trains = allTrains ?? [];
+    if(selectedNumber > 0){
+        trains = trains.filter(t => t.number === selectedNumber)
+    } if (selectedDate){
+        trains = trains.filter(t => t.scheduledDeparture === selectedDate)
+    }
+    return trains
+}
+
+export function getClosestStation(stations, userLocation){
+    let userLat = userLocation.coords.latitude;
+    let userLon = userLocation.coords.longitude;
+    let minDistance = calculateDistance(stations[0].lat, userLat, stations[0].lon, userLon);
+    let minStation = stations[0];
+    stations.forEach((station) => {
+        let distance = calculateDistance(station.lat, userLat, station.lon, userLon);
+        if (distance < minDistance){
+            minDistance = distance;
+            minStation = station;
+        }
+    });
+    return minStation;
+}
+
+export function convertStationCodeToStation(allStations, stationCode){
+    let matchingStations = allStations.filter((station) => {
+        return station.stationCode === stationCode;
+    });
+    return matchingStations[0];
+}
+
+function calculateDistance(lat1, lat2, lon1, lon2){
+    return (Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(lon2-lon1, 2)));
+}
+
 function sortTrains(trains, sortingCriteria){
     return trains.sort(sortingCriteria);
 }
