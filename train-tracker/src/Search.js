@@ -35,6 +35,11 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         setFromStation("");
         setToStation("");
     }
+
+    const refresh = () => {
+        clearSearch();
+        searchFun("", "", "", false, "", "");
+    }
     return (
         <form className='form' onSubmit={search}>
                 <div className='top-label'>
@@ -71,6 +76,7 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
                     <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
                     <div onClick={setToFavorites} className='form-button'>Favorite <MdFavoriteBorder/></div>
+                    <div onClick={refresh} className='form-button'>Refresh <IoSearch/></div>
                 </span>
               </form>
     );
