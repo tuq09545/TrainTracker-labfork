@@ -2,10 +2,10 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { useNavigate, Link, Routes, Route, HashRouter } from 'react-router-dom';
+import { Link, Routes, Route, HashRouter, useNavigate } from 'react-router-dom';
 
 import Home from './Home';
-import TrainPage from './TrainPage';
+import TrainPage, {TrainForm} from './TrainPage';
 
 import { getClosestStation } from './functionality/app';
 
@@ -64,7 +64,7 @@ function App() {
         )
     }
   
-    const homePage = <Home
+    const HomePage = <Home
         allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
@@ -91,9 +91,10 @@ function App() {
               
           <div className='content'>
                 <Routes>
-                    <Route path="/" element={homePage}/>
-                    <Route path="/home" element={homePage}/>
-                    <Route path="/train/:trainInfo" element={<TrainPage/>}/>
+                    <Route path="/" element={HomePage}/>
+                    <Route path="/home" element={HomePage}/>
+                    <Route path="/train/:trainInfo" element={<TrainPage allTrains={allTrains}/>}/>
+
                 </Routes>
               </div> 
           </div>
