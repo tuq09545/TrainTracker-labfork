@@ -21,7 +21,7 @@ function TrainPopup({onClose, children, actionBar, train}){
         </div> 
             <div className='modal-content'>
                 {children}
-                <Link to={"/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>Open in New Tab</Link>
+                <Link to={"/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)} target="_blank">Open in New Tab</Link>
                 <TrainInfo train={train}/>   
             </div>  
         </div>
