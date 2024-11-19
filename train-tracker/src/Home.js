@@ -5,6 +5,7 @@ import Map from './Map';
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
+import Favorites from './favorites.js';
 
 import {filterTrains} from './functionality/app.js'
 
@@ -19,6 +20,7 @@ function Home({
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const [showDefaultList, setDefaultList] = useState(true);
 
     const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
         let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
@@ -42,6 +44,11 @@ function Home({
         return renderedRoutes;
     }
 
+    function handleFavoriteClick(e){
+        setDefaultList(false)
+        searchTrains("", e.props.value, "", "", "", "")
+    }
+
     // Modal Functions
     function handleTrainClick(train){
         setShowModal(true);
@@ -56,6 +63,12 @@ function Home({
         <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
     </div>);
 
+    let trainListElementDefault = <Favorites handleFavoriteClick={handleFavoriteClick}/>
+
+    let trainListElement = <TrainList className = 'TrainList' 
+    trains={currentTrains} 
+    handleTrainClick={handleTrainClick}/>
+
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
 
     return (
@@ -68,10 +81,7 @@ function Home({
               />
               </div>
               <div className='app-train-list-container'>
-                <TrainList className = 'TrainList' 
-                    trains={currentTrains} 
-                    handleTrainClick={handleTrainClick}
-                />
+                {!showDefaultList && trainListElement || showDefaultList && trainListElementDefault}
               </div>
               <div className='map-container'>
                 <Map className = 'Map' 
