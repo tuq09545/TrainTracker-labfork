@@ -45,26 +45,26 @@ function TrainPage({allTrains}){
         } 
     },[number,date])
 
+    let content = <h2>No Trains Found</h2>
+    
+
     if(isLoading){
-        return(
-            <div>
-                <h2>Loading...</h2>
-            </div>
-        )
+        content=<h2>Loading...</h2>
     }
 
     // Multiple Results
     if (selectedTrains.length > 1){
-        return <Tiebreaker trains={selectedTrains}/>
+        content = <Tiebreaker trains={selectedTrains}/>
     } 
     
     if (selectedTrains.length == 1){
-        return <TrainInfo train={selectedTrains[0]}/>
+        content = <TrainInfo train={selectedTrains[0]}/>
     }
 
     return(
         <div>
-            <h2>No Trains Found</h2>
+            <Link to="/home">Go Home</Link>
+            {content}
         </div>
     )
 }

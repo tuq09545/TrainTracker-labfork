@@ -238,7 +238,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
 
     return (
         <>
-        <button onClick={updateTrainData}>Refresh Trains</button>
         <MapContainer
             ref={mapRef}
             center={[39.8283, -98.5795]}
