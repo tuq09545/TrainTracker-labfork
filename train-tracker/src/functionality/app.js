@@ -36,6 +36,7 @@ export function filterTrainPage(allTrains, selectedNumber, selectedDate){
         trains = trains.filter(t => t.scheduledDeparture === selectedDate)
     }
     return trains
+}
 
 export function getClosestStation(stations, userLocation){
     let userLat = userLocation.coords.latitude;

@@ -3,14 +3,15 @@ import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
-import { MdFavoriteBorder } from "react-icons/md";
-import { setToCache } from './LocalCache';
+import { getLocalCache } from './LocalCache';
+
 
 function Search({searchFun, routes, stations, setSelectedStation, selectedStation, selectedRoute, setSelectedRoute}){
     const [selectedNumber, setSelectedNumber] = useState("");
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
+    const [favoriteOptions, addToFavList] = useState(populateFavDrop)
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){ setSelectedRoute(e.target.value); }
@@ -18,9 +19,24 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
-    function setToFavorites(){
-        setToCache(selectedRoute,selectedNumber, selectedStation);
+    
+    function handleFavoriteSelection(e){
+        addToFavList(populateFavDrop())
+        e.preventDefault();
+        searchFun("", e.target.value, "", "", "", "")
     }
+
+    function populateFavDrop(){
+        let favNames = ["---"]
+        const cachedTrains = getLocalCache()
+        Object.keys(cachedTrains.data).forEach(trainName => {
+            favNames.push(trainName)
+        });
+        const mapping = favNames.map((element, index) => <option value={element} key={index}>{element}</option>)
+        return mapping
+    }
+
+    
 
     const search = (event) =>{
         event.preventDefault();
@@ -35,6 +51,7 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         setFromStation("");
         setToStation("");
     }
+
     return (
         <form className='form' onSubmit={search}>
                 <div className='top-label'>
@@ -67,10 +84,16 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
                     </span>
                 </label>
 
+                <label className="favorites-dropdown-selection">
+                Favorites:
+                    <span className="select-box">
+                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions}</select>
+                    </span>
+                </label>
+
                 <span className='button-container'>
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
                     <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
-                    <div onClick={setToFavorites} className='form-button'>Favorite <MdFavoriteBorder/></div>
                 </span>
               </form>
     );

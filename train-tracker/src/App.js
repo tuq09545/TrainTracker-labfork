@@ -2,7 +2,7 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Link, Routes, Route, HashRouter } from 'react-router-dom';
+import { Link, Routes, Route, HashRouter, useNavigate } from 'react-router-dom';
 
 import Home from './Home';
 import TrainPage, {TrainForm} from './TrainPage';
@@ -31,12 +31,6 @@ function App() {
 
     },[]);
 
-    const HomePage = <Home
-            allTrains={allTrains}
-            allRoutes={allRoutes}
-            allStations={allStations}
-        />
-              
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos)=>{
@@ -70,7 +64,7 @@ function App() {
         )
     }
   
-    const homePage = <Home
+    const HomePage = <Home
         allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
