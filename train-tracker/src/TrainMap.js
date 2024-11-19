@@ -32,14 +32,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const mapRef = useRef();
 
     useEffect(() => {
-        fetch("/TrainTracker/geojson/amtrak-track.geojson")
-            .then(response => response.json())
-            .then(data => setRailLines(data));
-
-        fetch("/TrainTracker/geojson/amtrak-stations.geojson")
-            .then(response => response.json())
-            .then(data => setStations(data));
-
 
         fetch("/TrainTracker/geojson/NTAD_Amtrak_Routes_flipped.json")
             .then(response => response.json())
