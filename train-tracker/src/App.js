@@ -31,12 +31,6 @@ function App() {
 
     },[]);
 
-    const HomePage = <Home
-            allTrains={allTrains}
-            allRoutes={allRoutes}
-            allStations={allStations}
-        />
-              
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos)=>{
@@ -70,7 +64,7 @@ function App() {
         )
     }
   
-    const homePage = <Home
+    const HomePage = <Home
         allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
