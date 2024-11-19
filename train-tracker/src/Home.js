@@ -76,14 +76,6 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                     handleTrainClick={handleTrainClick}
                 />
               </div>
-              <div className='map-container'>
-                <TrainMap className = 'Map' 
-                    trains={currentTrains}
-                    userLocation={userLocation}
-                    selectedStation={convertStationCodeToStation(allStations, selectedStation)}
-                    selectedRoute={selectedRoute}
-                />
-              </div>
               <div>
                 {showModal && modal}
               </div>

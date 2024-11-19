@@ -2,12 +2,13 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Routes, Route, HashRouter, useNavigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Link, useNavigate } from 'react-router-dom';
 
 import Home from './Home';
 import TrainPage from './TrainPage';
+import TrainMap from './TrainMap';
 
-import { getClosestStation } from './functionality/app';
+import {convertStationCodeToStation, getClosestStation} from './functionality/app';
 
 function App() {
     // load api data
@@ -54,7 +55,14 @@ function App() {
         selectedRoute={selectedRoute}
         setSelectedRoute={setSelectedRoute}
     />;
-    
+
+    const MapPage = <TrainMap
+        trains={allTrains}
+        userLocation={userLocation}
+        selectedStation={convertStationCodeToStation(allStations, selectedStation)}
+        selectedRoute={selectedRoute}
+        />;
+
   return (
     <HashRouter>
         <div className="App">
@@ -66,11 +74,25 @@ function App() {
           </div>
               
           <div className='content'>
+              <div className="sidebar">
+                  <ul className="nav">
+                      <li>
+                          <Link to="/home">Home</Link>
+                      </li>
+                      <li>
+                          <Link to="/train">Trains</Link>
+                      </li>
+                      <li>
+                          <Link to="/map">Map</Link>
+                      </li>
+                  </ul>
+              </div>
+
                 <Routes>
                     <Route path="/" element={HomePage}/>
                     <Route path="/home" element={HomePage}/>
                     <Route path="/train/:trainInfo" element={<TrainPage allTrains={allTrains}/>}/>
-
+                    <Route path="/map" element={MapPage}/>
                 </Routes>
               </div> 
           </div>

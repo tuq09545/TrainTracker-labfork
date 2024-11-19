@@ -26,6 +26,11 @@
   overflow: hidden;
 }
 
+.sidebar {
+  width: 30%;
+  height: 90%;
+}
+
 .heading-box {
   display: flex;
   align-items: center;

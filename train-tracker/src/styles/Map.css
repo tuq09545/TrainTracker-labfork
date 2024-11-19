@@ -8,3 +8,13 @@
     align-items: center;
     overflow: hidden;
 }
+
+.map-container {
+    flex: 1;
+    width: 50%;
+    height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Polyline} from "react-leaflet";
+import {Link, useNavigate, useLocation} from 'react-router-dom';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
@@ -26,9 +27,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     const [routes, setRoutes] = useState(null);
-    // const [trains, setTrains] = useState([]);
-    // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
-    // const apiInstance = useRef(new APIInstance());
     const mapRef = useRef();
 
     useEffect(() => {
@@ -203,32 +201,35 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
 
     return (
         <>
-        <MapContainer
-            ref={mapRef}
-            center={[39.8283, -98.5795]}
-            zoom={4}
-            style={{ width: "100%", height: "100%" }}
-        >
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {railLines && (
-                <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
-            )}
-            {stations && (
-                <GeoJSON
-                    data={stations}
-                    pointToLayer={(feature, latlng) =>
-                        L.circleMarker(latlng, { radius: 1, color: "red" })
-                    }
-                />
-            )}
-            <RouteLines/>
-            <TrainMarkers/>
-            <UserLocationMarker/>
-            <SelectedStationMarker/>
-        </MapContainer>
+            <div className="map-container">
+                <MapContainer
+                    ref={mapRef}
+                    center={[39.8283, -98.5795]}
+                    zoom={4}
+                    style={{ width: "100%", height: "100%" }}
+                >
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {railLines && (
+                        <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
+                    )}
+                    {stations && (
+                        <GeoJSON
+                            data={stations}
+                            pointToLayer={(feature, latlng) =>
+                                L.circleMarker(latlng, { radius: 1, color: "red" })
+                            }
+                        />
+                    )}
+                    <RouteLines/>
+                    <TrainMarkers/>
+                    <UserLocationMarker/>
+                    <SelectedStationMarker/>
+                </MapContainer>
+            </div>
+
      </>
     );
 };
