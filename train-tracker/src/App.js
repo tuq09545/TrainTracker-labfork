@@ -91,7 +91,7 @@ function App() {
                         )}
                     </div>
 
-                    <div className="content" id="main">
+                    <div className={`content ${!sidebarOpen ? 'sidebar-closed' : ''}`} id="main">
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/home" element={<HomePage />} />

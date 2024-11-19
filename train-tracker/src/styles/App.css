@@ -11,6 +11,7 @@
   flex: 1;
   padding: 20px;
   transition: margin-left 0.5s;
+  margin-left: 80px;
   overflow: hidden;
 }
 
@@ -90,4 +91,12 @@
   border: none;
   color: white;
   cursor: pointer;
+}
+
+.content.sidebar-closed {
+  margin-left: 80px;
+}
+
+.content.sidebar-open {
+  margin-left: 20%;
 }

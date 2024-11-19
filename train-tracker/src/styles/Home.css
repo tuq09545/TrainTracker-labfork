@@ -1,11 +1,13 @@
 .home-page {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 90%;
     height: 90%;
     gap: 1rem;
     overflow: hidden;
+
   }
+
 .search-container {
     width: 20%;
     height: 80vh;
@@ -17,23 +19,13 @@
   }
   
   .app-train-list-container {
-    width: 30%;
+    width: 90%;
     height: 80vh;
     padding: 1rem;
     background-color: #f0f0f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
       overflow: hidden;
-  }
-  
-  .map-container {
-    flex: 1;
-    width: 50%;
-    height: 80vh;
-    border-radius: 8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-      position: relative;
-    overflow: hidden;
   }
   
   .Map {
