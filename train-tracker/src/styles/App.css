@@ -1,52 +1,93 @@
 .App {
   text-align: center;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   min-height: 100vh;
   background-color: #f4f4f9;
   overflow: hidden;
 }
 
-.header {
+.content {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.5s;
+  overflow: hidden;
+}
+
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  width: 80px; /* Default collapsed width */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #97ccf0;
+  overflow-x: hidden;
+  transition: width 0.5s;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px 0;
+}
+
+.sidebar.open {
+  width: 20%; /*Same width as search-container*/
+}
+
+.sidebar .train_icon {
+  width: 50px; /* Smaller icon in sidebar */
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.sidebar button.openbtn {
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 70%;
+  text-align: center;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar button.openbtn:hover {
+  background-color: #666;
+}
+
+.sidebar ul {
   width: 100%;
-  padding: 1rem;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
 }
 
-.content {
+.sidebar ul li {
   width: 100%;
-  height: 90%;
-  overflow: hidden;
+  padding: 15px 20px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.sidebar {
-  width: 30%;
-  height: 90%;
+.sidebar ul li:hover {
+  color: #f1f1f1;
+  background-color: #333;
 }
 
-.heading-box {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
+/* Close button inside expanded sidebar */
+.sidebar .closebtn {
+  align-self: flex-end;
+  margin: 10px 15px 0 0;
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
-
-.train_icon {
-  width: 80px;
-  height: 80px;
-  margin-right: 10px;
-  overflow: hidden;
-}
-
-
