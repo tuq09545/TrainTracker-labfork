@@ -47,33 +47,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const updateTrainData = () => {
-        // removed update button functionality temporarily
-        //apiInstance.current.update();
-        //setTrains(apiInstance.current.trains || []);
-    };
-
-        // Commented out the logic for assigning random colors
-        /*
-        setTrainColors(prevColors => {
-            const updatedColors = { ...prevColors };
-            newTrains.forEach(train => {
-                if (!updatedColors[train.number]) {
-                    updatedColors[train.number] = getRandomColor();
-                }
-            });
-            return updatedColors;
-        });
-        */
-
-    /*useEffect(() => {
-        apiInstance.current.onUpdated = updateTrainData;
-        updateTrainData();
-        const intervalId = setInterval(updateTrainData, 600000);
-
-        return () => clearInterval(intervalId);
-    }, []);*/
-
     // Commented out getRandomColor function
     /*
     const getRandomColor = () => {
