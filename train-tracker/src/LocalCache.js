@@ -52,6 +52,30 @@ export const setToCache=(train)=>{
 
 }
 
+export const setRouteToCache=(selectedRoute)=>{
+    if (selectedRoute == ""){
+        alert("No route selected");
+        return;
+    }
+
+    const localCache=getLocalCache()
+    let data=localCache.data
+
+    const item={
+        route:selectedRoute,
+    }
+
+    data[selectedRoute]=item
+
+    try{
+        localStorage.setItem(LOCAL_CACHE,JSON.stringify(localCache))
+    }
+    catch(e){
+        alert("Unable to Save to Favorites");
+    }
+
+}
+
 export const isFavorited=(train)=>{
     const localCache = getLocalCache();
     const data = localCache.data;
