@@ -92,19 +92,19 @@ function App() {
                         {sidebarOpen ? (
                             <div className="nav">
                                 <Link to="/home" className="nav-link">Home</Link>
-                                <Link to="/train" className="nav-link">Trains</Link>
                                 <Link to="/map" className="nav-link">Map</Link>
+                                <Link to="/train" className="nav-link">Trains</Link>
                             </div>
                         ) : (
                             <div className="nav-icons">
                                 <Link to="/home" className="nav-icon-link">
                                     <IoHomeOutline size={30} />
                                 </Link>
-                                <Link to="/train" className="nav-icon-link">
-                                    <IoTrainOutline size={30} />
-                                </Link>
                                 <Link to="/map" className="nav-icon-link">
                                     <FaMapLocationDot size={30} />
+                                </Link>
+                                <Link to="/train" className="nav-icon-link">
+                                    <IoTrainOutline size={30} />
                                 </Link>
                             </div>
                             )}
