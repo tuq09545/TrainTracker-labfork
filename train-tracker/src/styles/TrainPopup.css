@@ -7,6 +7,7 @@
     background-color: #d1d5db;
     opacity: 0.8;
     z-index: 999;
+    overflow: scroll;
 }
   
 .inner-modal-container {
@@ -19,7 +20,7 @@
     background-color: white;
     z-index: 1000;
     max-height: 100vh;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
   
 .modal-content {
@@ -27,6 +28,7 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    overflow: scroll;
 }
   
 .action-bar {
