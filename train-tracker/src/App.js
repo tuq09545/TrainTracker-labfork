@@ -93,7 +93,7 @@ function App() {
                             <div className="nav">
                                 <Link to="/home" className="nav-link">Home</Link>
                                 <Link to="/map" className="nav-link">Map</Link>
-                                <Link to="/train" className="nav-link">Trains</Link>
+                                <Link to="/trains/all" className="nav-link">Trains</Link>
                             </div>
                         ) : (
                             <div className="nav-icons">
@@ -103,7 +103,7 @@ function App() {
                                 <Link to="/map" className="nav-icon-link">
                                     <FaMapLocationDot size={30} />
                                 </Link>
-                                <Link to="/train" className="nav-icon-link">
+                                <Link to="/trains/all" className="nav-icon-link">
                                     <IoTrainOutline size={30} />
                                 </Link>
                             </div>
@@ -114,7 +114,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/home" element={<HomePage />} />
-                            <Route path="/train/:trainInfo" element={<TrainPage allTrains={allTrains} />} />
+                            <Route path="/trains/:trainInfo" element={<TrainPage allTrains={allTrains} />} />
                             <Route path="/map" element={<MapPage />} />
                         </Routes>
                     </div>

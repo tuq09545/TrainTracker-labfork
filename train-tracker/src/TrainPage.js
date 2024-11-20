@@ -15,7 +15,12 @@ function TrainPage({allTrains}){
     // wait for allTrains to load
     if(isLoading){
         if(allTrains.length > 0){
-            let trains = filterTrainPage(allTrains,number,date);
+            let trains;
+            if (number == "all"){
+                trains = allTrains.sort((a,b) => a.number - b.number);
+            } else {
+                trains = filterTrainPage(allTrains,number,date);
+            }
             setSelectedTrains(trains);
             setIsLoading(false);
         }
@@ -62,8 +67,8 @@ function TrainPage({allTrains}){
     }
 
     return(
-        <div>
-            <Link to="/home">Go Home</Link>
+        <div className="train-page">
+            <TrainForm/>
             {content}
         </div>
     )
@@ -75,7 +80,7 @@ function Tiebreaker(t){
             <h2>Multiple Results:</h2>
             {t.trains.map((train) => {
                 return(
-                    <Link to={"/train/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
+                    <Link to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
                         <div className='train-info'>
                             <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
                         </div>
@@ -95,12 +100,13 @@ export function TrainForm(){
 
     function search(event){
         event.preventDefault();
-        navigate("/train/"+selectedNumber);
+        navigate("/trains/"+selectedNumber);
+        setSelectedNumber("");
     }
 
     return (
-        <form onSubmit={search}>
-            <input className="select-box" value={selectedNumber} placeholder="Search by Number" onChange={handleNumber} type="number" min='1'></input>
+        <form onSubmit={search} className="train-form">
+            <input className="select-box" value={selectedNumber} placeholder="Quick Search by Number" onChange={handleNumber} type="number" min='1'></input>
         </form>
     )
 }
