@@ -2,15 +2,15 @@
     display: flex;
     justify-content: space-between;
     width: 90%;
-    height: 90%;
+    min-height: 94vh;
+    height: 100%;
     gap: 1rem;
     overflow: hidden;
-
   }
 
 .search-container {
-    width: 20%;
-    height: 80vh;
+    width: 30%;
+    height: 90vh;
     padding: 1rem;
     background-color: #f0f0f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -19,13 +19,13 @@
   }
   
   .app-train-list-container {
-    width: 90%;
-    height: 80vh;
+    width: 70%;
+    height: 90vh;
     padding: 1rem;
     background-color: #f0f0f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-      overflow: hidden;
+      overflow: scroll;
   }
   
   .Map {

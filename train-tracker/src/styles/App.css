@@ -2,7 +2,6 @@
   text-align: center;
   display: flex;
   flex-direction: row;
-  min-height: 100vh;
   background-color: #f4f4f9;
   overflow: hidden;
 }
@@ -10,6 +9,7 @@
 .content {
   flex: 1;
   padding: 20px;
+  height: 100%;
   transition: margin-left 0.5s;
   margin-left: 80px;
   overflow: hidden;
@@ -36,61 +36,82 @@
   width: 20%; /*Same width as search-container*/
 }
 
-.sidebar .train_icon {
+.train_icon {
   width: 50px; /* Smaller icon in sidebar */
   height: 50px;
-  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
-.sidebar button.openbtn {
-  font-size: 16px;
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 70%;
-  text-align: center;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.sidebar button.openbtn:hover {
-  background-color: #666;
-}
-
-.sidebar ul {
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
 }
 
-.sidebar ul li {
-  width: 100%;
+.sidebar .nav-link {
+  display: flex; /* To center the content horizontally */
+  align-items: center; /* To center content vertically */
+  justify-content: center; /* Center the text horizontally */
   padding: 15px 20px;
+  background: none;
+  border: none;
   text-decoration: none;
-  font-size: 18px;
-  color: #818181;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
-.sidebar ul li:hover {
-  color: #f1f1f1;
-  background-color: #333;
+.sidebar .nav-link:hover {
+  color: #001f3d; /* Navy color when hovered */
 }
 
-/* Close button inside expanded sidebar */
-.sidebar .closebtn {
-  align-self: flex-end;
-  margin: 10px 15px 0 0;
-  font-size: 20px;
-  background: none;
+.sidebar .nav-icons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sidebar .nav-icon-link {
+  display: block;
+  padding: 15px;
+  color: white; /* Icon color */
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.sidebar .nav-icon-link:hover {
+  color: #001f3d; /* Change color on hover */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.sidebar-heading {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+  display: inline-block;
+}
+
+.openbtn {
+  background-color: transparent;
   border: none;
   color: white;
+  font-size: 30px;
   cursor: pointer;
+}
+
+.openbtn:hover {
+  color: #ddd;
 }
 
 .content.sidebar-closed {
