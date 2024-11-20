@@ -1,15 +1,15 @@
 import './styles/TrainInfo.css'
-import { setToCache, removeFromCache, isFavorited } from './LocalCache';
+import { setRouteToCache, removeRouteFromCache, isFavorited } from './LocalCache';
 import { MdFavoriteBorder } from "react-icons/md";
 
 function TrainInfo({train}){
 
     function setToFavorites(e){
         if(e.target.style.backgroundColor === "red"){
-            removeFromCache(train)
+            removeRouteFromCache(train.routeName)
             e.target.style.backgroundColor = "white"
         } else {
-            setToCache(train);
+            setRouteToCache(train.routeName);
             e.target.style.backgroundColor = "red"
         }
     }
@@ -37,7 +37,7 @@ function TrainInfo({train}){
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
     let punctualityToDisplay = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
-    let backColor = isFavorited(train)
+    let backColor = isFavorited(train.routeName)
     return(
         <div className='train-info'>
             <h2 className='route'>{train.routeName} (#{train.number})</h2>
