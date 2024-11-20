@@ -2,10 +2,10 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Link, Routes, Route, HashRouter, useNavigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, useNavigate } from 'react-router-dom';
 
 import Home from './Home';
-import TrainPage, {TrainForm} from './TrainPage';
+import TrainPage from './TrainPage';
 
 import { getClosestStation } from './functionality/app';
 
@@ -43,26 +43,6 @@ function App() {
         }
         
     }, [allStations]);
-
-
-    function TrainForm(){
-        const [selectedNumber, setSelectedNumber] = useState("");
-
-        const navigate = useNavigate();
-
-        function handleNumber(e){ setSelectedNumber(e.target.value); }
-
-        function search(event){
-            event.preventDefault();
-            navigate("/train/"+selectedNumber);
-        }
-
-        return (
-            <form onSubmit={search}>
-                <input className="select-box" value={selectedNumber} placeholder="Search by Number" onChange={handleNumber} type="number" min='1'></input>
-            </form>
-        )
-    }
   
     const HomePage = <Home
         allTrains={allTrains}
@@ -79,14 +59,10 @@ function App() {
     <HashRouter>
         <div className="App">
           <div className="header">
-              <Link to="/">
                 <div className="heading-box">
                     <img src={train_icon} alt="Train Icon" className="train_icon" />
                     <h1>TrainTracker</h1>
                 </div>
-              </Link>
-              
-              <TrainForm/>
           </div>
               
           <div className='content'>
