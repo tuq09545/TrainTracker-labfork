@@ -98,3 +98,7 @@
 .button-container {
     display: inline-flex;
 }
+
+.magenta-icon {
+    color: #ed156f;
+}
