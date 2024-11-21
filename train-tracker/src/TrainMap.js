@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Polyline} from "react-leaflet";
+import {Link, useNavigate, useLocation} from 'react-router-dom';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
@@ -26,20 +27,9 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const [railLines, setRailLines] = useState(null);
     const [stations, setStations] = useState(null);
     const [routes, setRoutes] = useState(null);
-    // const [trains, setTrains] = useState([]);
-    // const [trainColors, setTrainColors] = useState({}); // Commented out trainColors state
-    // const apiInstance = useRef(new APIInstance());
     const mapRef = useRef();
 
     useEffect(() => {
-        fetch("/TrainTracker/geojson/amtrak-track.geojson")
-            .then(response => response.json())
-            .then(data => setRailLines(data));
-
-        fetch("/TrainTracker/geojson/amtrak-stations.geojson")
-            .then(response => response.json())
-            .then(data => setStations(data));
-
 
         fetch("/TrainTracker/geojson/NTAD_Amtrak_Routes_flipped.json")
             .then(response => response.json())
@@ -54,33 +44,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-
-    const updateTrainData = () => {
-        // removed update button functionality temporarily
-        //apiInstance.current.update();
-        //setTrains(apiInstance.current.trains || []);
-    };
-
-        // Commented out the logic for assigning random colors
-        /*
-        setTrainColors(prevColors => {
-            const updatedColors = { ...prevColors };
-            newTrains.forEach(train => {
-                if (!updatedColors[train.number]) {
-                    updatedColors[train.number] = getRandomColor();
-                }
-            });
-            return updatedColors;
-        });
-        */
-
-    /*useEffect(() => {
-        apiInstance.current.onUpdated = updateTrainData;
-        updateTrainData();
-        const intervalId = setInterval(updateTrainData, 600000);
-
-        return () => clearInterval(intervalId);
-    }, []);*/
 
     // Commented out getRandomColor function
     /*
@@ -238,32 +201,46 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
 
     return (
         <>
-        <MapContainer
-            ref={mapRef}
-            center={[39.8283, -98.5795]}
-            zoom={4}
-            style={{ width: "100%", height: "100%" }}
-        >
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {railLines && (
-                <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
-            )}
-            {stations && (
-                <GeoJSON
-                    data={stations}
-                    pointToLayer={(feature, latlng) =>
-                        L.circleMarker(latlng, { radius: 1, color: "red" })
-                    }
-                />
-            )}
-            <RouteLines/>
-            <TrainMarkers/>
-            <UserLocationMarker/>
-            <SelectedStationMarker/>
-        </MapContainer>
+        <div className="full-map-page">
+            <div className="map-container">
+                <MapContainer
+                    ref={mapRef}
+                    center={[39.8283, -98.5795]}
+                    zoom={4}
+                    style={{ width: "100%", height: "100%" }}
+                >
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {railLines && (
+                        <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
+                    )}
+                    {stations && (
+                        <GeoJSON
+                            data={stations}
+                            pointToLayer={(feature, latlng) =>
+                                L.circleMarker(latlng, { radius: 1, color: "red" })
+                            }
+                        />
+                    )}
+                    <RouteLines/>
+                    <TrainMarkers/>
+                    <UserLocationMarker/>
+                    <SelectedStationMarker/>
+                </MapContainer>
+            </div>
+            <div className="search-display-box">
+                <div className="search-container-in-map">
+                    {selectedRoute ? (
+                        <span>Selected Route: <strong>{selectedRoute}</strong></span>
+                    ) : (
+                        <span>No route selected</span>
+                    )}
+                </div>
+            </div>
+        </div>
+
      </>
     );
 };

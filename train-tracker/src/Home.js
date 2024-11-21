@@ -1,9 +1,5 @@
 import './styles/Home.css';
-import React, {useState} from 'react'
-
-import {convertStationCodeToStation} from './functionality/app.js';
-
-import TrainMap from './TrainMap';
+import React, {useState, useMemo} from 'react'
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
@@ -13,9 +9,8 @@ import {filterTrains} from './functionality/app.js'
 import { IoClose } from "react-icons/io5";
 
 function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute}){
-    // sorted trains
+    //sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
-
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -25,6 +20,14 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
 
         setCurrentTrains(trains);
     }
+
+    const filteredTrains = useMemo(() => {
+        return filterTrains(allTrains, selectedStation, selectedRoute, null, null, null, null);
+    }, [allTrains, selectedStation, selectedRoute]);
+
+    // If no search has been made, default to the filtered trains
+    const trainsToDisplay = currentTrains.length > 0 ? currentTrains : filteredTrains;
+
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -72,16 +75,8 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
               </div>
               <div className='app-train-list-container'>
                 <TrainList className = 'TrainList' 
-                    trains={currentTrains} 
+                    trains={trainsToDisplay}
                     handleTrainClick={handleTrainClick}
-                />
-              </div>
-              <div className='map-container'>
-                <TrainMap className = 'Map' 
-                    trains={currentTrains}
-                    userLocation={userLocation}
-                    selectedStation={convertStationCodeToStation(allStations, selectedStation)}
-                    selectedRoute={selectedRoute}
                 />
               </div>
               <div>
@@ -91,4 +86,4 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
     )
 }
 
-export default Home;
+export default React.memo(Home);
