@@ -20,7 +20,6 @@
     background-color: white;
     z-index: 1000;
     max-height: 100vh;
-    overflow-y: scroll;
 }
   
 .modal-content {
@@ -28,7 +27,6 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    overflow: scroll;
 }
   
 .action-bar {
