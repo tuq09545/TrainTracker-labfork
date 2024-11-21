@@ -1,3 +1,4 @@
-.train-page .train-info {
-    overflow: show;
+.tiebreaker {
+    background-color: yellow;
+    overflow: scroll;
 }

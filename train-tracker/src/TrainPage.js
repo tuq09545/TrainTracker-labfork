@@ -1,3 +1,5 @@
+import './styles/TrainPage.css';
+
 import {useState, useEffect} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import { filterTrainPage } from './functionality/app';
@@ -76,12 +78,12 @@ function TrainPage({allTrains}){
 
 function Tiebreaker(t){
     return(
-        <div>
+        <div className='tiebreaker'>
             <h2>Multiple Results:</h2>
             {t.trains.map((train) => {
                 return(
                     <Link to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
-                        <div className='train-info'>
+                        <div>
                             <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
                         </div>
                     </Link>
