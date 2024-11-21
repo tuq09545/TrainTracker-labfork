@@ -1,18 +1,7 @@
 import './styles/TrainInfo.css'
-import { setRouteToCache, removeRouteFromCache, isFavorited } from './LocalCache';
-import { MdFavoriteBorder } from "react-icons/md";
+import { isFavorited } from './LocalCache'
 
 function TrainInfo({train}){
-
-    function setToFavorites(e){
-        if(e.target.style.backgroundColor === "red"){
-            removeRouteFromCache(train.routeName)
-            e.target.style.backgroundColor = "white"
-        } else {
-            setRouteToCache(train.routeName);
-            e.target.style.backgroundColor = "red"
-        }
-    }
 
     console.log(train);
 
@@ -37,7 +26,10 @@ function TrainInfo({train}){
     let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
     let punctualityToDisplay = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
-    let backColor = isFavorited(train.routeName)
+    let favorited = ""
+    if(isFavorited(train.routeName)==='red'){
+        favorited = <em>&#10003; Favorited</em>
+    }
     return(
         <div className='train-info'>
             <h2 className='route'>{train.routeName} (#{train.number})</h2>
@@ -45,7 +37,7 @@ function TrainInfo({train}){
             <h3 className='direction'>To: {train.to}</h3>
             <div className={punctualityClassName} >{punctualityToDisplay}</div>
             <div>Last updated: {train.lastUpdate}</div>
-            <div onClick={setToFavorites} className='form-button' style={{background:backColor}}>Favorite<MdFavoriteBorder/></div>
+            <div>{favorited}</div>
             <table>
                 <thead><tr><th>Station</th><th>Arrived</th><th>Departed</th></tr></thead>
                 <tbody>{renderedStops}</tbody>
