@@ -5,7 +5,6 @@
     min-height: 94vh;
     height: 100%;
     gap: 1rem;
-    overflow: scroll;
   }
 
 .search-container {
@@ -15,7 +14,6 @@
     background-color: #f0f0f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: scroll;
   }
   
   .app-train-list-container {
