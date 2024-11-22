@@ -56,6 +56,7 @@ function App() {
 
     }, [allStations]);
 
+ RefreshButton
     useEffect(() => {
         if (refreshState) {
             const newApi = new Amtrak.APIInstance();
@@ -128,6 +129,7 @@ function App() {
                             </div>
                             )}
                     </div>
+
 
                     <div className={`content ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`} id="main">
                         <Routes>

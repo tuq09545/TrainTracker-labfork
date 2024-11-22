@@ -47,6 +47,7 @@
   flex-direction: column;
   width: 100%;
 }
+
 .refresh-popup {
     position: fixed;
     top: 0;
@@ -58,7 +59,6 @@
     border-radius: 5px;
     z-index: 1000;
 }
-
 
 .sidebar .nav-link {
   display: flex; /* To center the content horizontally */
