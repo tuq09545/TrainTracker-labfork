@@ -1,8 +1,8 @@
 import './styles/Search.css';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import { IoSearch } from "react-icons/io5";
-import { MdClear, MdRefresh, MdFavoriteBorder } from "react-icons/md";
+import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { getLocalCache, setRouteToCache } from './LocalCache';
 
 
@@ -12,6 +12,14 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
     const [favoriteOptions, addToFavList] = useState(populateFavDrop)
+    const [isFavorited, setIsFavorited] = useState(false);
+
+    useEffect(() => {
+        const cachedTrains = getLocalCache();
+        if (cachedTrains.data[selectedRoute]) {
+            setIsFavorited(true);
+        }
+    }, [selectedRoute]);
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){ setSelectedRoute(e.target.value); }
@@ -26,8 +34,13 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         searchFun("", e.target.value, "", "", "", "")
     }
 
-    function setToFavorites(){
-        setRouteToCache(selectedRoute);
+    function setToFavorites() {
+        if (isFavorited) {
+            setRouteToCache(selectedRoute, false);
+        } else {
+            setRouteToCache(selectedRoute, true);
+        }
+        setIsFavorited(!isFavorited);
     }
 
     function populateFavDrop(){
@@ -82,7 +95,13 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
                 <span className="select-label">
                         Route:
                         <select className="select-box" value={selectedRoute} onChange={handleRoute} children={routes}></select>
-                        <div onClick={setToFavorites} className='form-button'><MdFavoriteBorder/></div>
+                        <div onClick={setToFavorites} className='form-button'>
+                              {isFavorited ? (
+                                  <MdFavorite className="magenta-icon" />
+                              ) : (
+                                  <MdFavoriteBorder />
+                              )}
+                        </div>
                     </span>
                 <span className="select-label">By station: </span>
                     <select className='select-box' value={selectedStation} onChange={handleStation} children={stations}></select>
