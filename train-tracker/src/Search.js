@@ -1,5 +1,5 @@
 import './styles/Search.css';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";

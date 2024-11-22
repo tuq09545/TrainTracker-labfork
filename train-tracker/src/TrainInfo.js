@@ -38,7 +38,7 @@ function TrainInfo({train}){
             <div className={punctualityClassName} >{punctualityToDisplay}</div>
             <div>Last updated: {train.lastUpdate}</div>
             <div>{favorited}</div>
-            <table>
+            <table className="train-table">
                 <thead><tr><th>Station</th><th>Arrived</th><th>Departed</th></tr></thead>
                 <tbody>{renderedStops}</tbody>
             </table>

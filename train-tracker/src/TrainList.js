@@ -2,6 +2,7 @@ import React from 'react';
 import './styles/TrainList.css';
 
 function TrainList({trains, handleTrainClick}){
+    console.log("TrainList rendered");
 
     function MakeTrain({train}){
         const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
