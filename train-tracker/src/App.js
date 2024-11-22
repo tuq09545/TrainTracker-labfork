@@ -56,7 +56,6 @@ function App() {
 
     }, [allStations]);
 
- RefreshButton
     useEffect(() => {
         if (refreshState) {
             const newApi = new Amtrak.APIInstance();
