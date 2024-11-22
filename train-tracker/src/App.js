@@ -18,6 +18,8 @@ import {convertStationCodeToStation, getClosestStation} from './functionality/ap
 function App() {
     // load api data
     const api = new Amtrak.APIInstance();
+    const [refreshState, setRefreshState] = useState(false);
+    const [refreshPopup, setRefreshPopup] = useState(false);
 
     const [userLocation, setUserLocation] = useState(null);
     const [selectedStation, setSelectedStation] = useState("");
@@ -54,6 +56,21 @@ function App() {
 
     }, [allStations]);
 
+ RefreshButton
+    useEffect(() => {
+        if (refreshState) {
+            const newApi = new Amtrak.APIInstance();
+            newApi.onUpdated = function() {
+                setAllTrains(this.trains);
+            }
+            newApi.update();
+            setRefreshState(false);
+            setRefreshPopup(true);
+            setTimeout(() => setRefreshPopup(false), 3000); // Hide popup after 3 seconds
+            
+        }
+    }, [refreshState]);
+
     const HomePage = () => ( <Home
         allTrains={allTrains}
         allRoutes={allRoutes}
@@ -63,6 +80,8 @@ function App() {
         setSelectedStation={setSelectedStation}
         selectedRoute={selectedRoute}
         setSelectedRoute={setSelectedRoute}
+        refresh={refreshState}
+        setRefresh={setRefreshState}
     />);
 
     const MapPage = () => ( <TrainMap
@@ -75,7 +94,8 @@ function App() {
         return (
             <HashRouter>
                 <div className="App">
-                    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
+                      {refreshPopup && <div className="refresh-popup">Refreshed</div>}
+            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
                         <div className="sidebar-header">
                             <img src={train_icon} alt="Train Icon" className="train_icon" />
                             {sidebarOpen && (
@@ -109,6 +129,7 @@ function App() {
                             </div>
                             )}
                     </div>
+
 
                     <div className={`content ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`} id="main">
                         <Routes>

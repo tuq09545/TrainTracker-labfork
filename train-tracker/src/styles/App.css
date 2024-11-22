@@ -48,6 +48,18 @@
   width: 100%;
 }
 
+.refresh-popup {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
 .sidebar .nav-link {
   display: flex; /* To center the content horizontally */
   align-items: center; /* To center content vertically */

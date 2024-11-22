@@ -8,8 +8,8 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute}){
-    //sorted trains
+function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh}){
+    // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
@@ -71,6 +71,8 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                 selectedStation={selectedStation}
                 selectedRoute={selectedRoute}
                 setSelectedRoute={setSelectedRoute}
+                refreshState={refresh}
+                setRefreshState={setRefresh}
               />
               </div>
               <div className='app-train-list-container'>
