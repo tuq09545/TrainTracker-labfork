@@ -3,7 +3,7 @@ import React, {useState, useMemo} from 'react'
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
-import Favorites from './favorites.js';
+//import Favorites from './favorites.js';
 
 import {filterTrains} from './functionality/app.js'
 
@@ -66,11 +66,11 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
         <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
     </div>);
 
-    let trainListElementDefault = <Favorites handleFavoriteClick={handleFavoriteClick}/>
+    // let trainListElementDefault = <Favorites handleFavoriteClick={handleFavoriteClick}/>
 
-    let trainListElement = <TrainList className = 'TrainList' 
-    trains={currentTrains} 
-    handleTrainClick={handleTrainClick}/>
+    // let trainListElement = <TrainList className = 'TrainList' 
+    // trains={trainsToDisplay} 
+    // handleTrainClick={handleTrainClick}/>
 
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
     return (

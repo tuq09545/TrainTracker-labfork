@@ -21,9 +21,9 @@ export const getLocalCache=()=>{
 }
 
 export const removeRouteFromCache=(selectedRoute)=>{
-    if (selectedRoute == ""){
+    if (selectedRoute === ""){
         alert("No route selected");
-        return;
+        return 1;
     }
     const localCache=getLocalCache()
     let data=localCache.data
@@ -33,13 +33,15 @@ export const removeRouteFromCache=(selectedRoute)=>{
     }
     catch(e){
         alert("Unable to remove from Favorites");
+        return 1;
     }
+    return 0;
 }
 
 export const setRouteToCache=(selectedRoute)=>{
-    if (selectedRoute == ""){
+    if (selectedRoute === ""){
         alert("No route selected");
-        return;
+        return 1;
     }
 
     const localCache=getLocalCache()
@@ -56,7 +58,9 @@ export const setRouteToCache=(selectedRoute)=>{
     }
     catch(e){
         alert("Unable to Save to Favorites");
+        return 1;
     }
+    return 0;
 
 }
 

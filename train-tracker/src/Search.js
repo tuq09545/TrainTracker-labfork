@@ -15,14 +15,7 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
     const [favoriteIcon, toggleFavorite] = useState(<MdFavoriteBorder style={{color:'black'}}/>)
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
-    function handleRoute(e){ 
-        setSelectedRoute(e.target.value); 
-        if(isFavorited(e.target.value)==='red'){
-            toggleFavorite(favorited);
-        } else{
-            toggleFavorite(unfavorited)
-        }
-    }
+    function handleRoute(e){setSelectedRoute(e.target.value)}
     function handleStation(e){ setSelectedStation(e.target.value)}
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
@@ -34,13 +27,17 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         searchFun("", e.target.value, "", "", "", "")
     }
 
-    function setToFavorites(e){
+    function setToFavorites(){
         if(favoriteIcon.type.name==="MdFavorite"){
-            removeRouteFromCache(selectedRoute)
-            toggleFavorite(unfavorited)
+            let res = removeRouteFromCache(selectedRoute)
+            if(res===0){
+                toggleFavorite(<MdFavoriteBorder style={{color:'black'}}/>)
+            }
         } else {
-            setRouteToCache(selectedRoute);
-            toggleFavorite(favorited)
+            let res = setRouteToCache(selectedRoute);
+            if(res===0){
+                toggleFavorite(<MdFavorite style={{color:'red'}}/>)
+            }
         }
         
     }
@@ -74,8 +71,13 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
         searchFun("", "", "", false, "", "");
     }
 
-    const unfavorited = <MdFavoriteBorder style={{color:'black'}}/>
-    const favorited = <MdFavorite style={{color:'red'}}/>
+    useEffect(() => {
+        if (isFavorited(selectedRoute) === 'red') {
+            toggleFavorite(<MdFavorite style={{color:'red'}}/>);
+        } else {
+            toggleFavorite(<MdFavoriteBorder style={{color:'black'}}/>);
+        }
+    }, [selectedRoute]);
 
     return (
 

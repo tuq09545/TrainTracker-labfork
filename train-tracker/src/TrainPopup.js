@@ -3,32 +3,8 @@ import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import './styles/TrainPopup.css'
 import TrainInfo from "./TrainInfo";
-import { setRouteToCache, removeRouteFromCache, isFavorited } from './LocalCache';
-import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-import {useState} from 'react'
 
 function TrainPopup({onClose, children, actionBar, train}){
-
-    const [favoriteIcon, toggleFavorite] = useState(<MdFavoriteBorder style={{color:'black'}}/>)
-
-    function setToFavorites(e){
-        if(favoriteIcon.type.name==="MdFavorite"){
-            removeRouteFromCache(train.routeName)
-            toggleFavorite(unfavorited)
-        } else {
-            setRouteToCache(train.routeName);
-            toggleFavorite(favorited)
-        }
-        
-    }
-
-    function isFavorite(){ 
-        if(isFavorited(train.routeName)==='red'){
-            toggleFavorite(favorited);
-        } else{
-            toggleFavorite(unfavorited)
-        }
-    }
 
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
@@ -38,8 +14,6 @@ function TrainPopup({onClose, children, actionBar, train}){
         };
     }, []);
 
-    const unfavorited = <MdFavoriteBorder style={{color:'black'}}/>
-    const favorited = <MdFavorite style={{color:'red'}}/>
 
     return ReactDOM.createPortal(<div>
         <div onClick={onClose} className='overlay' ></div> 
