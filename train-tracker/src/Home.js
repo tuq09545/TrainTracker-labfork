@@ -1,35 +1,18 @@
 import './styles/Home.css';
-import React, {useState, useMemo} from 'react'
+import React, {useState} from 'react'
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
 //import Favorites from './favorites.js';
 
-import {filterTrains} from './functionality/app.js'
-
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute}){
-    //sorted trains
-    const [currentTrains, setCurrentTrains] = useState([]);
+function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
+}){
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [showDefaultList, setDefaultList] = useState(true);
-
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-    }
-
-    const filteredTrains = useMemo(() => {
-        return filterTrains(allTrains, selectedStation, selectedRoute, null, null, null, null);
-    }, [allTrains, selectedStation, selectedRoute]);
-
-    // If no search has been made, default to the filtered trains
-    const trainsToDisplay = currentTrains.length > 0 ? currentTrains : filteredTrains;
-
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -80,15 +63,12 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
                 searchFun = {searchTrains}
-                setSelectedStation={setSelectedStation}
-                selectedStation={selectedStation}
-                selectedRoute={selectedRoute}
-                setSelectedRoute={setSelectedRoute}
+                setRefreshState={setRefresh}
               />
               </div>
               <div className='app-train-list-container'>
                 <TrainList className = 'TrainList' 
-                    trains={trainsToDisplay}
+                    trains={currentTrains}
                     handleTrainClick={handleTrainClick}
                 />
               </div>
@@ -99,4 +79,4 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
     )
 }
 
-export default React.memo(Home);
+export default Home;

@@ -6,13 +6,21 @@ import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md
 import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
 
 
-function Search({searchFun, routes, stations, setSelectedStation, selectedStation, selectedRoute, setSelectedRoute}){
+function Search({searchFun, routes, stations, setRefreshState
+}){
+    const [favoriteOptions, addToFavList] = useState(populateFavDrop)
+    const [isFavorited, setIsFavorited] = useState(false);
+
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
     const [selectedNumber, setSelectedNumber] = useState("");
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
+
     const [favoriteOptions, addToFavList] = useState(populateFavDrop)
     const [favoriteIcon, toggleFavorite] = useState(<MdFavoriteBorder style={{color:'black'}}/>)
+
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){setSelectedRoute(e.target.value)}
@@ -67,8 +75,7 @@ function Search({searchFun, routes, stations, setSelectedStation, selectedStatio
     }
 
     const refresh = () => {
-        clearSearch();
-        searchFun("", "", "", false, "", "");
+        setRefreshState(true);
     }
 
     useEffect(() => {
