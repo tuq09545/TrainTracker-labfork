@@ -2,11 +2,11 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Routes, Route, HashRouter, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 
 import Home from './Home';
+import MapPage from './MapPage';
 import TrainPage from './TrainPage';
-import TrainMap from './TrainMap';
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
@@ -14,6 +14,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
 import {convertStationCodeToStation, getClosestStation} from './functionality/app';
+import { filterTrains } from './functionality/app';
 
 function App() {
     // load api data
@@ -23,12 +24,23 @@ function App() {
 
     const [userLocation, setUserLocation] = useState(null);
     const [selectedStation, setSelectedStation] = useState("");
-    const [selectedRoute, setSelectedRoute] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const [currentTrains, setCurrentTrains] = useState([]);
+
+    const [mapRoute, setMapRoute] = useState("");
+
+    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
+        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+
+        setCurrentTrains(trains);
+
+        setMapRoute(selectedRoute);
+    }
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -71,23 +83,20 @@ function App() {
     }, [refreshState]);
 
     const HomePage = () => ( <Home
-        allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
-        userLocation={userLocation}
-        selectedStation={selectedStation}
-        setSelectedStation={setSelectedStation}
-        selectedRoute={selectedRoute}
-        setSelectedRoute={setSelectedRoute}
-        refresh={refreshState}
         setRefresh={setRefreshState}
+        currentTrains={currentTrains}
+        searchTrains={searchTrains}
     />);
 
-    const MapPage = () => ( <TrainMap
-        trains={allTrains}
-        userLocation={userLocation}
-        selectedStation={convertStationCodeToStation(allStations, selectedStation)}
-        selectedRoute={selectedRoute}
+    const MapPageComponent = () => ( <MapPage
+        allRoutes={allRoutes}
+        allStations={allStations}
+        setRefresh={setRefreshState}
+        currentTrains={currentTrains}
+        searchTrains={searchTrains}
+        mapRoute={mapRoute}
     />);
 
         return (
@@ -135,7 +144,7 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/home" element={<HomePage />} />
                             <Route path="/trains/:trainInfo" element={<TrainPage allTrains={allTrains} />} />
-                            <Route path="/map" element={<MapPage />} />
+                            <Route path="/map" element={<MapPageComponent />} />
                         </Routes>
                     </div>
                 </div>
