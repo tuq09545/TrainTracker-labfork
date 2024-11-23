@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Polyline} from "react-leaflet";
-import {Link, useNavigate, useLocation} from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup, Polyline} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { IoTrainOutline } from "react-icons/io5";
@@ -23,11 +22,10 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
-    const [railLines, setRailLines] = useState(null);
-    const [stations, setStations] = useState(null);
+const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
+    
 
     useEffect(() => {
 
@@ -140,12 +138,12 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
                 ['Silver Service / Palmetto', 'Palmetto'],
             ]);
 
-            if (selectedRoute){
-                if (name_map.has(selectedRoute)){
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(selectedRoute));
+            if (mapRoute){
+                if (name_map.has(mapRoute)){
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(mapRoute));
                 }
                 else{
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === selectedRoute)
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === mapRoute)
                 }
                 
             }
@@ -213,17 +211,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    {railLines && (
-                        <GeoJSON data={railLines} style={{ color: "black", weight: 1 }} />
-                    )}
-                    {stations && (
-                        <GeoJSON
-                            data={stations}
-                            pointToLayer={(feature, latlng) =>
-                                L.circleMarker(latlng, { radius: 1, color: "red" })
-                            }
-                        />
-                    )}
                     <RouteLines/>
                     <TrainMarkers/>
                     <UserLocationMarker/>

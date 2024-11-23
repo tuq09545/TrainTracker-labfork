@@ -37,10 +37,14 @@ function App() {
 
     const [currentTrains, setCurrentTrains] = useState([]);
 
+    const [mapRoute, setMapRoute] = useState("");
+
     const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
         let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
 
         setCurrentTrains(trains);
+
+        setMapRoute(selectedRoute);
     }
 
     const toggleSidebar = () => {
@@ -127,6 +131,7 @@ function App() {
         setToStation={setToStation}
         currentTrains={currentTrains}
         searchTrains={searchTrains}
+        mapRoute={mapRoute}
     />);
 
         return (
