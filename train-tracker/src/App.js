@@ -24,11 +24,6 @@ function App() {
 
     const [userLocation, setUserLocation] = useState(null);
     const [selectedStation, setSelectedStation] = useState("");
-    const [selectedRoute, setSelectedRoute] = useState("");
-    const [selectedNumber, setSelectedNumber] = useState("");
-    const [upcoming, setUpcoming] = useState(false);
-    const [fromStation, setFromStation] = useState("");
-    const [toStation, setToStation] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -88,47 +83,17 @@ function App() {
     }, [refreshState]);
 
     const HomePage = () => ( <Home
-        allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
-        userLocation={userLocation}
-        selectedStation={selectedStation}
-        setSelectedStation={setSelectedStation}
-        selectedRoute={selectedRoute}
-        setSelectedRoute={setSelectedRoute}
-        refresh={refreshState}
         setRefresh={setRefreshState}
-        selectedNumber={selectedNumber}
-        setSelectedNumber={setSelectedNumber}
-        upcoming={upcoming} 
-        setUpcoming={setUpcoming}
-        fromStation={fromStation}
-        setFromStation={setFromStation}
-        toStation={toStation}
-        setToStation={setToStation}
         currentTrains={currentTrains}
         searchTrains={searchTrains}
     />);
 
     const MapPageComponent = () => ( <MapPage
-        allTrains={allTrains}
         allRoutes={allRoutes}
         allStations={allStations}
-        userLocation={userLocation}
-        selectedStation={selectedStation}
-        setSelectedStation={setSelectedStation}
-        selectedRoute={selectedRoute}
-        setSelectedRoute={setSelectedRoute}
-        refresh={refreshState}
         setRefresh={setRefreshState}
-        selectedNumber={selectedNumber}
-        setSelectedNumber={setSelectedNumber}
-        upcoming={upcoming} 
-        setUpcoming={setUpcoming}
-        fromStation={fromStation}
-        setFromStation={setFromStation}
-        toStation={toStation}
-        setToStation={setToStation}
         currentTrains={currentTrains}
         searchTrains={searchTrains}
         mapRoute={mapRoute}

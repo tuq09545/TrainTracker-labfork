@@ -6,11 +6,17 @@ import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md
 import { getLocalCache, setRouteToCache } from './LocalCache';
 
 
-function Search({searchFun, routes, stations, setSelectedStation, selectedStation, selectedRoute, setSelectedRoute, refreshState, setRefreshState, 
-    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation
+function Search({searchFun, routes, stations, setRefreshState
 }){
     const [favoriteOptions, addToFavList] = useState(populateFavDrop)
     const [isFavorited, setIsFavorited] = useState(false);
+
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
+    const [selectedNumber, setSelectedNumber] = useState("");
+    const [upcoming, setUpcoming] = useState(false);
+    const [fromStation, setFromStation] = useState("");
+    const [toStation, setToStation] = useState("");
 
     useEffect(() => {
         const cachedTrains = getLocalCache();

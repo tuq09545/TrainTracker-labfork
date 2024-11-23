@@ -6,8 +6,7 @@ import TrainPopup from './TrainPopup';
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh, 
-    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation, currentTrains, searchTrains
+function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
 }){
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
@@ -51,20 +50,7 @@ function Home({allRoutes, allStations, userLocation, selectedStation, setSelecte
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
                 searchFun = {searchTrains}
-                setSelectedStation={setSelectedStation}
-                selectedStation={selectedStation}
-                selectedRoute={selectedRoute}
-                setSelectedRoute={setSelectedRoute}
-                refreshState={refresh}
                 setRefreshState={setRefresh}
-                selectedNumber={selectedNumber}
-                setSelectedNumber={setSelectedNumber}
-                upcoming={upcoming} 
-                setUpcoming={setUpcoming}
-                fromStation={fromStation}
-                setFromStation={setFromStation}
-                toStation={toStation}
-                setToStation={setToStation}
               />
               </div>
               <div className='app-train-list-container'>
