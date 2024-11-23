@@ -230,15 +230,6 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
                     <SelectedStationMarker/>
                 </MapContainer>
             </div>
-            <div className="search-display-box">
-                <div className="search-container-in-map">
-                    {selectedRoute ? (
-                        <span>Selected Route: <strong>{selectedRoute}</strong></span>
-                    ) : (
-                        <span>No route selected</span>
-                    )}
-                </div>
-            </div>
         </div>
 
      </>
