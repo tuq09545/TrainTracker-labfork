@@ -9,7 +9,6 @@ import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } fro
 function Search({searchFun, routes, stations, setRefreshState
 }){
     const [favoriteOptions, addToFavList] = useState(populateFavDrop)
-    const [isFavorited, setIsFavorited] = useState(false);
 
     const [selectedStation, setSelectedStation] = useState("");
     const [selectedRoute, setSelectedRoute] = useState("");
@@ -17,8 +16,6 @@ function Search({searchFun, routes, stations, setRefreshState
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
-
-    const [favoriteOptions, addToFavList] = useState(populateFavDrop)
     const [favoriteIcon, toggleFavorite] = useState(<MdFavoriteBorder style={{color:'black'}}/>)
 
 
