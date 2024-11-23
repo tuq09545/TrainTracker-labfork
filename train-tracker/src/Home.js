@@ -1,27 +1,17 @@
 import './styles/Home.css';
-import React, {useState, useMemo} from 'react'
+import React, {useState} from 'react'
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
 
-import {filterTrains} from './functionality/app.js'
-
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh, 
-    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation
+function Home({allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh, 
+    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation, currentTrains, searchTrains
 }){
-    // sorted trains
-    const [currentTrains, setCurrentTrains] = useState([]);
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
-
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-    }
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {

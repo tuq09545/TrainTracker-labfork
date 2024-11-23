@@ -1,22 +1,13 @@
 import './styles/MapPage.css';
-import React, {useState, useMemo} from 'react'
+import React from 'react'
 import Search from './Search';
 import TrainMap from './TrainMap';
 
-import {filterTrains} from './functionality/app.js'
 import {convertStationCodeToStation} from './functionality/app';
 
-function MapPage({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh,
-    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation
+function MapPage({allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh,
+    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation, currentTrains, searchTrains
 }){
-    // sorted trains
-    const [currentTrains, setCurrentTrains] = useState([]);
-
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-    }
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {

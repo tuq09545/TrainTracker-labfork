@@ -14,6 +14,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
 import {convertStationCodeToStation, getClosestStation} from './functionality/app';
+import { filterTrains } from './functionality/app';
 
 function App() {
     // load api data
@@ -33,6 +34,14 @@ function App() {
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const [currentTrains, setCurrentTrains] = useState([]);
+
+    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
+        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+
+        setCurrentTrains(trains);
+    }
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -93,6 +102,8 @@ function App() {
         setFromStation={setFromStation}
         toStation={toStation}
         setToStation={setToStation}
+        currentTrains={currentTrains}
+        searchTrains={searchTrains}
     />);
 
     const MapPageComponent = () => ( <MapPage
@@ -114,6 +125,8 @@ function App() {
         setFromStation={setFromStation}
         toStation={toStation}
         setToStation={setToStation}
+        currentTrains={currentTrains}
+        searchTrains={searchTrains}
     />);
 
         return (
