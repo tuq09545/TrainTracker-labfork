@@ -1,36 +1,22 @@
 import './styles/MapPage.css';
 import React, {useState, useMemo} from 'react'
-import TrainList from './TrainList';
 import Search from './Search';
-import TrainPopup from './TrainPopup';
 import TrainMap from './TrainMap';
 
 import {filterTrains} from './functionality/app.js'
 import {convertStationCodeToStation} from './functionality/app';
 
-
-import { IoClose } from "react-icons/io5";
-
-function MapPage({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh}){
+function MapPage({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh,
+    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation
+}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
-    // popup modal
-    const [selectedTrain, setSelectedTrain] = useState({});
-    const [showModal, setShowModal] = useState(false);
 
     const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
         let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
 
         setCurrentTrains(trains);
     }
-
-    const filteredTrains = useMemo(() => {
-        return filterTrains(allTrains, selectedStation, selectedRoute, null, null, null, null);
-    }, [allTrains, selectedStation, selectedRoute]);
-
-    // If no search has been made, default to the filtered trains
-    const trainsToDisplay = currentTrains.length > 0 ? currentTrains : filteredTrains;
-
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -48,21 +34,7 @@ function MapPage({allTrains, allRoutes, allStations, userLocation, selectedStati
         return renderedRoutes;
     }
 
-    // Modal Functions
-    function handleTrainClick(train){
-        setShowModal(true);
-        setSelectedTrain(train);
-    }
 
-    const handleModalClose = () => {
-        setShowModal(false);
-    };
-
-    const closeButton = (<div>
-        <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
-    </div>);
-
-    const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
     return (
         <div className='map-page'>
             <div className='search-container'>
@@ -76,21 +48,26 @@ function MapPage({allTrains, allRoutes, allStations, userLocation, selectedStati
                 setSelectedRoute={setSelectedRoute}
                 refreshState={refresh}
                 setRefreshState={setRefresh}
+                selectedNumber={selectedNumber}
+                setSelectedNumber={setSelectedNumber}
+                upcoming={upcoming} 
+                setUpcoming={setUpcoming}
+                fromStation={fromStation}
+                setFromStation={setFromStation}
+                toStation={toStation}
+                setToStation={setToStation}
               />
               </div>
               <div className='map-container'>
               <TrainMap
-                trains={allTrains}
+                trains={currentTrains}
                 userLocation={userLocation}
                 selectedStation={convertStationCodeToStation(allStations, selectedStation)}
                 selectedRoute={selectedRoute}
             />
               </div>
-              <div>
-                {showModal && modal}
-              </div>
         </div>
     )
 }
 
-export default React.memo(MapPage);
+export default MapPage;

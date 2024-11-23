@@ -2,7 +2,7 @@ import './styles/App.css';
 import Amtrak from './AmtrakAPI';
 import train_icon from './images/train_icon.png';
 import React, {useState, useEffect} from 'react'
-import { Routes, Route, HashRouter, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 
 import Home from './Home';
 import MapPage from './MapPage';
@@ -24,6 +24,10 @@ function App() {
     const [userLocation, setUserLocation] = useState(null);
     const [selectedStation, setSelectedStation] = useState("");
     const [selectedRoute, setSelectedRoute] = useState("");
+    const [selectedNumber, setSelectedNumber] = useState("");
+    const [upcoming, setUpcoming] = useState(false);
+    const [fromStation, setFromStation] = useState("");
+    const [toStation, setToStation] = useState("");
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -81,6 +85,14 @@ function App() {
         setSelectedRoute={setSelectedRoute}
         refresh={refreshState}
         setRefresh={setRefreshState}
+        selectedNumber={selectedNumber}
+        setSelectedNumber={setSelectedNumber}
+        upcoming={upcoming} 
+        setUpcoming={setUpcoming}
+        fromStation={fromStation}
+        setFromStation={setFromStation}
+        toStation={toStation}
+        setToStation={setToStation}
     />);
 
     const MapPageComponent = () => ( <MapPage
@@ -94,6 +106,14 @@ function App() {
         setSelectedRoute={setSelectedRoute}
         refresh={refreshState}
         setRefresh={setRefreshState}
+        selectedNumber={selectedNumber}
+        setSelectedNumber={setSelectedNumber}
+        upcoming={upcoming} 
+        setUpcoming={setUpcoming}
+        fromStation={fromStation}
+        setFromStation={setFromStation}
+        toStation={toStation}
+        setToStation={setToStation}
     />);
 
         return (

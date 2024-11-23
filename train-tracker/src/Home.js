@@ -8,7 +8,9 @@ import {filterTrains} from './functionality/app.js'
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh}){
+function Home({allTrains, allRoutes, allStations, userLocation, selectedStation, setSelectedStation, selectedRoute, setSelectedRoute, refresh, setRefresh, 
+    selectedNumber, setSelectedNumber, upcoming, setUpcoming, fromStation, setFromStation, toStation, setToStation
+}){
     // sorted trains
     const [currentTrains, setCurrentTrains] = useState([]);
     // popup modal
@@ -20,14 +22,6 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
 
         setCurrentTrains(trains);
     }
-
-    const filteredTrains = useMemo(() => {
-        return filterTrains(allTrains, selectedStation, selectedRoute, null, null, null, null);
-    }, [allTrains, selectedStation, selectedRoute]);
-
-    // If no search has been made, default to the filtered trains
-    const trainsToDisplay = currentTrains.length > 0 ? currentTrains : filteredTrains;
-
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -73,11 +67,19 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
                 setSelectedRoute={setSelectedRoute}
                 refreshState={refresh}
                 setRefreshState={setRefresh}
+                selectedNumber={selectedNumber}
+                setSelectedNumber={setSelectedNumber}
+                upcoming={upcoming} 
+                setUpcoming={setUpcoming}
+                fromStation={fromStation}
+                setFromStation={setFromStation}
+                toStation={toStation}
+                setToStation={setToStation}
               />
               </div>
               <div className='app-train-list-container'>
                 <TrainList className = 'TrainList' 
-                    trains={trainsToDisplay}
+                    trains={currentTrains}
                     handleTrainClick={handleTrainClick}
                 />
               </div>
@@ -88,4 +90,4 @@ function Home({allTrains, allRoutes, allStations, userLocation, selectedStation,
     )
 }
 
-export default React.memo(Home);
+export default Home;
