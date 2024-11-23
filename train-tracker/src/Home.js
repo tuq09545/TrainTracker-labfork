@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import TrainList from './TrainList';
 import Search from './Search';
 import TrainPopup from './TrainPopup';
-//import Favorites from './favorites.js';
 
 import { IoClose } from "react-icons/io5";
 
@@ -48,12 +47,6 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
     const closeButton = (<div>
         <div onClick={handleModalClose} className='close-button'><IoClose size={'3rem'}/></div>
     </div>);
-
-    // let trainListElementDefault = <Favorites handleFavoriteClick={handleFavoriteClick}/>
-
-    // let trainListElement = <TrainList className = 'TrainList' 
-    // trains={trainsToDisplay} 
-    // handleTrainClick={handleTrainClick}/>
 
     const modal = <TrainPopup onClose={handleModalClose} actionBar={closeButton} train={selectedTrain}/>
     return (
