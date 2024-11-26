@@ -3,8 +3,6 @@ import { isFavorited } from './LocalCache'
 
 function TrainInfo({train}){
 
-    console.log(train);
-
     const renderedStops = train.stations.map((s) => {
         let arrivalStyle = "";
         let departureStyle = "";
@@ -27,7 +25,7 @@ function TrainInfo({train}){
     let punctualityToDisplay = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
     let favorited = ""
-    if(isFavorited(train.routeName)==='red'){
+    if(isFavorited(train.routeName)){
         favorited = <em>&#10003; Favorited</em>
     }
     return(

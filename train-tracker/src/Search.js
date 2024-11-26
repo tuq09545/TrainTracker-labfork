@@ -8,7 +8,6 @@ import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } fro
 
 function Search({searchFun, routes, stations, setRefreshState
 }){
-    const [favoriteOptions, addToFavList] = useState(populateFavDrop)
 
     const [selectedStation, setSelectedStation] = useState("");
     const [selectedRoute, setSelectedRoute] = useState("");
@@ -16,7 +15,7 @@ function Search({searchFun, routes, stations, setRefreshState
     const [upcoming, setUpcoming] = useState(false);
     const [fromStation, setFromStation] = useState("");
     const [toStation, setToStation] = useState("");
-    const [favoriteIcon, toggleFavorite] = useState(<MdFavoriteBorder style={{color:'black'}}/>)
+    const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
 
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
@@ -25,36 +24,39 @@ function Search({searchFun, routes, stations, setRefreshState
     function handleUpcoming(e){ setUpcoming(e.target.checked); }
     function handleFromStation(e){ setFromStation(e.target.value); }
     function handleToStation(e){ setToStation(e.target.value); }
+
+    const nonFavoriteIcon = <MdFavoriteBorder style={{color:'black'}}/>;
+    const favoriteIcon = <MdFavorite style={{color:'red'}}/>;
     
     function handleFavoriteSelection(e){
-        addToFavList(populateFavDrop())
         e.preventDefault();
-        searchFun("", e.target.value, "", "", "", "")
     }
 
     function setToFavorites(){
-        if(favoriteIcon.type.name==="MdFavorite"){
+        if(currentRouteFavorited){
             let res = removeRouteFromCache(selectedRoute)
             if(res===0){
-                toggleFavorite(<MdFavoriteBorder style={{color:'black'}}/>)
+                setCurrentRouteFavorited(false);
             }
         } else {
             let res = setRouteToCache(selectedRoute);
             if(res===0){
-                toggleFavorite(<MdFavorite style={{color:'red'}}/>)
+                setCurrentRouteFavorited(true);
             }
         }
         
     }
 
-    function populateFavDrop(){
+    const favoriteOptions = () => {
+        console.log(getLocalCache());
         let favNames = ["---"]
-        const cachedTrains = getLocalCache()
+        const cachedTrains = getLocalCache();
         Object.keys(cachedTrains.data).forEach(trainName => {
             favNames.push(trainName)
         });
-        const mapping = favNames.map((element, index) => <option value={element} key={index}>{element}</option>)
-        return mapping
+        const mapping = favNames.map((element, index) => {
+            return <option value={element} key={index}>{element}</option>})
+        return mapping;
     }
 
     const search = (event) =>{
@@ -75,21 +77,13 @@ function Search({searchFun, routes, stations, setRefreshState
         setRefreshState(true);
     }
 
-    useEffect(() => {
-        if (isFavorited(selectedRoute) === 'red') {
-            toggleFavorite(<MdFavorite style={{color:'red'}}/>);
-        } else {
-            toggleFavorite(<MdFavoriteBorder style={{color:'black'}}/>);
-        }
-    }, [selectedRoute]);
-
     return (
 
         <form className='form' onSubmit={search}>
                 <label className="favorites-dropdown-selection">
                     <span className="select-label">
                     Favorites:
-                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions}</select>
+                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
                     </span>
                 </label>
 
@@ -103,7 +97,7 @@ function Search({searchFun, routes, stations, setRefreshState
                 <span className="select-label">
                         Route:
                         <select className="select-box" value={selectedRoute} onChange={handleRoute} children={routes}></select>
-                        <div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{favoriteIcon}</div>
+                        <div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{currentRouteFavorited || isFavorited(selectedRoute) ? favoriteIcon : nonFavoriteIcon}</div>
                     </span>
                 <span className="select-label">By station: </span>
                     <select className='select-box' value={selectedStation} onChange={handleStation} children={stations}></select>

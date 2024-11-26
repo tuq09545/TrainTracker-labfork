@@ -68,7 +68,7 @@ export const isFavorited=(routeName)=>{
     const localCache = getLocalCache();
     const data = localCache.data;
     if(routeName in data){
-        return "red";
+        return true;
     }
-    return "white"
+    return false;
 }
