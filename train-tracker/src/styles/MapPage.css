@@ -5,7 +5,7 @@
     min-height: 94vh;
     height: 100%;
     gap: 1rem;
-  }
+}
 
 .search-container {
     width: 30%;
@@ -27,19 +27,30 @@
   }
   
   @media (max-width: 768px) {
+    .map-page {
+        flex-direction: column;
+        overflow-y: scroll;
+        height: 100vh;
+    }
     .content {
-      flex-direction: column;
+        flex-direction: column;
         overflow: hidden;
     }
-  
-    .search-container, .map-container {
-      width: 100%;
-      height: auto;
-      margin-bottom: 1rem;
-      overflow: scroll;
+
+    .full-map-page {
+        flex-direction: column;
+        overflow-y: auto;
     }
-  }
-  
+
+    .search-container, .map-container {
+        width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+        overflow: visible;
+        overflow-y: auto;
+    }
+}
+
   .close-button:hover{
     cursor: pointer;
   }
