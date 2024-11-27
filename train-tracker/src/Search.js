@@ -17,9 +17,15 @@ export function SearchObject(){
     this.date = "";
 }
 
-function Search({searchFun, routes, stations, setRefreshState, searchObject, setSearchObject
+function Search({routes, stations, setRefreshState, globalSearchObject, setGlobalSearchObject
 }){
+    const [searchObject,setSearchObject] = useState(new SearchObject());
     const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
+
+    // update local search object when global search is changed
+    useEffect(() => {
+        setSearchObject(globalSearchObject);
+    },[globalSearchObject]);
 
     useEffect(() => {
         // update favorite button
@@ -69,13 +75,14 @@ function Search({searchFun, routes, stations, setRefreshState, searchObject, set
         return mapping;
     }
 
+    // search just sets global 
     const search = (event) =>{
         event.preventDefault();
-        searchFun();
+        setGlobalSearchObject(searchObject);
     }
 
     const clear = () => {
-        setSearchObject(new SearchObject());
+        setGlobalSearchObject(new SearchObject());
     }
 
     const refresh = () => {

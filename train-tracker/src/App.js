@@ -37,9 +37,12 @@ function App() {
 
     const searchTrains = () => {
         let trains = filterTrains(allTrains, searchObject);
-
         setCurrentTrains(trains);
     }
+
+    useEffect(() => {
+        searchTrains();
+    },[searchObject]);
 
     // wait for allTrains to load & then make search
     if(isLoading){
@@ -66,9 +69,10 @@ function App() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
                     setUserLocation(pos);
+                    /* not used, but keeping in case we want to reintroduce it
                     if (allStations.length > 0 && pos) {
                         setSearchObject(setProp(searchObject,"station",getClosestStation(allStations, pos).stationCode));
-                    }
+                    }*/
                 },
                 (error) => console.log('error' + error));
         }
@@ -94,9 +98,8 @@ function App() {
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
-        searchObject={searchObject}
-        setSearchObject={setSearchObject}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
     const MapPageComponent = () => ( <MapPage
@@ -105,9 +108,8 @@ function App() {
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
-        searchObject={searchObject}
-        setSearchObject={setSearchObject}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
         return (

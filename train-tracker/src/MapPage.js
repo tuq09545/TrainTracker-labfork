@@ -5,7 +5,7 @@ import TrainMap from './TrainMap';
 
 import {convertStationCodeToStation} from './functionality/app';
 
-function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrains, searchTrains, searchObject, setSearchObject
+function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrains, globalSearchObject, setGlobalSearchObject
 }){
 
     const getStationOptions = () => {
@@ -31,19 +31,17 @@ function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrain
               <Search className='Search'
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
-                searchFun = {searchTrains}
                 setRefreshState={setRefresh}
-                searchObject = {searchObject}
-                setSearchObject = {setSearchObject}
+                globalSearchObject = {globalSearchObject}
+                setGlobalSearchObject = {setGlobalSearchObject}
               />
               </div>
               <div className='map-container'>
               <TrainMap
                 trains={currentTrains}
                 userLocation={userLocation}
-                selectedStation={convertStationCodeToStation(allStations, searchObject.station)}
-                selectedRoute={searchObject.route}
-                searchObject = {searchObject}
+                selectedStation={convertStationCodeToStation(allStations, globalSearchObject.station)}
+                selectedRoute={globalSearchObject.route}
             />
               </div>
         </div>

@@ -6,12 +6,11 @@ import TrainPopup from './TrainPopup';
 
 import { IoClose } from "react-icons/io5";
 
-function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains, searchObject, setSearchObject
+function Home({allRoutes, allStations, setRefresh, currentTrains, globalSearchObject, setGlobalSearchObject
 }){
     // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [showDefaultList, setDefaultList] = useState(true);
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -27,11 +26,6 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains, 
         });
         renderedRoutes.unshift(<option value={""} key={""}></option>);
         return renderedRoutes;
-    }
-
-    function handleFavoriteClick(e){
-        setDefaultList(false)
-        searchTrains("", e.props.value, "", "", "", "")
     }
 
     // Modal Functions
@@ -55,10 +49,9 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains, 
               <Search className='Search'
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
-                searchFun = {searchTrains}
                 setRefreshState={setRefresh}
-                searchObject={searchObject}
-                setSearchObject={setSearchObject}
+                globalSearchObject={globalSearchObject}
+                setGlobalSearchObject={setGlobalSearchObject}
               />
               </div>
               <div className='app-train-list-container'>
