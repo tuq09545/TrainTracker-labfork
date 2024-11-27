@@ -41,6 +41,7 @@ function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrain
                 trains={currentTrains}
                 userLocation={userLocation}
                 selectedStation={convertStationCodeToStation(allStations, globalSearchObject.station)}
+                selectedFromStation={convertStationCodeToStation(allStations, globalSearchObject.fromStation)}
                 selectedRoute={globalSearchObject.route}
             />
               </div>

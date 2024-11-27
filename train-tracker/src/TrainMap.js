@@ -22,7 +22,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
+const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, selectedRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
     
@@ -94,12 +94,12 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
         }
     }
 
-    function SelectedStationMarker(){
-        if (selectedStation){
+    function SelectedStationMarker({station, name}){
+        if (station){
             return (
                 <Marker
                     key={'selectedStation'}
-                    position={[selectedStation.lat, selectedStation.lon]}
+                    position={[station.lat, station.lon]}
                     icon={L.divIcon({
                         html: renderToString(<SelectedStationIcon />),
                         className: 'custom-icon',
@@ -108,8 +108,8 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
                     })}>
 
                     <Popup>
-                        <strong>Selected Station</strong>
-                        <p>{selectedStation.stationCode} - {selectedStation.stationName ? selectedStation.stationName : selectedStation.name}</p>
+                        <strong>{name}</strong>
+                        <p>{station.stationCode} - {station.stationName ? station.stationName : station.name}</p>
                     </Popup>
                 </Marker>)
         }
@@ -214,7 +214,8 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
                     <RouteLines/>
                     <TrainMarkers/>
                     <UserLocationMarker/>
-                    <SelectedStationMarker/>
+                    <SelectedStationMarker station={selectedStation} name="Selected Station"/>
+                    <SelectedStationMarker station={selectedFromStation} name="From"/>
                 </MapContainer>
             </div>
         </div>
