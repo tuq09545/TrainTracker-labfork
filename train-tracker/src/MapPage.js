@@ -5,8 +5,7 @@ import TrainMap from './TrainMap';
 
 import {convertStationCodeToStation} from './functionality/app';
 
-function MapPage({allRoutes, allStations, userLocation, selectedStation, setRefresh, currentTrains, searchTrains,
-    mapRoute, searchObject, setSearchObject
+function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrains, searchTrains, searchObject, setSearchObject
 }){
 
     const getStationOptions = () => {
@@ -42,8 +41,9 @@ function MapPage({allRoutes, allStations, userLocation, selectedStation, setRefr
               <TrainMap
                 trains={currentTrains}
                 userLocation={userLocation}
-                selectedStation={convertStationCodeToStation(allStations, selectedStation)}
-                mapRoute={mapRoute}
+                selectedStation={convertStationCodeToStation(allStations, searchObject.station)}
+                selectedRoute={searchObject.route}
+                searchObject = {searchObject}
             />
               </div>
         </div>

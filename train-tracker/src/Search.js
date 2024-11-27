@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
+
 import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
+import { setProp } from './functionality/app';
 
 export function SearchObject(){
     this.number = "";
@@ -31,14 +33,6 @@ function Search({searchFun, routes, stations, setRefreshState, searchObject, set
             setSearchObject(setProp(searchObject,"fromStation",""))
         }
     },[searchObject]);
-
-    // react doesn't recognize just changing an object property
-    // so we need to set it to a copy w/ the prop changed
-    function setProp(searchObj,prop,value){
-        var r = Object.assign({},searchObj)
-        r[prop] = value;
-        return r;
-    }
 
     const nonFavoriteIcon = <MdFavoriteBorder style={{color:'black'}}/>;
     const favoriteIcon = <MdFavorite style={{color:'red'}}/>;

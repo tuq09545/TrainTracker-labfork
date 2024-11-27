@@ -22,7 +22,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
+const TrainMap = ({trains, userLocation, selectedStation, selectedRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
     
@@ -138,12 +138,12 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                 ['Silver Service / Palmetto', 'Palmetto'],
             ]);
 
-            if (mapRoute){
-                if (name_map.has(mapRoute)){
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(mapRoute));
+            if (selectedRoute){
+                if (name_map.has(selectedRoute)){
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(selectedRoute));
                 }
                 else{
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === mapRoute)
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === selectedRoute)
                 }
                 
             }

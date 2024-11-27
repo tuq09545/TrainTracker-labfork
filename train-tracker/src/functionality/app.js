@@ -1,3 +1,12 @@
+// returns a copy of SearchObject with a property changed
+// react doesn't recognize just changing an object property
+// so we need to set it to a copy w/ the prop changed
+export function setProp(searchObj,prop,value){
+    var r = Object.assign({},searchObj)
+    r[prop] = value;
+    return r;
+}
+
 export function filterTrains(allTrains, sObj) {
     let trains = allTrains ?? [];
     if (sObj.number > 0){

@@ -14,7 +14,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
-import {convertStationCodeToStation, getClosestStation} from './functionality/app';
+import { convertStationCodeToStation, getClosestStation, setProp} from './functionality/app';
 import { filterTrains } from './functionality/app';
 
 function App() {
@@ -24,10 +24,8 @@ function App() {
     const [refreshPopup, setRefreshPopup] = useState(false);
 
     const [userLocation, setUserLocation] = useState(null);
-    const [selectedStation, setSelectedStation] = useState("");
 
-    const [searchObject,setSearchObject] = useState(new SearchObject())
-    console.log(searchObject);
+    const [searchObject,setSearchObject] = useState(new SearchObject());
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
@@ -36,14 +34,10 @@ function App() {
 
     const [currentTrains, setCurrentTrains] = useState([]);
 
-    const [mapRoute, setMapRoute] = useState("");
-
     const searchTrains = () => {
         let trains = filterTrains(allTrains, searchObject);
 
         setCurrentTrains(trains);
-
-        setMapRoute(searchObject.selectedRoute);
     }
 
     const toggleSidebar = () => {
@@ -64,7 +58,7 @@ function App() {
             navigator.geolocation.getCurrentPosition((pos) => {
                     setUserLocation(pos);
                     if (allStations.length > 0 && pos) {
-                        setSelectedStation(getClosestStation(allStations, pos).stationCode);
+                        setSearchObject(setProp(searchObject,"station",getClosestStation(allStations, pos).stationCode));
                     }
                 },
                 (error) => console.log('error' + error));
@@ -97,12 +91,12 @@ function App() {
     />);
 
     const MapPageComponent = () => ( <MapPage
+        userLocation={userLocation}
         allRoutes={allRoutes}
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
         searchTrains={searchTrains}
-        mapRoute={mapRoute}
         searchObject={searchObject}
         setSearchObject={setSearchObject}
     />);
