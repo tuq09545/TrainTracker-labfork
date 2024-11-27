@@ -31,8 +31,6 @@ function TrainInfo({train}){
     const trainLink =`/trains/${train.number}?date=${encodeURIComponent(train.scheduledDeparture)}`;
     
     const handleShareClick = () => {
-        console.log(trainLink);
-        console.log(window.location.origin);
         navigator.clipboard.writeText(`I'm on Amtrak train #${train.number}, route ${train.routeName} 🚆! #TrackMyTrain: ${window.location.origin}/TrainTracker#${trainLink}`);
 
         setCopiedPopup(true);

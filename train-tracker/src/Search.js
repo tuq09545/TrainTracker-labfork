@@ -22,7 +22,6 @@ function Search({searchFun, routes, stations, setRefreshState
     function handleRoute(e){
         setSelectedRoute(e.target.value);
         if (isFavorited(e.target.value)){
-            console.log(e.target.value);
             setCurrentRouteFavorited(true);
         }
         else{

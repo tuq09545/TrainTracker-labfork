@@ -8,10 +8,8 @@ import { IoClose } from "react-icons/io5";
 
 function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
 }){
-    // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [showDefaultList, setDefaultList] = useState(true);
 
     const getStationOptions = () => {
         let renderedStations = allStations.map(station => {
@@ -29,12 +27,6 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
         return renderedRoutes;
     }
 
-    function handleFavoriteClick(e){
-        setDefaultList(false)
-        searchTrains("", e.props.value, "", "", "", "")
-    }
-
-    // Modal Functions
     function handleTrainClick(train){
         setShowModal(true);
         setSelectedTrain(train);
