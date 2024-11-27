@@ -82,9 +82,9 @@ function Tiebreaker(t){
     return(
         <div className='tiebreaker'>
             <h2>Multiple Results:</h2>
-            {t.trains.map((train) => {
+            {t.trains.map((train,index) => {
                 return(
-                    <Link to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
+                    <Link key={index} to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
                         <div>
                             <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
                         </div>

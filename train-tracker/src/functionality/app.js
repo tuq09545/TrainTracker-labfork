@@ -2,13 +2,13 @@ export function filterTrains(allTrains, sObj) {
     let trains = allTrains ?? [];
     if (sObj.number > 0){
         trains = trains.filter(t => t.number === sObj.number)
-    } if (sObj.selectedRoute){
-        trains = trains.filter(t => t.routeName === sObj.selectedRoute)
-    } if (sObj.selectedStation){
-        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === sObj.selectedStation) !== -1));
+    } if (sObj.route){
+        trains = trains.filter(t => t.routeName === sObj.route)
+    } if (sObj.station){
+        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === sObj.station) !== -1));
         if (sObj.upcoming){
             trains = trains.filter((t) => {
-                let station = t.stations.find((station) => station.stationCode === sObj.selectedStation);
+                let station = t.stations.find((station) => station.stationCode === sObj.station);
                 if (station.stationCode === t.from && station.hasDeparted){
                     return undefined;
                 }
@@ -17,9 +17,9 @@ export function filterTrains(allTrains, sObj) {
                 }
             })
         }
-    } if (sObj.fromStation && sObj.toStation){
+    } if (sObj.fromStation){
         trains = trains.filter((t) =>{
-            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.toStation);
+            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.station);
         })
     } if (sObj.date){
         trains = trains.filter(t => t.scheduledDeparture === sObj.date)
