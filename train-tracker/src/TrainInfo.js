@@ -2,8 +2,10 @@ import './styles/TrainInfo.css';
 import { isFavorited } from './LocalCache';
 import {Link} from 'react-router-dom';
 import { FaRegShareFromSquare } from "react-icons/fa6";
+import {useState} from 'react'
 
 function TrainInfo({train}){
+    const [copiedPopup, setCopiedPopup] = useState(false);
 
     const renderedStops = train.stations.map((s) => {
         let arrivalStyle = "";
@@ -32,6 +34,9 @@ function TrainInfo({train}){
         console.log(trainLink);
         console.log(window.location.origin);
         navigator.clipboard.writeText(`I'm on Amtrak train #${train.number}, route ${train.routeName} 🚆! #TrackMyTrain: ${window.location.origin}/TrainTracker#${trainLink}`);
+
+        setCopiedPopup(true);
+        setTimeout(() => setCopiedPopup(false), 3000); // Hide popup after 3 seconds
     };
 
     let favorited = "";
@@ -41,8 +46,10 @@ function TrainInfo({train}){
 
     return(
         <div className='train-info'>
-            <h2 className='route'><Link to={trainLink} target="_blank">{train.routeName} (#{train.number})</Link></h2>
-            <FaRegShareFromSquare onClick={handleShareClick}/>
+            {copiedPopup && <div className="refresh-popup">Copied train info to clipboard!</div>}
+            <h2 className='route'><Link to={trainLink} target="_blank">{train.routeName} (#{train.number})</Link>
+                <FaRegShareFromSquare size={'1.1em'} className='copy-button' onClick={handleShareClick} />
+            </h2>
             <h3 className='direction'>From: {train.from}</h3>
             <h3 className='direction'>To: {train.to}</h3>
             <div className={punctualityClassName} >{punctualityToDisplay}</div>
