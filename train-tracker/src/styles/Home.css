@@ -50,3 +50,11 @@
         height: auto;
     }
 }
+
+.close-button:hover {
+    cursor: pointer;
+}
+
+.close-button:active {
+    cursor: pointer;
+}
