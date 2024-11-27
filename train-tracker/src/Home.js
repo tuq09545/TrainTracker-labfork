@@ -8,7 +8,6 @@ import { IoClose } from "react-icons/io5";
 
 function Home({allRoutes, allStations, setRefresh, currentTrains, globalSearchObject, setGlobalSearchObject
 }){
-    // popup modal
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
 
@@ -28,7 +27,6 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, globalSearchOb
         return renderedRoutes;
     }
 
-    // Modal Functions
     function handleTrainClick(train){
         setShowModal(true);
         setSelectedTrain(train);

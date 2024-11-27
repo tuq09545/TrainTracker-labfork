@@ -25,14 +25,12 @@ function TrainInfo({train}){
                 <td className={departureStyle}>{s.departureTime ? ((s.hasDeparted) ? "" : "Estimated: ") + s.departureTime : ""}</td>
             </tr>
         })
-    let punctualityClassName = train.punctuality === 'ON TIME' ? 'ontime' : 'late';
+    let punctualityClassName = train.punctuality?.endsWith('LATE') ? 'late' : 'ontime';
     let punctualityToDisplay = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
     const trainLink =`/trains/${train.number}?date=${encodeURIComponent(train.scheduledDeparture)}`;
     
     const handleShareClick = () => {
-        console.log(trainLink);
-        console.log(window.location.origin);
         navigator.clipboard.writeText(`I'm on Amtrak train #${train.number}, route ${train.routeName} 🚆! #TrackMyTrain: ${window.location.origin}/TrainTracker#${trainLink}`);
 
         setCopiedPopup(true);
