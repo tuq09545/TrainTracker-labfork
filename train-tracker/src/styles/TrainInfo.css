@@ -45,7 +45,7 @@
 .train-table {
     width: 100%;
     border-collapse: collapse;
-    height: 80vh;
+    max-height: 80vh;
     margin-bottom: 30px;
     overflow: scroll;
 }

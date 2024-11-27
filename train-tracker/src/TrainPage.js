@@ -1,4 +1,4 @@
-import './styles/TrainPage.css';
+import './styles/TrainList.css';
 
 import {useState, useEffect} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
@@ -79,18 +79,42 @@ function TrainPage({allTrains}){
 }
 
 function Tiebreaker(t){
+    function MakeTrain({train}){
+        const navigate = useNavigate();
+
+        const handleClick = () => {
+            navigate("/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture));
+        }
+
+        return (
+            <tr onClick={handleClick} className="train-row">
+                <td>{train.routeName} #{train.number}</td>
+                <td>{train.scheduledDeparture}</td>
+                <td>{train.from}</td>
+                <td>{train.to}</td>
+            </tr>
+        );
+    }
     return(
         <div className='tiebreaker'>
-            <h2>Multiple Results:</h2>
-            {t.trains.map((train,index) => {
-                return(
-                    <Link key={index} to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
-                        <div>
-                            <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
-                        </div>
-                    </Link>
-                )
-            })}
+            <h2>Multiple Results ({t.trains.length}):</h2>
+            <div className="train-list-container">
+                <table className="train-list">
+                    <thead>
+                        <tr>
+                            <th>Train Name</th>
+                            <th>Departed At</th>
+                            <th>From</th>
+                            <th>To</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {t.trains.map((t,index) =>
+                            <MakeTrain train={t} key={index}/>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

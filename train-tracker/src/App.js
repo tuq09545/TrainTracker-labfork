@@ -33,11 +33,20 @@ function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const [currentTrains, setCurrentTrains] = useState([]);
+    const [isLoading,setIsLoading] = useState(true);
 
     const searchTrains = () => {
         let trains = filterTrains(allTrains, searchObject);
 
         setCurrentTrains(trains);
+    }
+
+    // wait for allTrains to load & then make search
+    if(isLoading){
+        if(allTrains.length > 0){
+            searchTrains();
+            setIsLoading(false);
+        }
     }
 
     const toggleSidebar = () => {
