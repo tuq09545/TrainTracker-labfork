@@ -20,42 +20,28 @@ export const getLocalCache=()=>{
     return localCache
 }
 
-export const removeFromCache=(train)=>{
+export const removeRouteFromCache=(selectedRoute)=>{
+    if (selectedRoute === ""){
+        alert("No route selected");
+        return 1;
+    }
     const localCache=getLocalCache()
     let data=localCache.data
-    delete data[train.routeName]
+    delete data[selectedRoute]
     try{
         localStorage.setItem(LOCAL_CACHE,JSON.stringify(localCache))
     }
     catch(e){
         alert("Unable to remove from Favorites");
+        return 1;
     }
-}
-
-export const setToCache=(train)=>{
-
-    const localCache=getLocalCache()
-    let data=localCache.data
-
-    const item={
-        route:train.routeName,
-    }
-
-    data[train.routeName]=item
-
-    try{
-        localStorage.setItem(LOCAL_CACHE,JSON.stringify(localCache))
-    }
-    catch(e){
-        alert("Unable to Save to Favorites");
-    }
-
+    return 0;
 }
 
 export const setRouteToCache=(selectedRoute)=>{
-    if (selectedRoute == ""){
+    if (selectedRoute === ""){
         alert("No route selected");
-        return;
+        return 1;
     }
 
     const localCache=getLocalCache()
@@ -72,15 +58,17 @@ export const setRouteToCache=(selectedRoute)=>{
     }
     catch(e){
         alert("Unable to Save to Favorites");
+        return 1;
     }
+    return 0;
 
 }
 
-export const isFavorited=(train)=>{
+export const isFavorited=(routeName)=>{
     const localCache = getLocalCache();
     const data = localCache.data;
-    if(train.routeName in data){
-        return "red";
+    if(routeName in data){
+        return true;
     }
-    return "white"
+    return false;
 }

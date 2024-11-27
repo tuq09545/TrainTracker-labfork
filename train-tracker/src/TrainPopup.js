@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom";
 import {useEffect} from 'react';
-import {Link} from 'react-router-dom';
 import './styles/TrainPopup.css'
 import TrainInfo from "./TrainInfo";
 
 function TrainPopup({onClose, children, actionBar, train}){
+
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
 
@@ -12,6 +12,7 @@ function TrainPopup({onClose, children, actionBar, train}){
             document.body.classList.remove('overflow-hidden');
         };
     }, []);
+
 
     return ReactDOM.createPortal(<div>
         <div onClick={onClose} className='overlay' ></div> 
@@ -21,7 +22,6 @@ function TrainPopup({onClose, children, actionBar, train}){
         </div> 
             <div className='modal-content'>
                 {children}
-                <button><Link to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)} target="_blank">Open in New Tab</Link></button>
                 <TrainInfo train={train}/>   
             </div>  
         </div>

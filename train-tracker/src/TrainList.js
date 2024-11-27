@@ -2,7 +2,6 @@ import React from 'react';
 import './styles/TrainList.css';
 
 function TrainList({trains, handleTrainClick}){
-    console.log("TrainList rendered");
 
     function MakeTrain({train}){
         const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
@@ -49,7 +48,18 @@ function TrainList({trains, handleTrainClick}){
     } else {
         return (
             <div>
-                <h1>No results.</h1>
+                <table className="train-list">
+                <thead>
+                        <tr>
+                            <th>Train Number</th>
+                            <th>Line Name</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+                <h3>Oops! It looks like we couldn't find the train you were looking for &#128647;</h3>
             </div>
         )
     }
