@@ -1,14 +1,14 @@
-export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) {
-    let trains = allTrains;
-    if (selectedNumber > 0){
-        trains = trains.filter(t => t.number === selectedNumber)
-    } if (selectedRoute){
-        trains = trains.filter(t => t.routeName === selectedRoute)
-    } if (selectedStation){
-        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
-        if (upcoming){
+export function filterTrains(allTrains, sObj) {
+    let trains = allTrains ?? [];
+    if (sObj.number > 0){
+        trains = trains.filter(t => t.number === sObj.number)
+    } if (sObj.selectedRoute){
+        trains = trains.filter(t => t.routeName === sObj.selectedRoute)
+    } if (sObj.selectedStation){
+        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === sObj.selectedStation) !== -1));
+        if (sObj.upcoming){
             trains = trains.filter((t) => {
-                let station = t.stations.find((station) => station.stationCode === selectedStation);
+                let station = t.stations.find((station) => station.stationCode === sObj.selectedStation);
                 if (station.stationCode === t.from && station.hasDeparted){
                     return undefined;
                 }
@@ -17,25 +17,16 @@ export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedS
                 }
             })
         }
-    } if (fromStation && toStation){
+    } if (sObj.fromStation && sObj.toStation){
         trains = trains.filter((t) =>{
-            return t.stations.findIndex((station) => station.stationCode === fromStation) < t.stations.findIndex((station) => station.stationCode === toStation);
+            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.toStation);
         })
+    } if (sObj.date){
+        trains = trains.filter(t => t.scheduledDeparture === sObj.date)
     }
     // sort results by number (ascending)
     trains = sortTrains(trains, (a,b) => a.number - b.number);
     return trains;
-}
-
-// very lazy alternative filter for train page (will refactor later)
-export function filterTrainPage(allTrains, selectedNumber, selectedDate){
-    let trains = allTrains ?? [];
-    if(selectedNumber > 0){
-        trains = trains.filter(t => t.number === selectedNumber)
-    } if (selectedDate){
-        trains = trains.filter(t => t.scheduledDeparture === selectedDate)
-    }
-    return trains
 }
 
 export function getClosestStation(stations, userLocation){

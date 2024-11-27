@@ -5,8 +5,17 @@ import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
 
+export function SearchObject(){
+    this.number = "";
+    this.route = "";
+    this.station = "";
+    this.upcoming = false;
+    this.fromStation = "";
+    this.toStation = "";
+    this.date = "";
+}
 
-function Search({searchFun, routes, stations, setRefreshState
+function Search({searchFun, routes, stations, setRefreshState, searchObject, setSearchObject
 }){
 
     const [selectedStation, setSelectedStation] = useState("");
@@ -17,6 +26,13 @@ function Search({searchFun, routes, stations, setRefreshState
     const [toStation, setToStation] = useState("");
     const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
 
+    // react doesn't recognize just changing an object property
+    // so we need to set it to a copy w/ the prop changed
+    function setProp(searchObj,prop,value){
+        var r = Object.assign({},searchObj)
+        r[prop] = value;
+        return r;
+    }
 
     function handleNumber(e){ setSelectedNumber(e.target.value); }
     function handleRoute(e){
@@ -72,7 +88,7 @@ function Search({searchFun, routes, stations, setRefreshState
 
     const search = (event) =>{
         event.preventDefault();
-        searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+        searchFun();
     }
 
     const clearSearch = () => {
@@ -103,7 +119,9 @@ function Search({searchFun, routes, stations, setRefreshState
                 </div>
                 <span className="select-label">
                         Train Number:
-                        <input className="select-box" value={selectedNumber} onChange={handleNumber} type="number" min='1'></input>
+                        <input className="select-box" value={searchObject.number} type="number" min='1' onChange=
+                            {e => setSearchObject(setProp(searchObject,"number",e.target.value))}
+                        />
                     </span>
                 <span className="select-label">
                         Route:

@@ -2,8 +2,9 @@ import './styles/TrainPage.css';
 
 import {useState, useEffect} from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
-import { filterTrainPage } from './functionality/app';
+import { filterTrains } from './functionality/app';
 import TrainInfo from './TrainInfo';
+import Search, { SearchObject } from './Search';
 
 function TrainPage({allTrains}){
     const location = useLocation();
@@ -14,16 +15,18 @@ function TrainPage({allTrains}){
 
     const [selectedTrains,setSelectedTrains] = useState([]);
 
+    function findTrain(){
+        let search = new SearchObject();
+        search.number = number;
+        search.date = date;
+        let trains = filterTrains(allTrains,search);
+        setSelectedTrains(trains);
+    }
+
     // wait for allTrains to load
     if(isLoading){
         if(allTrains.length > 0){
-            let trains;
-            if (number == "all"){
-                trains = allTrains.sort((a,b) => a.number - b.number);
-            } else {
-                trains = filterTrainPage(allTrains,number,date);
-            }
-            setSelectedTrains(trains);
+            findTrain();
             setIsLoading(false);
         }
     }
@@ -47,8 +50,7 @@ function TrainPage({allTrains}){
     // updates on number or date change
     useEffect(() => {
         if(!isLoading){
-            let trains = filterTrainPage(allTrains,number,date);
-            setSelectedTrains(trains);
+            findTrain();
         } 
     },[number,date])
 

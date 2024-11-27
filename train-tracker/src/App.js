@@ -7,6 +7,7 @@ import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 import Home from './Home';
 import MapPage from './MapPage';
 import TrainPage from './TrainPage';
+import { SearchObject } from './Search';
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
@@ -25,6 +26,9 @@ function App() {
     const [userLocation, setUserLocation] = useState(null);
     const [selectedStation, setSelectedStation] = useState("");
 
+    const [searchObject,setSearchObject] = useState(new SearchObject())
+    console.log(searchObject);
+
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
@@ -34,12 +38,12 @@ function App() {
 
     const [mapRoute, setMapRoute] = useState("");
 
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+    const searchTrains = () => {
+        let trains = filterTrains(allTrains, searchObject);
 
         setCurrentTrains(trains);
 
-        setMapRoute(selectedRoute);
+        setMapRoute(searchObject.selectedRoute);
     }
 
     const toggleSidebar = () => {
@@ -88,6 +92,8 @@ function App() {
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
         searchTrains={searchTrains}
+        searchObject={searchObject}
+        setSearchObject={setSearchObject}
     />);
 
     const MapPageComponent = () => ( <MapPage
@@ -97,6 +103,8 @@ function App() {
         currentTrains={currentTrains}
         searchTrains={searchTrains}
         mapRoute={mapRoute}
+        searchObject={searchObject}
+        setSearchObject={setSearchObject}
     />);
 
         return (
