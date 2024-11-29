@@ -102,3 +102,10 @@
 .magenta-icon {
     color: #ed156f;
 }
+
+@media (max-width: 900px) {
+    .form {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}

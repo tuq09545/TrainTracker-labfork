@@ -31,11 +31,11 @@
 }
 
 .sidebar.open {
-  width: 20%; /*Same width as search-container*/
+  width: 20%;
 }
 
 .train_icon {
-  width: 50px; /* Smaller icon in sidebar */
+  width: 50px;
   height: 50px;
   margin-right: 20px;
 }
@@ -94,7 +94,7 @@
 }
 
 .sidebar .nav-icon-link:hover {
-  color: #001f3d; /* Change color on hover */
+  color: #001f3d;
 }
 
 .sidebar-header {
@@ -130,4 +130,17 @@
 
 .content.sidebar-open {
   margin-left: 20%;
+}
+
+@media (max-width: 900px) {
+  .sidebar-heading {
+    display: none;
+  }
+}
+
+
+@media (max-width: 1300px) {
+  .sidebar-heading {
+    display: none;
+  }
 }
