@@ -109,3 +109,10 @@
         margin-right: 1rem;
     }
 }
+
+/*Between 900 and 1050, buttons on search should go vertical*/
+@media (min-width:900px) and (max-width:1050px) {
+    .button-container {
+        flex-direction: column;
+    }
+}
