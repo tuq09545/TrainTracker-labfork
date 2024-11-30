@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: row;
   background-color: #f4f4f9;
+  overflow-x: hidden;
 }
 
 .content {
@@ -60,9 +61,9 @@
 }
 
 .sidebar .nav-link {
-  display: flex; /* To center the content horizontally */
-  align-items: center; /* To center content vertically */
-  justify-content: center; /* Center the text horizontally */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 15px 20px;
   background: none;
   border: none;
@@ -75,7 +76,7 @@
 }
 
 .sidebar .nav-link:hover {
-  color: #001f3d; /* Navy color when hovered */
+  color: #001f3d;
 }
 
 .sidebar .nav-icons {
@@ -89,7 +90,7 @@
 .sidebar .nav-icon-link {
   display: block;
   padding: 15px;
-  color: white; /* Icon color */
+  color: white;
   font-size: 24px;
   text-decoration: none;
 }

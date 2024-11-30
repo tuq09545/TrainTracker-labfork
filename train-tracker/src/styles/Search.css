@@ -103,11 +103,16 @@
     color: #ed156f;
 }
 
-/*Between 768 and 1050, buttons on search should go vertical*/
-@media (min-width:768px) and (max-width:1050px) {
+/*Over 768 form should go vertical */
+@media (min-width:768px) {
     .form {
         padding-bottom: 3rem;
+        flex-direction: column;
     }
+}
+
+/* Over 768 and under 1050 buttons specifically should go vertical bc they fall out of the form */
+@media (min-width:768px) and (max-width: 1050px) {
     .button-container {
         flex-direction: column;
     }
