@@ -93,7 +93,7 @@ function Search({searchFun, routes, stations, setRefreshState
                 <label className="favorites-dropdown-selection">
                     <span className="select-label">
                     Favorites:
-                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
+                    <select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
                     </span>
                 </label>
 
