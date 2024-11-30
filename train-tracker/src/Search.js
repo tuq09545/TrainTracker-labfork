@@ -5,7 +5,6 @@ import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
 
 import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
-import { setProp } from './functionality/app';
 
 export function SearchObject(){
     this.number = "";
@@ -61,7 +60,6 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
                 setCurrentRouteFavorited(true);
             }
         }
-        
     }
 
     const favoriteOptions = () => {
@@ -105,25 +103,26 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
                 <span className="select-label">
                         Number:
                         <input className="select-box" value={searchObject.number} type="number" min='1' onChange=
-                            {e => setSearchObject(setProp(searchObject,"number",e.target.value))}
+                            // onChange: set local search object to a copy of itself with the property changed
+                            {e => setSearchObject({...searchObject, "number": e.target.value})}
                         />
                     </span>
                 <span className="select-label">
                         Route:
                         <select className="select-box" value={searchObject.route} children={routes} onChange=
-                            {e => setSearchObject(setProp(searchObject,"route",e.target.value))}
+                            {e => setSearchObject({...searchObject, "route": e.target.value})}
                         />
                         <div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{currentRouteFavorited ? favoriteIcon : nonFavoriteIcon}</div>
                     </span>
                 <span className="select-label">{searchObject.upcoming ? "To:" : "Station:"}
                     <select className='select-box' value={searchObject.station} children={stations} onChange=
-                        {e => setSearchObject(setProp(searchObject,"station",e.target.value))}
+                        {e => setSearchObject({...searchObject, "station": e.target.value})}
                     />
                 </span>
                 <span className="select-label">
                         Upcoming trains only: 
                         <input checked={searchObject.upcoming} type="checkbox" onChange=
-                            {e => setSearchObject(setProp(searchObject,"upcoming",e.target.checked))}
+                            {e => setSearchObject({...searchObject, "upcoming": e.target.checked})}
                         />
                     </span>
                 
@@ -131,7 +130,7 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
                     <span className="select-label">
                         From:
                         <select className="select-box" value={searchObject.fromStation} children={stations} onChange=
-                            {e => setSearchObject(setProp(searchObject,"fromStation",e.target.value))}
+                            {e => setSearchObject({...searchObject, "fromStation": e.target.checked})}
                         />
                     </span>
                 : <span/>}

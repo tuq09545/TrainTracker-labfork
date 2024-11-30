@@ -14,7 +14,6 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
-import { convertStationCodeToStation, getClosestStation, setProp} from './functionality/app';
 import { filterTrains } from './functionality/app';
 
 function App() {
