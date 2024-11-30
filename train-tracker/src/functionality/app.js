@@ -17,9 +17,9 @@ export function filterTrains(allTrains, sObj) {
                 }
             })
         }
-    } if (sObj.fromStation){
+    } if (sObj.fromStation && sObj.toStation){
         trains = trains.filter((t) =>{
-            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.station);
+            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.toStation);
         })
     } if (sObj.date){
         trains = trains.filter(t => t.scheduledDeparture === sObj.date)

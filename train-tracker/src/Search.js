@@ -33,18 +33,14 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
         } else {
             setCurrentRouteFavorited(false);
         }
-        // clear fromStation if hidden
-        if(searchObject.fromStation !== "" && !searchObject.upcoming){
-            setSearchObject(setProp(searchObject,"fromStation",""))
-        }
-    },[searchObject]);
+    },[searchObject.route]);
 
     const nonFavoriteIcon = <MdFavoriteBorder style={{color:'black'}}/>;
     const favoriteIcon = <MdFavorite style={{color:'red'}}/>;
     
     function handleFavoriteSelection(e){
         if (e.target.value !== "---"){
-            setSearchObject(setProp(searchObject,"route",e.target.value))
+            setSearchObject({...searchObject, "route": e.target.value})
         }   
     }
 
@@ -88,14 +84,13 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
     }
 
     return (
-
         <form className='form' onSubmit={search}>
                 <label className="favorites-dropdown-selection">
-                    <span className="select-label">
-                    Favorites:
-                    <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
-                    </span>
-                </label>
+                        <span className="select-label">
+                        Favorites:
+                        <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
+                        </span>
+                    </label>
 
                 <div className='top-label'>
                     Search Options: 
@@ -114,26 +109,32 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
                         />
                         <div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{currentRouteFavorited ? favoriteIcon : nonFavoriteIcon}</div>
                     </span>
-                <span className="select-label">{searchObject.upcoming ? "To:" : "Station:"}
-                    <select className='select-box' value={searchObject.station} children={stations} onChange=
-                        {e => setSearchObject({...searchObject, "station": e.target.value})}
-                    />
-                </span>
+                <span className="select-label">
+                        Station:
+                        <select className='select-box' value={searchObject.station} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "station": e.target.value})}
+                        />
+                    </span>
                 <span className="select-label">
                         Upcoming trains only: 
                         <input checked={searchObject.upcoming} type="checkbox" onChange=
                             {e => setSearchObject({...searchObject, "upcoming": e.target.checked})}
                         />
                     </span>
-                
-                {searchObject.upcoming?
-                    <span className="select-label">
-                        From:
-                        <select className="select-box" value={searchObject.fromStation} children={stations} onChange=
-                            {e => setSearchObject({...searchObject, "fromStation": e.target.checked})}
+
+                <span className="select-label">
+                        To:
+                        <select className="select-box" value={searchObject.toStation} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "toStation": e.target.value})}
                         />
                     </span>
-                : <span/>}
+                
+                <span className="select-label">
+                        From:
+                        <select className="select-box" value={searchObject.fromStation} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "fromStation": e.target.value})}
+                        />
+                    </span>
 
                 <span className='button-container'>
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
