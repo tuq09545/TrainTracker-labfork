@@ -131,7 +131,6 @@ function Search({searchFun, routes, stations, setRefreshState
                 <span className='button-container'>
                     <div onClick={search} className='form-button'>Search <IoSearch/></div>
                     <div onClick={clearSearch} className='form-button'>Clear <MdClear/></div>
-                    
                     <div onClick={refresh} className='form-button'>Refresh <MdRefresh/></div>
                 </span>
               </form>
