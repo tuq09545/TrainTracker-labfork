@@ -8,6 +8,7 @@ import {convertStationCodeToStation} from './functionality/app';
 /**
  * Component displaying map page.
  * @component
+ * @module MapPage
  * @param {object[]} allRoutes - The list of objects representing all available Amtrak routes.
  * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
  * @param {object} userLocation - The object representing the user's location.
@@ -59,7 +60,4 @@ function MapPage({allRoutes, allStations, userLocation, selectedStation, setRefr
         </div>
     )
 }
-/**
- * @exports MapPage
- */
 export default MapPage;

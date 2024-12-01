@@ -6,6 +6,7 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying station icon.
  * @component
+ * @module SelectedStationMarker
  * @returns {JSX.Element} The selected station icon component.
  */
 const SelectedStationIcon = () => (
@@ -17,6 +18,7 @@ const SelectedStationIcon = () => (
 /**
  * Component displaying station on map.
  * @component
+ * @module SelectedStationMarker
  * @param {object} selectedStation - The object representing the currently selected station.
  * @returns {JSX.Element} The selected station component.
  */
@@ -40,7 +42,4 @@ const SelectedStationMarker = ({selectedStation}) =>{
             </Marker>)
     }
 }
-/**
- * @exports SelectedStationMarker
- */
 export default SelectedStationMarker;

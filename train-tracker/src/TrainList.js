@@ -4,6 +4,7 @@ import './styles/TrainList.css';
 /**
  * Component displaying list of trains.
  * @component
+ * @module TrainList
  * @param {object[]} trains - The list of train objects to display.
  * @param {function} handleTrainClick - The train click handler, which opens an app-wide popup.
  * @returns {JSX.Element} The train list component.
@@ -71,7 +72,4 @@ function TrainList({trains, handleTrainClick}){
         )
     }
 }
-/**
- * @exports TrainList
- */
 export default TrainList;

@@ -23,6 +23,7 @@ L.Icon.Default.mergeOptions({
 /**
  * Component displaying train, route, and station information on map.
  * @component
+ * @module TrainMap
  * @param {object[]} trains - The list of train objects to display.
  * @param {object} userLocation - The user's location.
  * @param {object} selectedStation - The station currently selected in search.
@@ -75,7 +76,4 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
      </>
     );
 };
-/**
- * @exports TrainMap
- */
 export default TrainMap;

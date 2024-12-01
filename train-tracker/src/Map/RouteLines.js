@@ -4,6 +4,7 @@ import { Polyline, Popup} from "react-leaflet";
 /**
  * Component displaying routes as leaflet Polylines.
  * @component
+ * @module RouteLines
  * @param {object[]} routes - The route location information.
  * @param {string} mapRoute - The currently selected route in search, to be displayed on the map.
  * @returns {JSX.Element} The route lines component.
@@ -56,7 +57,4 @@ const RouteLines = ({routes, mapRoute}) =>{
         return <div></div>
     }
 }
-/**
- * @exports RouteLines
- */
 export default RouteLines;

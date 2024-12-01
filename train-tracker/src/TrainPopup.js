@@ -6,6 +6,7 @@ import TrainInfo from "./TrainInfo";
 /**
  * Component which creates a modal in which to show train-specific information.
  * @component
+ * @module TrainPopup
  * @param {function} onClose - The function that handles closing the popup.
  * @param {JSX.Element[]} children - The list of children to include in the popup.
  * @param {JSX.Element} actionBar - The component allowing user interaction, in this case the close button.
@@ -38,7 +39,4 @@ function TrainPopup({onClose, children, actionBar, train}){
     document.querySelector('.modal-container')
     );
 }
-/**
- * @exports TrainPopup
- */
 export default TrainPopup;

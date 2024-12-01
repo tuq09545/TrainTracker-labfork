@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Search.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Search.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './styles/Search.css';
+import {useState} from 'react'
+
+import { IoSearch } from "react-icons/io5";
+import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './functionality/LocalCache';
+
+/**
+ * Component allowing searching of trains.
+ * @component
+ * @module Search
+ * @param {function} searchFun - The function that filters all trains for the app.
+ * @param {object[]} routes - The list of all Amtrak routes available.
+ * @param {object[]} stations - The list of all Amtrak stations available.
+ * @param {function} setRefreshState - The function that toggles refresh state for the app.
+ * @returns {JSX.Element} The search component.
+ */
+function Search({searchFun, routes, stations, setRefreshState
+}){
+
+    const [selectedStation, setSelectedStation] = useState("");
+    const [selectedRoute, setSelectedRoute] = useState("");
+    const [selectedNumber, setSelectedNumber] = useState("");
+    const [upcoming, setUpcoming] = useState(false);
+    const [fromStation, setFromStation] = useState("");
+    const [toStation, setToStation] = useState("");
+    const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
+
+
+    function handleNumber(e){ setSelectedNumber(e.target.value); }
+    function handleRoute(e){
+        setSelectedRoute(e.target.value);
+        if (isFavorited(e.target.value)){
+            setCurrentRouteFavorited(true);
+        }
+        else{
+            setCurrentRouteFavorited(false);
+        }
+    }
+    function handleStation(e){ setSelectedStation(e.target.value)}
+    function handleUpcoming(e){ setUpcoming(e.target.checked); }
+    function handleFromStation(e){ setFromStation(e.target.value); }
+    function handleToStation(e){ setToStation(e.target.value); }
+
+    const nonFavoriteIcon = &lt;MdFavoriteBorder style={{color:'black'}}/>;
+    const favoriteIcon = &lt;MdFavorite style={{color:'red'}}/>;
+    
+    function handleFavoriteSelection(e){
+        if (e.target.value !== "---"){
+            setSelectedRoute(e.target.value);
+            setCurrentRouteFavorited(true);
+        }   
+    }
+
+    function setToFavorites(){
+        if(currentRouteFavorited){
+            let res = removeRouteFromCache(selectedRoute)
+            if(res===0){
+                setCurrentRouteFavorited(false);
+            }
+        } else {
+            let res = setRouteToCache(selectedRoute);
+            if(res===0){
+                setCurrentRouteFavorited(true);
+            }
+        }
+        
+    }
+
+    const favoriteOptions = () => {
+        let favNames = ["---"]
+        const cachedTrains = getLocalCache();
+        Object.keys(cachedTrains.data).forEach(trainName => {
+            favNames.push(trainName)
+        });
+        const mapping = favNames.map((element, index) => {
+            return &lt;option value={element} key={index}>{element}&lt;/option>})
+        return mapping;
+    }
+
+    const search = (event) =>{
+        event.preventDefault();
+        searchFun(selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
+    }
+
+    const clearSearch = () => {
+        setSelectedNumber("");
+        setSelectedRoute("");
+        setSelectedStation("");
+        setUpcoming(false);
+        setFromStation("");
+        setToStation("");
+    }
+
+    const refresh = () => {
+        setRefreshState(true);
+    }
+
+    return (
+
+        &lt;form className='form' onSubmit={search}>
+                &lt;label className="favorites-dropdown-selection">
+                    &lt;span className="select-label">
+                    Favorites:
+                    &lt;select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}&lt;/select>
+                    &lt;/span>
+                &lt;/label>
+
+                &lt;div className='top-label'>
+                    Search options: 
+                &lt;/div>
+                &lt;span className="select-label">
+                        Train Number:
+                        &lt;input className="select-box" value={selectedNumber} onChange={handleNumber} type="number" min='1'>&lt;/input>
+                    &lt;/span>
+                &lt;span className="select-label">
+                        Route:
+                        &lt;select className="select-box" value={selectedRoute} onChange={handleRoute} children={routes}>&lt;/select>
+                        &lt;div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{currentRouteFavorited ? favoriteIcon : nonFavoriteIcon}&lt;/div>
+                    &lt;/span>
+                &lt;span className="select-label">By station: &lt;/span>
+                    &lt;select className='select-box' value={selectedStation} onChange={handleStation} children={stations}>&lt;/select>
+                    &lt;span className="select-label">
+                        Upcoming trains only: 
+                        &lt;input checked={upcoming} onChange={handleUpcoming} type="checkbox" >&lt;/input>
+                    &lt;/span>
+               
+                &lt;label className="optional-criteria-label">
+                    Optional criteria:
+                    &lt;span className="select-label">
+                        From:
+                        &lt;select className="select-box" value={fromStation} onChange={handleFromStation} children={stations}>&lt;/select>
+                    &lt;/span>
+                    &lt;span className="select-label">
+                        To:
+                        &lt;select className="select-box" value={toStation} onChange={handleToStation} children={stations}>&lt;/select>
+                    &lt;/span>
+                &lt;/label>
+
+                &lt;span className='button-container'>
+                    &lt;div onClick={search} className='form-button'>Search &lt;IoSearch/>&lt;/div>
+                    &lt;div onClick={clearSearch} className='form-button'>Clear &lt;MdClear/>&lt;/div>
+                    &lt;div onClick={refresh} className='form-button'>Refresh &lt;MdRefresh/>&lt;/div>
+                &lt;/span>
+              &lt;/form>
+    );
+    
+}
+export default Search;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Dec 01 2024 13:24:42 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

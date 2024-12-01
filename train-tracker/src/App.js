@@ -22,6 +22,7 @@ import { filterTrains } from './functionality/app';
  * It renders 3 different pages in the form of components: Home, MapPage, and TrainPage.
  * It also includes a sidebar/ nav bar on mobile.
  * @component
+ * @module App
  * @returns {JSX.Element} The app component.
  */
 function App() {
@@ -175,7 +176,4 @@ function App() {
         </HashRouter>
     );
 }
-/**
- * @exports App
- */
 export default App;

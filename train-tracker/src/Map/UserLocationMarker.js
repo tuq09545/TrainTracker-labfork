@@ -7,6 +7,7 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying user location icon.
  * @component
+ * @module UserLocationMarker
  * @returns {JSX.Element} The user location icon component.
  */
 const UserLocationIcon = () => (
@@ -18,6 +19,7 @@ const UserLocationIcon = () => (
 /**
  * Component displaying user location on map.
  * @component
+ * @module UserLocationMarker
  * @param {object} userLocation - The object representing the user location.
  * @returns {JSX.Element} The user location marker component.
  */
@@ -40,7 +42,4 @@ const UserLocationMarker = ({userLocation}) => {
             </Marker>)
     }
 }
-/**
- * @exports UserLocationMarker
- */
 export default UserLocationMarker;

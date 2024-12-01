@@ -8,6 +8,7 @@ import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } fro
 /**
  * Component allowing searching of trains.
  * @component
+ * @module Search
  * @param {function} searchFun - The function that filters all trains for the app.
  * @param {object[]} routes - The list of all Amtrak routes available.
  * @param {object[]} stations - The list of all Amtrak stations available.
@@ -145,7 +146,4 @@ function Search({searchFun, routes, stations, setRefreshState
     );
     
 }
-/**
- * @exports Search
- */
 export default Search;

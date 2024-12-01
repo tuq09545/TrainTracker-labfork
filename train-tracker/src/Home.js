@@ -9,6 +9,7 @@ import { IoClose } from "react-icons/io5";
 /**
  * Component displaying home page.
  * @component
+ * @module Home
  * @param {object[]} allRoutes - The list of objects representing all available Amtrak routes.
  * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
  * @param {function} setRefresh - The function allowing app-wide toggling of refresh state.
@@ -73,7 +74,4 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
         </div>
     )
 }
-/**
- * @exports Home
- */
 export default Home;

@@ -7,6 +7,7 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying train icon.
  * @component
+ * @module TrainMarkers
  * @returns {JSX.Element} The train icon component.
  */
 const TrainIcon = () => (
@@ -18,6 +19,7 @@ const TrainIcon = () => (
 /**
  * Component displaying train markers on map.
  * @component
+ * @module TrainMarkers
  * @param {object[]} trains - The list of train objects to display.
  * @returns {JSX.Element} The train markers.
  */
@@ -53,7 +55,4 @@ const TrainMarkers = ({trains}) => {
         return <div></div>;
     }   
 }
-/**
- * @exports TrainMarkers
- */
 export default TrainMarkers;
