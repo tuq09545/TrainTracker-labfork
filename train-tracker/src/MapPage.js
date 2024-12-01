@@ -1,7 +1,7 @@
 import './styles/MapPage.css';
 import React from 'react'
 import Search from './Search';
-import TrainMap from './TrainMap';
+import TrainMap from './Map/TrainMap';
 
 import {convertStationCodeToStation} from './functionality/app';
 
