@@ -7,7 +7,6 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying train icon.
  * @component
- * @module TrainMarkers
  * @returns {JSX.Element} The train icon component.
  */
 const TrainIcon = () => (
