@@ -1,3 +1,16 @@
+/**
+ * Function allowing filtering of train objects based on search criteria.
+ * @function
+ * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
+ * @param {number} selectedNumber - The train number to search by.
+ * @param {string} selectedRoute - The route to search by.
+ * @param {string} selectedStation - The station to search by.
+ * @param {boolean} upcoming - Whether to search only for upcoming trains through a station.
+ * @param {string} fromStation - The departure station to search by.
+ * @param {string} toStation - The arrival station to search by.
+ * @returns {object[]} The list of train objects matching the search criteria.
+ * @exports filterTrains
+ */
 export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) {
     let trains = allTrains;
     if (selectedNumber > 0){
@@ -38,6 +51,14 @@ export function filterTrainPage(allTrains, selectedNumber, selectedDate){
     return trains
 }
 
+/**
+ * Function finding closest Amtrak station to user location.
+ * @function
+ * @param {object[]} stations - The list of all stations available through the Amtrak API.
+ * @param {object} userLocation - The object containing user location information.
+ * @returns {object} The closest station to the user.
+ * @exports getClosestStation
+ */
 export function getClosestStation(stations, userLocation){
     let userLat = userLocation.coords.latitude;
     let userLon = userLocation.coords.longitude;
@@ -53,6 +74,14 @@ export function getClosestStation(stations, userLocation){
     return minStation;
 }
 
+/**
+ * Function converting Amtrak station code to station object.
+ * @function
+ * @param {object[]} allStations - The list of all stations available through the Amtrak API.
+ * @param {string} stationCode - The station code string.
+ * @returns {object} The station matching the station code provided.
+ * @exports convertStationCodeToStation
+ */
 export function convertStationCodeToStation(allStations, stationCode){
     let matchingStations = allStations.filter((station) => {
         return station.stationCode === stationCode;
@@ -60,10 +89,26 @@ export function convertStationCodeToStation(allStations, stationCode){
     return matchingStations[0];
 }
 
+/**
+ * Function calculating distance between two points.
+ * @function
+ * @param {number} lat1 - The first latitude.
+ * @param {number} lat2 - The second latitude.
+ * @param {number} lon1 - The first longitude.
+ * @param {number} lon2 - The second longitude.
+ * @returns {number} The distance between the two points.
+ */
 function calculateDistance(lat1, lat2, lon1, lon2){
     return (Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(lon2-lon1, 2)));
 }
 
+/**
+ * Function sorting trains by criteria.
+ * @function
+ * @param {object[]} trains - The list of train objects to sort.
+ * @param {fucntion} sortingCriteria - The comparison function.
+ * @returns {object[]} The sorted train objects.
+ */
 function sortTrains(trains, sortingCriteria){
     return trains.sort(sortingCriteria);
 }

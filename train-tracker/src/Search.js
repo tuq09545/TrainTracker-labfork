@@ -3,7 +3,7 @@ import {useState} from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
-import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
+import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './functionality/LocalCache';
 
 /**
  * Component allowing searching of trains.

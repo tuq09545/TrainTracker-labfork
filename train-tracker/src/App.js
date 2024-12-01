@@ -13,11 +13,18 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
-import {convertStationCodeToStation, getClosestStation} from './functionality/app';
+import {getClosestStation} from './functionality/app';
 import { filterTrains } from './functionality/app';
 
+/**
+ * Component displaying the entire app.
+ * It renders the main components of the app using React Router.
+ * It renders 3 different pages in the form of components: Home, MapPage, and TrainPage.
+ * It also includes a sidebar/ nav bar on mobile.
+ * @component
+ * @returns {JSX.Element} The app component.
+ */
 function App() {
-    // load api data
     const api = new Amtrak.APIInstance();
     const [refreshState, setRefreshState] = useState(false);
     const [refreshPopup, setRefreshPopup] = useState(false);
@@ -168,5 +175,7 @@ function App() {
         </HashRouter>
     );
 }
-
+/**
+ * @exports App
+ */
 export default App;

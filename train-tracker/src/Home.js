@@ -6,6 +6,16 @@ import TrainPopup from './TrainPopup';
 
 import { IoClose } from "react-icons/io5";
 
+/**
+ * Component displaying home page.
+ * @component
+ * @param {object[]} allRoutes - The list of objects representing all available Amtrak routes.
+ * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
+ * @param {function} setRefresh - The function allowing app-wide toggling of refresh state.
+ * @param {object[]} currentTrains - The list of objects representing trains matching the current search criteria.
+ * @param {function} searchTrains - The function allowing app-wide searching of trains.
+ * @returns {JSX.Element} The home page component.
+ */
 function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
 }){
     const [selectedTrain, setSelectedTrain] = useState({});
@@ -63,5 +73,7 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
         </div>
     )
 }
-
+/**
+ * @exports Home
+ */
 export default Home;

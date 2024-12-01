@@ -5,6 +5,18 @@ import TrainMap from './Map/TrainMap';
 
 import {convertStationCodeToStation} from './functionality/app';
 
+/**
+ * Component displaying map page.
+ * @component
+ * @param {object[]} allRoutes - The list of objects representing all available Amtrak routes.
+ * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
+ * @param {object} userLocation - The object representing the user's location.
+ * @param {object} selectedStation - The object representing the currently selected station.
+ * @param {function} setRefresh - The function allowing app-wide toggling of refresh state.
+ * @param {object[]} currentTrains - The list of objects representing trains matching the current search criteria.
+ * @param {function} searchTrains - The function allowing app-wide searching of trains.
+ * @returns {JSX.Element} The map page component.
+ */
 function MapPage({allRoutes, allStations, userLocation, selectedStation, setRefresh, currentTrains, searchTrains,
     mapRoute
 }){
@@ -47,5 +59,7 @@ function MapPage({allRoutes, allStations, userLocation, selectedStation, setRefr
         </div>
     )
 }
-
+/**
+ * @exports MapPage
+ */
 export default MapPage;

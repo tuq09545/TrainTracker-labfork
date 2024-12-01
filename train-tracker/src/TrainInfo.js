@@ -1,5 +1,5 @@
 import './styles/TrainInfo.css';
-import { isFavorited } from './LocalCache';
+import { isFavorited } from './functionality/LocalCache';
 import {Link} from 'react-router-dom';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import {useState} from 'react'
