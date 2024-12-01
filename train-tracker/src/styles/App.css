@@ -15,10 +15,9 @@
   background-color: #f4f4f9;
 }
 
-/* Sidebar styles */
 .sidebar {
   height: 100%;
-  width: 80px; /* Default collapsed width */
+  width: 80px;
   position: fixed;
   z-index: 1;
   top: 0;

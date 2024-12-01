@@ -1,5 +1,5 @@
 .tiebreaker {
     background-color: white;
-    overflow: auto; /* Enable vertical scrolling */
-    max-height: 800px; /* Set a maximum height to trigger scrolling */
+    overflow: auto;
+    max-height: 800px;
 }
