@@ -4,6 +4,14 @@ import {Link} from 'react-router-dom';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import {useState} from 'react'
 
+/**
+ * Component representing information for specific train,
+ * including schedule.
+ * @component
+ * @param {object} train - The object representing the train to display.
+ * @returns {JSX.Element} The rendered train information.
+ */
+
 function TrainInfo({train}){
     const [copiedPopup, setCopiedPopup] = useState(false);
 
@@ -60,5 +68,7 @@ function TrainInfo({train}){
         </div>
     )
 }
-
+/**
+ * @exports TrainInfo
+ */
 export default TrainInfo;

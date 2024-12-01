@@ -5,7 +5,15 @@ import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
 
-
+/**
+ * Component allowing searching of trains.
+ * @component
+ * @param {function} searchFun - The function that filters all trains for the app.
+ * @param {object[]} routes - The list of all Amtrak routes available.
+ * @param {object[]} stations - The list of all Amtrak stations available.
+ * @param {function} setRefreshState - The function that toggles refresh state for the app.
+ * @returns {JSX.Element} The search component.
+ */
 function Search({searchFun, routes, stations, setRefreshState
 }){
 
@@ -137,5 +145,7 @@ function Search({searchFun, routes, stations, setRefreshState
     );
     
 }
-
+/**
+ * @exports Search
+ */
 export default Search;
