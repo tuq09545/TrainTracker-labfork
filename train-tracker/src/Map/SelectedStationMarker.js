@@ -3,12 +3,23 @@ import { Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import { renderToString } from "react-dom/server";
 
+/**
+ * Component displaying station icon.
+ * @component
+ * @returns {JSX.Element} The selected station icon component.
+ */
 const SelectedStationIcon = () => (
     <div className="custom-icon-container" style={{ color: "black" }}>
         <FaBuildingUser size={20} />
     </div>
 );
 
+/**
+ * Component displaying station on map.
+ * @component
+ * @param {object} selectedStation - The object representing the currently selected station.
+ * @returns {JSX.Element} The selected station component.
+ */
 const SelectedStationMarker = ({selectedStation}) =>{
     if (selectedStation){
         return (
@@ -29,5 +40,7 @@ const SelectedStationMarker = ({selectedStation}) =>{
             </Marker>)
     }
 }
-
+/**
+ * @exports SelectedStationMarker
+ */
 export default SelectedStationMarker;

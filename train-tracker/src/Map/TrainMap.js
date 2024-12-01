@@ -3,7 +3,7 @@ import { MapContainer, TileLayer} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import '../styles/Map.css';
-import MapTrainMarkers from "./TrainMarkers";
+import TrainMarkers from "./TrainMarkers";
 import UserLocationMarker from "./UserLocationMarker";
 import SelectedStationMarker from "./SelectedStationMarker";
 import RouteLines from "./RouteLines";
@@ -20,6 +20,15 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
+/**
+ * Component displaying train, route, and station information on map.
+ * @component
+ * @param {object[]} trains - The list of train objects to display.
+ * @param {object} userLocation - The user's location.
+ * @param {object} selectedStation - The station currently selected in search.
+ * @param {string} mapRoute - The currently selected route in search, to be displayed on the map.
+ * @returns {JSX.Element} The train map component.
+ */
 const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
@@ -56,7 +65,7 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <RouteLines routes={routes} mapRoute={mapRoute}/>
-                    <MapTrainMarkers trains={trains}/>
+                    <TrainMarkers trains={trains}/>
                     <UserLocationMarker userLocation={userLocation}/>
                     <SelectedStationMarker selectedStation={selectedStation}/>
                 </MapContainer>
@@ -66,5 +75,7 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
      </>
     );
 };
-
+/**
+ * @exports TrainMap
+ */
 export default TrainMap;

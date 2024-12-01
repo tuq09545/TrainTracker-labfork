@@ -3,13 +3,25 @@ import { Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import { renderToString } from "react-dom/server";
 
+
+/**
+ * Component displaying train icon.
+ * @component
+ * @returns {JSX.Element} The train icon component.
+ */
 const TrainIcon = () => (
     <div className="custom-icon-container" style={{ color: "blue" }}>
         <IoTrainOutline size={20} />
     </div>
 );
 
-const MapTrainMarkers = ({trains}) => { 
+/**
+ * Component displaying train markers on map.
+ * @component
+ * @param {object[]} trains - The list of train objects to display.
+ * @returns {JSX.Element} The train markers.
+ */
+const TrainMarkers = ({trains}) => { 
     if(trains.length !== 0){
         return(
             <div>
@@ -41,5 +53,7 @@ const MapTrainMarkers = ({trains}) => {
         return <div></div>;
     }   
 }
-
-export default MapTrainMarkers;
+/**
+ * @exports TrainMarkers
+ */
+export default TrainMarkers;
