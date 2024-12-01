@@ -40,7 +40,15 @@ export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedS
     return trains;
 }
 
-// very lazy alternative filter for train page (will refactor later)
+/**
+ * Alternative filter function for train page criteria 
+ * @function
+ * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
+ * @param {number} selectedNumber - The train number to search by.
+ * @param {string} selectedDate - The departure date to search by.
+ * @returns {object[]} The list of train objects matching the search criteria.
+ * @exports filterTrainPage
+ */
 export function filterTrainPage(allTrains, selectedNumber, selectedDate){
     let trains = allTrains ?? [];
     if(selectedNumber > 0){

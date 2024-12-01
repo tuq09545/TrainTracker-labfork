@@ -1,10 +1,17 @@
 import './styles/TrainPage.css';
 
-import {useState, useEffect} from 'react';
-import {Link, useNavigate, useLocation} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { filterTrainPage } from './functionality/app';
 import TrainInfo from './TrainInfo';
 
+/**
+ * Component displaying train specific page.
+ * @component
+ * @module TrainPage
+ * @param {object[]} allTrains - The list of all Amtrak trains running
+ * @returns {JSX.Element}
+ */
 function TrainPage({allTrains}){
     const location = useLocation();
     const [isLoading,setIsLoading] = useState(true);
@@ -70,7 +77,6 @@ function TrainPage({allTrains}){
 
     return(
         <div className="train-page">
-            <TrainForm/>
             {content}
         </div>
     )
@@ -90,26 +96,6 @@ function Tiebreaker(t){
                 )
             })}
         </div>
-    )
-}
-
-export function TrainForm(){
-    const [selectedNumber, setSelectedNumber] = useState("");
-
-    const navigate = useNavigate();
-
-    function handleNumber(e){ setSelectedNumber(e.target.value); }
-
-    function search(event){
-        event.preventDefault();
-        navigate("/trains/"+selectedNumber);
-        setSelectedNumber("");
-    }
-
-    return (
-        <form onSubmit={search} className="train-form">
-            <input className="select-box" value={selectedNumber} placeholder="Quick Search by Number" onChange={handleNumber} type="number" min='1'></input>
-        </form>
     )
 }
 
