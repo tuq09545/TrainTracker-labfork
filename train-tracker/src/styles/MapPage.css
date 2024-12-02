@@ -9,7 +9,6 @@
 
 .search-container {
     width: 30%;
-    height: 90vh;
     padding: 1rem;
     background-color: #f0f0f5;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -25,19 +24,16 @@
       overflow: hidden;
     position: relative;
   }
-  
-  @media (max-width: 768px) {
-    .map-page {
-        flex-direction: column;
-    }
+
+@media (max-width: 768px) {
+
     .content {
         flex-direction: column;
     }
-
-    .full-map-page {
+    .map-page {
         flex-direction: column;
+        width: 90%;
     }
-
     .search-container, .map-container {
         width: 100%;
         height: auto;

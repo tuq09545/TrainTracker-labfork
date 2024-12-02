@@ -29,8 +29,6 @@ function App() {
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
     const [currentTrains, setCurrentTrains] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
 
@@ -38,6 +36,20 @@ function App() {
         let trains = filterTrains(allTrains, searchObject);
         setCurrentTrains(trains);
     }
+    const [mapRoute, setMapRoute] = useState("");
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 600);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+        
 
     useEffect(() => {
         searchTrains();
@@ -111,11 +123,18 @@ function App() {
         setGlobalSearchObject={setSearchObject}
     />);
 
-        return (
-            <HashRouter>
-                <div className="App">
-                      {refreshPopup && <div className="refresh-popup">Refreshed</div>}
-            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
+    return (
+        <HashRouter>
+            <div className="App">
+                {refreshPopup && <div className="refresh-popup">Refreshed</div>}
+                {isMobile ? (
+                    <div className="topbar">
+                        <Link to="/home" className="nav-icon-link"><IoHomeOutline size={30} /></Link>
+                        <Link to="/map" className="nav-icon-link"><FaMapLocationDot size={30} /></Link>
+                        <Link to="/trains/all" className="nav-icon-link"><IoTrainOutline size={30} /></Link>
+                    </div>
+                ) : (
+                    <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
                         <div className="sidebar-header">
                             <img src={train_icon} alt="Train Icon" className="train_icon" />
                             {sidebarOpen && (
@@ -147,21 +166,21 @@ function App() {
                                     <IoTrainOutline size={30} />
                                 </Link>
                             </div>
-                            )}
+                        )}
                     </div>
+                )}
 
-
-                    <div className={`content ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`} id="main">
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/home" element={<HomePage />} />
-                            <Route path="/trains/:trainInfo" element={<TrainPage allTrains={allTrains} />} />
-                            <Route path="/map" element={<MapPageComponent />} />
-                        </Routes>
-                    </div>
+                <div className={`content ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`} id="main">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/trains/:trainInfo" element={<TrainPage allTrains={allTrains} />} />
+                        <Route path="/map" element={<MapPageComponent />} />
+                    </Routes>
                 </div>
-            </HashRouter>
-        );
+            </div>
+        </HashRouter>
+    );
 }
 
 export default App;
