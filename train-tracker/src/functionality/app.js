@@ -21,6 +21,17 @@ export function filterTrains(allTrains, sObj) {
         trains = trains.filter((t) =>{
             return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) < t.stations.findIndex((station) => station.stationCode === sObj.toStation);
         })
+        if (sObj.upcoming){
+            trains = trains.filter((t) => {
+                let station = t.stations.find((station) => station.stationCode === sObj.toStation);
+                if (station.stationCode === t.from && station.hasDeparted){
+                    return undefined;
+                }
+                if (!station.hasArrived || !station.hasDeparted){
+                    return t;
+                }
+            })
+        }
     } if (sObj.date){
         trains = trains.filter(t => t.scheduledDeparture === sObj.date)
     }

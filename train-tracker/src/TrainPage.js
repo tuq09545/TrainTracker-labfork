@@ -1,10 +1,11 @@
 import './styles/TrainList.css';
 
-import {useState, useEffect} from 'react';
-import {Link, useNavigate, useLocation} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { SearchObject } from './Search';
 import { filterTrains } from './functionality/app';
+
 import TrainInfo from './TrainInfo';
-import Search, { SearchObject } from './Search';
 
 function TrainPage({allTrains}){
     const location = useLocation();
@@ -72,7 +73,6 @@ function TrainPage({allTrains}){
 
     return(
         <div className="train-page">
-            <TrainForm/>
             {content}
         </div>
     )
@@ -116,26 +116,6 @@ function Tiebreaker(t){
                 </table>
             </div>
         </div>
-    )
-}
-
-export function TrainForm(){
-    const [selectedNumber, setSelectedNumber] = useState("");
-
-    const navigate = useNavigate();
-
-    function handleNumber(e){ setSelectedNumber(e.target.value); }
-
-    function search(event){
-        event.preventDefault();
-        navigate("/trains/"+selectedNumber);
-        setSelectedNumber("");
-    }
-
-    return (
-        <form onSubmit={search} className="train-form">
-            <input className="select-box" value={selectedNumber} placeholder="Quick Search by Number" onChange={handleNumber} type="number" min='1'></input>
-        </form>
     )
 }
 

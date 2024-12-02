@@ -22,7 +22,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, selectedRoute}) => {
+const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, selectedToStation, selectedRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
     
@@ -214,8 +214,9 @@ const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, s
                     <RouteLines/>
                     <TrainMarkers/>
                     <UserLocationMarker/>
+                    <SelectedStationMarker station={selectedToStation} name="To Station"/>
                     <SelectedStationMarker station={selectedStation} name="Selected Station"/>
-                    <SelectedStationMarker station={selectedFromStation} name="From"/>
+                    <SelectedStationMarker station={selectedFromStation} name="From Station"/>
                 </MapContainer>
             </div>
         </div>
