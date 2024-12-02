@@ -22,7 +22,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
+const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, selectedToStation, selectedRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
     
@@ -94,12 +94,12 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
         }
     }
 
-    function SelectedStationMarker(){
-        if (selectedStation){
+    function SelectedStationMarker({station, name}){
+        if (station){
             return (
                 <Marker
                     key={'selectedStation'}
-                    position={[selectedStation.lat, selectedStation.lon]}
+                    position={[station.lat, station.lon]}
                     icon={L.divIcon({
                         html: renderToString(<SelectedStationIcon />),
                         className: 'custom-icon',
@@ -108,8 +108,8 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                     })}>
 
                     <Popup>
-                        <strong>Selected Station</strong>
-                        <p>{selectedStation.stationCode} - {selectedStation.stationName ? selectedStation.stationName : selectedStation.name}</p>
+                        <strong>{name}</strong>
+                        <p>{station.stationCode} - {station.stationName ? station.stationName : station.name}</p>
                     </Popup>
                 </Marker>)
         }
@@ -138,12 +138,12 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                 ['Silver Service / Palmetto', 'Palmetto'],
             ]);
 
-            if (mapRoute){
-                if (name_map.has(mapRoute)){
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(mapRoute));
+            if (selectedRoute){
+                if (name_map.has(selectedRoute)){
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(selectedRoute));
                 }
                 else{
-                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === mapRoute)
+                    routesToDisplay = routes.features.filter((feature) => feature.properties.name === selectedRoute)
                 }
                 
             }
@@ -214,7 +214,9 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                     <RouteLines/>
                     <TrainMarkers/>
                     <UserLocationMarker/>
-                    <SelectedStationMarker/>
+                    <SelectedStationMarker station={selectedToStation} name="To Station"/>
+                    <SelectedStationMarker station={selectedStation} name="Selected Station"/>
+                    <SelectedStationMarker station={selectedFromStation} name="From Station"/>
                 </MapContainer>
             </div>
         </div>
