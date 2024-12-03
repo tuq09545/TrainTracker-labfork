@@ -53,7 +53,6 @@ function Station() {
  * route name,
  * etc.
  *
- * will include helper functions to determine gps coords, eta for a given station name, etc.
  * @constructor
  */
 function Train() {
@@ -79,6 +78,12 @@ function Train() {
     }
 }
 
+/**
+ * Construct {@link Station} object from Amtrak JSON data
+ * @function
+ * @param {JSON} data from Amtrak's site
+ * @returns {Station}
+ */
 function stationFromRaw(data) {
     const station = new Station();
 
@@ -108,8 +113,14 @@ function APIInstance() {
 
     /**
      * user-defined function gets called when dataset is updated
+     * @method
      */
     this.onUpdated = function(){};
+
+    /**
+     * refresh api data
+     * @method
+     */
     this.update = function() {
         if(this.routes === null) {
             getRoutesJSONData().then(data => {
@@ -141,26 +152,44 @@ function APIInstance() {
     }
 }
 
-
+/**
+ * get trains json object from backend
+ * @function
+ * @returns {Promise<any>}
+ */
 async function getTrainsJSONData() {
     return fetch(API_HOST + "/getTrains").then(
         res => res.json()
     )
 }
 
+/**
+ * get routes json object from backend
+ * @function
+ * @returns {Promise<any>}
+ */
 async function getRoutesJSONData() {
     return fetch(API_HOST + "/getRoutes").then(
         res => res.json()
     )
 }
 
+/**
+ * get stations json object from backend
+ * @function
+ * @returns {Promise<any>}
+ */
 async function getStationsJSONData() {
     return fetch(API_HOST + "/getStations").then(
         res => res.json()
     )
 }
 
-
+/**
+ * fetches new, updated list of {@link Train} objects
+ * @function
+ * @returns {Promise<any[]>}
+ */
 async function getTrainList() {
     let apiData = await getTrainsJSONData();
 
