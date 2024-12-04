@@ -35,13 +35,13 @@ import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 import Home from './Home';
 import MapPage from './MapPage';
 import TrainPage from './TrainPage';
+import { SearchObject } from './Search';
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
-import {getClosestStation} from './functionality/app';
 import { filterTrains } from './functionality/app';
 
 /**
@@ -59,13 +59,19 @@ function App() {
     const [refreshPopup, setRefreshPopup] = useState(false);
 
     const [userLocation, setUserLocation] = useState(null);
-    const [selectedStation, setSelectedStation] = useState("");
+
+    const [searchObject,setSearchObject] = useState(new SearchObject());
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
     const [currentTrains, setCurrentTrains] = useState([]);
-    const [mapRoute, setMapRoute] = useState("");
+    const [isLoading,setIsLoading] = useState(true);
+
+    const searchTrains = () => {
+        let trains = filterTrains(allTrains, searchObject);
+        setCurrentTrains(trains);
+    }
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth &lt;= 600);
@@ -78,14 +84,18 @@ function App() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+        
 
+    useEffect(() => {
+        searchTrains();
+    },[searchObject]);
 
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-
-        setMapRoute(selectedRoute);
+    // wait for allTrains to load &amp; then make search
+    if(isLoading){
+        if(allTrains.length > 0){
+            searchTrains();
+            setIsLoading(false);
+        }
     }
 
     const toggleSidebar = () => {
@@ -105,9 +115,10 @@ function App() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
                     setUserLocation(pos);
+                    /* not used, but keeping in case we want to reintroduce it
                     if (allStations.length > 0 &amp;&amp; pos) {
-                        setSelectedStation(getClosestStation(allStations, pos).stationCode);
-                    }
+                        setSearchObject(setProp(searchObject,"station",getClosestStation(allStations, pos).stationCode));
+                    }*/
                 },
                 (error) => console.log('error' + error));
         }
@@ -133,16 +144,18 @@ function App() {
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
     const MapPageComponent = () => ( &lt;MapPage
+        userLocation={userLocation}
         allRoutes={allRoutes}
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
-        mapRoute={mapRoute}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
     return (
@@ -215,13 +228,13 @@ export default App;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrainPage.html">filterTrainPage</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#SelectedStationIcon">SelectedStationIcon</a></li><li><a href="global.html#TrainIcon">TrainIcon</a></li><li><a href="global.html#UserLocationIcon">UserLocationIcon</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#SelectedStationIcon">SelectedStationIcon</a></li><li><a href="global.html#TrainIcon">TrainIcon</a></li><li><a href="global.html#UserLocationIcon">UserLocationIcon</a></li><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 02 2024 22:02:45 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 21:14:08 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

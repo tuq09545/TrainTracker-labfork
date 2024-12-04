@@ -30,61 +30,52 @@
  * Function allowing filtering of train objects based on search criteria.
  * @function
  * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
- * @param {number} selectedNumber - The train number to search by.
- * @param {string} selectedRoute - The route to search by.
- * @param {string} selectedStation - The station to search by.
- * @param {boolean} upcoming - Whether to search only for upcoming trains through a station.
- * @param {string} fromStation - The departure station to search by.
- * @param {string} toStation - The arrival station to search by.
+ * @param {object} sObj - The object containing search criteria (number, route, stations, upcoming).
  * @returns {object[]} The list of train objects matching the search criteria.
  * @exports filterTrains
  */
-export function filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) {
-    let trains = allTrains;
-    if (selectedNumber > 0){
-        trains = trains.filter(t => t.number === selectedNumber)
-    } if (selectedRoute){
-        trains = trains.filter(t => t.routeName === selectedRoute)
-    } if (selectedStation){
-        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === selectedStation) !== -1));
-        if (upcoming){
+export function filterTrains(allTrains, sObj) {
+    let trains = allTrains ?? [];
+    if (sObj.number > 0){
+        trains = trains.filter(t => t.number === sObj.number)
+    } if (sObj.route){
+        trains = trains.filter(t => t.routeName === sObj.route)
+    } if (sObj.station){
+        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === sObj.station) !== -1));
+        if (sObj.upcoming){
             trains = trains.filter((t) => {
-                let station = t.stations.find((station) => station.stationCode === selectedStation);
+                let station = t.stations.find((station) => station.stationCode === sObj.station);
                 if (station.stationCode === t.from &amp;&amp; station.hasDeparted){
                     return undefined;
                 }
                 if (!station.hasArrived || !station.hasDeparted){
                     return t;
                 }
+                return false;
             })
         }
-    } if (fromStation &amp;&amp; toStation){
+    } if (sObj.fromStation &amp;&amp; sObj.toStation){
         trains = trains.filter((t) =>{
-            return t.stations.findIndex((station) => station.stationCode === fromStation) &lt; t.stations.findIndex((station) => station.stationCode === toStation);
+            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) &lt; t.stations.findIndex((station) => station.stationCode === sObj.toStation);
         })
+        if (sObj.upcoming){
+            trains = trains.filter((t) => {
+                let station = t.stations.find((station) => station.stationCode === sObj.toStation);
+                if (station.stationCode === t.from &amp;&amp; station.hasDeparted){
+                    return undefined;
+                }
+                if (!station.hasArrived || !station.hasDeparted){
+                    return t;
+                }
+                return false;
+            })
+        }
+    } if (sObj.date){
+        trains = trains.filter(t => t.scheduledDeparture === sObj.date)
     }
     // sort results by number (ascending)
     trains = sortTrains(trains, (a,b) => a.number - b.number);
     return trains;
-}
-
-/**
- * Alternative filter function for train page criteria 
- * @function
- * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
- * @param {number} selectedNumber - The train number to search by.
- * @param {string} selectedDate - The departure date to search by.
- * @returns {object[]} The list of train objects matching the search criteria.
- * @exports filterTrainPage
- */
-export function filterTrainPage(allTrains, selectedNumber, selectedDate){
-    let trains = allTrains ?? [];
-    if(selectedNumber > 0){
-        trains = trains.filter(t => t.number === selectedNumber)
-    } if (selectedDate){
-        trains = trains.filter(t => t.scheduledDeparture === selectedDate)
-    }
-    return trains
 }
 
 /**
@@ -157,13 +148,13 @@ function sortTrains(trains, sortingCriteria){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrainPage.html">filterTrainPage</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#SelectedStationIcon">SelectedStationIcon</a></li><li><a href="global.html#TrainIcon">TrainIcon</a></li><li><a href="global.html#UserLocationIcon">UserLocationIcon</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#SelectedStationIcon">SelectedStationIcon</a></li><li><a href="global.html#TrainIcon">TrainIcon</a></li><li><a href="global.html#UserLocationIcon">UserLocationIcon</a></li><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 02 2024 22:02:45 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 21:14:08 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
