@@ -74,7 +74,7 @@ function TrainPage({allTrains}){
         content = <Tiebreaker trains={selectedTrains}/>
     } 
     
-    if (selectedTrains.length == 1){
+    if (selectedTrains.length === 1){
         content = <TrainInfo train={selectedTrains[0]}/>
     }
 

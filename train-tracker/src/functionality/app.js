@@ -23,6 +23,7 @@ export function filterTrains(allTrains, sObj) {
                 if (!station.hasArrived || !station.hasDeparted){
                     return t;
                 }
+                return false;
             })
         }
     } if (sObj.fromStation && sObj.toStation){
@@ -38,6 +39,7 @@ export function filterTrains(allTrains, sObj) {
                 if (!station.hasArrived || !station.hasDeparted){
                     return t;
                 }
+                return false;
             })
         }
     } if (sObj.date){
