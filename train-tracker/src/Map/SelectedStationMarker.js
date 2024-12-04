@@ -21,12 +21,12 @@ const SelectedStationIcon = () => (
  * @param {object} selectedStation - The object representing the currently selected station.
  * @returns {JSX.Element} The selected station component.
  */
-const SelectedStationMarker = ({selectedStation}) =>{
-    if (selectedStation){
+const SelectedStationMarker = ({station, name}) =>{
+    if (station){
         return (
             <Marker
-                key={'selectedStation'}
-                position={[selectedStation.lat, selectedStation.lon]}
+                key={'selectedStation'+station.stationCode}
+                position={[station.lat, station.lon]}
                 icon={L.divIcon({
                     html: renderToString(<SelectedStationIcon />),
                     className: 'custom-icon',
@@ -35,8 +35,8 @@ const SelectedStationMarker = ({selectedStation}) =>{
                 })}>
 
                 <Popup>
-                    <strong>Selected Station</strong>
-                    <p>{selectedStation.stationCode} - {selectedStation.stationName ? selectedStation.stationName : selectedStation.name}</p>
+                    <strong>{name} Station</strong>
+                    <p>{station.stationCode} - {station.stationName ? station.stationName : station.name}</p>
                 </Popup>
             </Marker>)
     }

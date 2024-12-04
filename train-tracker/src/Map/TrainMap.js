@@ -30,7 +30,7 @@ L.Icon.Default.mergeOptions({
  * @param {string} mapRoute - The currently selected route in search, to be displayed on the map.
  * @returns {JSX.Element} The train map component.
  */
-const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
+const TrainMap = ({trains, userLocation, selectedStation, selectedFromStation, selectedToStation, selectedRoute}) => {
     const [routes, setRoutes] = useState(null);
     const mapRef = useRef();
     
@@ -65,10 +65,12 @@ const TrainMap = ({trains, userLocation, selectedStation, mapRoute}) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <RouteLines routes={routes} mapRoute={mapRoute}/>
+                    <RouteLines routes={routes} mapRoute={selectedRoute}/>
                     <TrainMarkers trains={trains}/>
                     <UserLocationMarker userLocation={userLocation}/>
-                    <SelectedStationMarker selectedStation={selectedStation}/>
+                    <SelectedStationMarker station={selectedToStation} name="To Station"/>
+                    <SelectedStationMarker station={selectedStation} name="Selected Station"/>
+                    <SelectedStationMarker station={selectedFromStation} name="From Station"/>
                 </MapContainer>
             </div>
         </div>

@@ -2,12 +2,7 @@
  * Function allowing filtering of train objects based on search criteria.
  * @function
  * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
- * @param {number} selectedNumber - The train number to search by.
- * @param {string} selectedRoute - The route to search by.
- * @param {string} selectedStation - The station to search by.
- * @param {boolean} upcoming - Whether to search only for upcoming trains through a station.
- * @param {string} fromStation - The departure station to search by.
- * @param {string} toStation - The arrival station to search by.
+ * @param {object} sObj - The object containing search criteria (number, route, stations, upcoming).
  * @returns {object[]} The list of train objects matching the search criteria.
  * @exports filterTrains
  */
