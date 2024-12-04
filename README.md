@@ -6,7 +6,7 @@ Amtrak National Rail services are a critical part of American transit. In 2023, 
 
 ![image](https://github.com/user-attachments/assets/9bd8d454-0bb4-4c64-ad38-c34fcdd8d39b)
 
-## Table of Contents
+# Table of Contents
 
 - [Website Overview](#website-overview)
 - [Contribution](#contribution)
