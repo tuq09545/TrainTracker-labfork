@@ -14,10 +14,11 @@ import { IoClose } from "react-icons/io5";
  * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
  * @param {function} setRefresh - The function allowing app-wide toggling of refresh state.
  * @param {object[]} currentTrains - The list of objects representing trains matching the current search criteria.
- * @param {function} searchTrains - The function allowing app-wide searching of trains.
+ * @param {object} globalSearchObject - The state object containing app-wide searching criteria.
+ * @param {function} setGlobalSearchObject - The setter function for the state object containing app-wide searching criteria.
  * @returns {JSX.Element} The home page component.
  */
-function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
+function Home({allRoutes, allStations, setRefresh, currentTrains, globalSearchObject, setGlobalSearchObject
 }){
     const [selectedTrain, setSelectedTrain] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -58,8 +59,9 @@ function Home({allRoutes, allStations, setRefresh, currentTrains, searchTrains
               <Search className='Search'
                 routes = {getRouteOptions()}
                 stations = {getStationOptions()}
-                searchFun = {searchTrains}
                 setRefreshState={setRefresh}
+                globalSearchObject={globalSearchObject}
+                setGlobalSearchObject={setGlobalSearchObject}
               />
               </div>
               <div className='app-train-list-container'>

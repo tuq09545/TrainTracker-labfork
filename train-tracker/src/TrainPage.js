@@ -1,8 +1,10 @@
-import './styles/TrainPage.css';
+import './styles/TrainList.css';
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { filterTrainPage } from './functionality/app';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { SearchObject } from './Search';
+import { filterTrains } from './functionality/app';
+
 import TrainInfo from './TrainInfo';
 
 /**
@@ -21,16 +23,18 @@ function TrainPage({allTrains}){
 
     const [selectedTrains,setSelectedTrains] = useState([]);
 
+    function findTrain(){
+        let search = new SearchObject();
+        search.number = number;
+        search.date = date;
+        let trains = filterTrains(allTrains,search);
+        setSelectedTrains(trains);
+    }
+
     // wait for allTrains to load
     if(isLoading){
         if(allTrains.length > 0){
-            let trains;
-            if (number == "all"){
-                trains = allTrains.sort((a,b) => a.number - b.number);
-            } else {
-                trains = filterTrainPage(allTrains,number,date);
-            }
-            setSelectedTrains(trains);
+            findTrain();
             setIsLoading(false);
         }
     }
@@ -54,8 +58,7 @@ function TrainPage({allTrains}){
     // updates on number or date change
     useEffect(() => {
         if(!isLoading){
-            let trains = filterTrainPage(allTrains,number,date);
-            setSelectedTrains(trains);
+            findTrain();
         } 
     },[number,date])
 
@@ -83,18 +86,42 @@ function TrainPage({allTrains}){
 }
 
 function Tiebreaker(t){
+    function MakeTrain({train}){
+        const navigate = useNavigate();
+
+        const handleClick = () => {
+            navigate("/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture));
+        }
+
+        return (
+            <tr onClick={handleClick} className="train-row">
+                <td>{train.routeName} #{train.number}</td>
+                <td>{train.scheduledDeparture}</td>
+                <td>{train.from}</td>
+                <td>{train.to}</td>
+            </tr>
+        );
+    }
     return(
         <div className='tiebreaker'>
-            <h2>Multiple Results:</h2>
-            {t.trains.map((train) => {
-                return(
-                    <Link to={"/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture)}>
-                        <div>
-                            <h2 className='route'>{train.routeName} (#{train.number}) - Departed {train.scheduledDeparture}</h2>
-                        </div>
-                    </Link>
-                )
-            })}
+            <h2>Multiple Results ({t.trains.length}):</h2>
+            <div className="train-list-container">
+                <table className="train-list">
+                    <thead>
+                        <tr>
+                            <th>Train Name</th>
+                            <th>Departed At</th>
+                            <th>From</th>
+                            <th>To</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {t.trains.map((t,index) =>
+                            <MakeTrain train={t} key={index}/>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

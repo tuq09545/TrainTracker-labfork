@@ -7,13 +7,13 @@ import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 import Home from './Home';
 import MapPage from './MapPage';
 import TrainPage from './TrainPage';
+import { SearchObject } from './Search';
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
 
-import {getClosestStation} from './functionality/app';
 import { filterTrains } from './functionality/app';
 
 /**
@@ -31,13 +31,19 @@ function App() {
     const [refreshPopup, setRefreshPopup] = useState(false);
 
     const [userLocation, setUserLocation] = useState(null);
-    const [selectedStation, setSelectedStation] = useState("");
+
+    const [searchObject,setSearchObject] = useState(new SearchObject());
 
     const [allTrains, setAllTrains] = useState([]);
     const [allRoutes, setAllRoutes] = useState([]);
     const [allStations, setAllStations] = useState([]);
     const [currentTrains, setCurrentTrains] = useState([]);
-    const [mapRoute, setMapRoute] = useState("");
+    const [isLoading,setIsLoading] = useState(true);
+
+    const searchTrains = () => {
+        let trains = filterTrains(allTrains, searchObject);
+        setCurrentTrains(trains);
+    }
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
@@ -50,14 +56,18 @@ function App() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+        
 
+    useEffect(() => {
+        searchTrains();
+    },[searchObject]);
 
-    const searchTrains = (selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation) => {
-        let trains = filterTrains(allTrains, selectedNumber, selectedRoute, selectedStation, upcoming, fromStation, toStation);
-
-        setCurrentTrains(trains);
-
-        setMapRoute(selectedRoute);
+    // wait for allTrains to load & then make search
+    if(isLoading){
+        if(allTrains.length > 0){
+            searchTrains();
+            setIsLoading(false);
+        }
     }
 
     const toggleSidebar = () => {
@@ -77,9 +87,10 @@ function App() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
                     setUserLocation(pos);
+                    /* not used, but keeping in case we want to reintroduce it
                     if (allStations.length > 0 && pos) {
-                        setSelectedStation(getClosestStation(allStations, pos).stationCode);
-                    }
+                        setSearchObject(setProp(searchObject,"station",getClosestStation(allStations, pos).stationCode));
+                    }*/
                 },
                 (error) => console.log('error' + error));
         }
@@ -105,16 +116,18 @@ function App() {
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
     const MapPageComponent = () => ( <MapPage
+        userLocation={userLocation}
         allRoutes={allRoutes}
         allStations={allStations}
         setRefresh={setRefreshState}
         currentTrains={currentTrains}
-        searchTrains={searchTrains}
-        mapRoute={mapRoute}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
     />);
 
     return (
