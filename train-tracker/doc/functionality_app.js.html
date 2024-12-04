@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: functionality/app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: functionality/app.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Function allowing filtering of train objects based on search criteria.
+ * @function
+ * @param {object[]} allTrains - The list of all train objects available through the Amtrak API.
+ * @param {object} sObj - The object containing search criteria (number, route, stations, upcoming).
+ * @returns {object[]} The list of train objects matching the search criteria.
+ * @exports filterTrains
+ */
+export function filterTrains(allTrains, sObj) {
+    let trains = allTrains ?? [];
+    if (sObj.number > 0){
+        trains = trains.filter(t => t.number === sObj.number)
+    } if (sObj.route){
+        trains = trains.filter(t => t.routeName === sObj.route)
+    } if (sObj.station){
+        trains = trains.filter((t) => (t.stations.findIndex((station) => station.stationCode === sObj.station) !== -1));
+        if (sObj.upcoming){
+            trains = trains.filter((t) => {
+                let station = t.stations.find((station) => station.stationCode === sObj.station);
+                if (station.stationCode === t.from &amp;&amp; station.hasDeparted){
+                    return undefined;
+                }
+                if (!station.hasArrived || !station.hasDeparted){
+                    return t;
+                }
+                return false;
+            })
+        }
+    } if (sObj.fromStation &amp;&amp; sObj.toStation){
+        trains = trains.filter((t) =>{
+            return t.stations.findIndex((station) => station.stationCode === sObj.fromStation) &lt; t.stations.findIndex((station) => station.stationCode === sObj.toStation);
+        })
+        if (sObj.upcoming){
+            trains = trains.filter((t) => {
+                let station = t.stations.find((station) => station.stationCode === sObj.toStation);
+                if (station.stationCode === t.from &amp;&amp; station.hasDeparted){
+                    return undefined;
+                }
+                if (!station.hasArrived || !station.hasDeparted){
+                    return t;
+                }
+                return false;
+            })
+        }
+    } if (sObj.date){
+        trains = trains.filter(t => t.scheduledDeparture === sObj.date)
+    }
+    // sort results by number (ascending)
+    trains = sortTrains(trains, (a,b) => a.number - b.number);
+    return trains;
+}
+
+/**
+ * Function finding closest Amtrak station to user location.
+ * @function
+ * @param {object[]} stations - The list of all stations available through the Amtrak API.
+ * @param {object} userLocation - The object containing user location information.
+ * @returns {object} The closest station to the user.
+ * @exports getClosestStation
+ */
+export function getClosestStation(stations, userLocation){
+    let userLat = userLocation.coords.latitude;
+    let userLon = userLocation.coords.longitude;
+    let minDistance = calculateDistance(stations[0].lat, userLat, stations[0].lon, userLon);
+    let minStation = stations[0];
+    stations.forEach((station) => {
+        let distance = calculateDistance(station.lat, userLat, station.lon, userLon);
+        if (distance &lt; minDistance){
+            minDistance = distance;
+            minStation = station;
+        }
+    });
+    return minStation;
+}
+
+/**
+ * Function converting Amtrak station code to station object.
+ * @function
+ * @param {object[]} allStations - The list of all stations available through the Amtrak API.
+ * @param {string} stationCode - The station code string.
+ * @returns {object} The station matching the station code provided.
+ * @exports convertStationCodeToStation
+ */
+export function convertStationCodeToStation(allStations, stationCode){
+    let matchingStations = allStations.filter((station) => {
+        return station.stationCode === stationCode;
+    });
+    return matchingStations[0];
+}
+
+/**
+ * Function calculating distance between two points.
+ * @function
+ * @param {number} lat1 - The first latitude.
+ * @param {number} lat2 - The second latitude.
+ * @param {number} lon1 - The first longitude.
+ * @param {number} lon2 - The second longitude.
+ * @returns {number} The distance between the two points.
+ */
+function calculateDistance(lat1, lat2, lon1, lon2){
+    return (Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(lon2-lon1, 2)));
+}
+
+/**
+ * Function sorting trains by criteria.
+ * @function
+ * @param {object[]} trains - The list of train objects to sort.
+ * @param {fucntion} sortingCriteria - The comparison function.
+ * @returns {object[]} The sorted train objects.
+ */
+function sortTrains(trains, sortingCriteria){
+    return trains.sort(sortingCriteria);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

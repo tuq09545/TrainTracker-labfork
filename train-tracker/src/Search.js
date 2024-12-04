@@ -3,19 +3,42 @@ import { useState, useEffect } from 'react'
 
 import { IoSearch } from "react-icons/io5";
 import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './functionality/LocalCache';
 
-import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './LocalCache';
-
-export function SearchObject(){
-    this.number = "";
-    this.route = "";
-    this.station = "";
-    this.upcoming = false;
-    this.fromStation = "";
-    this.toStation = "";
-    this.date = "";
+/** Class representing a search object, which contains search criteria. */
+export class SearchObject {
+    /**
+     * Create a search object.
+     * @param {string} number - The value for train number.
+     * @param {string} route - The value for route.
+     * @param {string} station - The value for station.
+     * @param {boolean} upcoming - If the station search should only select trains that have not yet arrived at the station.
+     * @param {string} fromStation - The departure station.
+     * @param {string} toStation - The arrival station.
+     * @param {string} date - The departure date of the train.
+     */
+    constructor() {
+        this.number = "";
+        this.route = "";
+        this.station = "";
+        this.upcoming = false;
+        this.fromStation = "";
+        this.toStation = "";
+        this.date = "";
+    }
 }
 
+/**
+ * Component allowing searching of trains.
+ * @component
+ * @module Search
+ * @param {object[]} routes - The list of all Amtrak routes available.
+ * @param {object[]} stations - The list of all Amtrak stations available.
+ * @param {function} setRefreshState - The function that toggles refresh state for the app.
+ * @param {object} globalSearchObject - The state object containing app-wide searching criteria.
+ * @param {function} setGlobalSearchObject - The setter function for the state object containing app-wide searching criteria.
+ * @returns {JSX.Element} The search component.
+ */
 function Search({routes, stations, setRefreshState, globalSearchObject, setGlobalSearchObject
 }){
     const [searchObject,setSearchObject] = useState(new SearchObject());
@@ -85,10 +108,10 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
 
     return (
         <form className='form' onSubmit={search}>
-                <label className="favorites-dropdown-selection">
+                <label className="select-label">
                         <span className="select-label">
                         Favorites:
-                        <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
+                        <select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
                         </span>
                     </label>
 
@@ -145,5 +168,4 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
     );
     
 }
-
 export default Search;

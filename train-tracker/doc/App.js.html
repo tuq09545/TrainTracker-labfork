@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './styles/App.css';
+import Amtrak from './AmtrakAPI';
+import train_icon from './images/train_icon.png';
+import React, {useState, useEffect} from 'react'
+import { Routes, Route, HashRouter, Link } from 'react-router-dom';
+
+import Home from './Home';
+import MapPage from './MapPage';
+import TrainPage from './TrainPage';
+import { SearchObject } from './Search';
+import { IoIosArrowDropleft } from "react-icons/io";
+import { IoIosArrowDropright } from "react-icons/io";
+import { IoHomeOutline } from "react-icons/io5";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { IoTrainOutline } from "react-icons/io5";
+
+import { filterTrains } from './functionality/app';
+
+/**
+ * Component displaying the entire app.
+ * It renders the main components of the app using React Router.
+ * It renders 3 different pages in the form of components: Home, MapPage, and TrainPage.
+ * It also includes a sidebar/ nav bar on mobile.
+ * @component
+ * @module App
+ * @returns {JSX.Element} The app component.
+ */
+function App() {
+    const api = new Amtrak.APIInstance();
+    const [refreshState, setRefreshState] = useState(false);
+    const [refreshPopup, setRefreshPopup] = useState(false);
+
+    const [userLocation, setUserLocation] = useState(null);
+
+    const [searchObject,setSearchObject] = useState(new SearchObject());
+
+    const [allTrains, setAllTrains] = useState([]);
+    const [allRoutes, setAllRoutes] = useState([]);
+    const [allStations, setAllStations] = useState([]);
+    const [currentTrains, setCurrentTrains] = useState([]);
+    const [isLoading,setIsLoading] = useState(true);
+
+    const searchTrains = () => {
+        let trains = filterTrains(allTrains, searchObject);
+        setCurrentTrains(trains);
+    }
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth &lt;= 600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth &lt;= 600);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+        
+
+    useEffect(() => {
+        searchTrains();
+    },[searchObject]);
+
+    // wait for allTrains to load &amp; then make search
+    if(isLoading){
+        if(allTrains.length > 0){
+            searchTrains();
+            setIsLoading(false);
+        }
+    }
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    }
+
+    useEffect(() => {
+        api.onUpdated = function () {
+            setAllTrains(this.trains);
+            setAllRoutes(this.routes);
+            setAllStations(this.stations);
+        }
+        api.update();
+    }, []);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                    setUserLocation(pos);
+                    /* not used, but keeping in case we want to reintroduce it
+                    if (allStations.length > 0 &amp;&amp; pos) {
+                        setSearchObject(setProp(searchObject,"station",getClosestStation(allStations, pos).stationCode));
+                    }*/
+                },
+                (error) => console.log('error' + error));
+        }
+
+    }, [allStations]);
+
+    useEffect(() => {
+        if (refreshState) {
+            const newApi = new Amtrak.APIInstance();
+            newApi.onUpdated = function() {
+                setAllTrains(this.trains);
+            }
+            newApi.update();
+            setRefreshState(false);
+            setRefreshPopup(true);
+            setTimeout(() => setRefreshPopup(false), 3000); // Hide popup after 3 seconds
+            
+        }
+    }, [refreshState]);
+
+    const HomePage = () => ( &lt;Home
+        allRoutes={allRoutes}
+        allStations={allStations}
+        setRefresh={setRefreshState}
+        currentTrains={currentTrains}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
+    />);
+
+    const MapPageComponent = () => ( &lt;MapPage
+        userLocation={userLocation}
+        allRoutes={allRoutes}
+        allStations={allStations}
+        setRefresh={setRefreshState}
+        currentTrains={currentTrains}
+        globalSearchObject={searchObject}
+        setGlobalSearchObject={setSearchObject}
+    />);
+
+    return (
+        &lt;HashRouter>
+            &lt;div className="App">
+                {refreshPopup &amp;&amp; &lt;div className="refresh-popup">Refreshed&lt;/div>}
+                {isMobile ? (
+                    &lt;div className="topbar">
+                        &lt;Link to="/home" className="nav-icon-link">&lt;IoHomeOutline size={30} />&lt;/Link>
+                        &lt;Link to="/map" className="nav-icon-link">&lt;FaMapLocationDot size={30} />&lt;/Link>
+                        &lt;Link to="/trains/all" className="nav-icon-link">&lt;IoTrainOutline size={30} />&lt;/Link>
+                    &lt;/div>
+                ) : (
+                    &lt;div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
+                        &lt;div className="sidebar-header">
+                            &lt;img src={train_icon} alt="Train Icon" className="train_icon" />
+                            {sidebarOpen &amp;&amp; (
+                                &lt;h2 className="sidebar-heading">TrainTracker&lt;/h2>
+                            )}
+                        &lt;/div>
+                        &lt;button className="openbtn" onClick={toggleSidebar}>
+                            {sidebarOpen ? (
+                                &lt;IoIosArrowDropleft size={30} />
+                            ) : (
+                                &lt;IoIosArrowDropright size={30} />
+                            )}
+                        &lt;/button>
+                        {sidebarOpen ? (
+                            &lt;div className="nav">
+                                &lt;Link to="/home" className="nav-link">Home&lt;/Link>
+                                &lt;Link to="/map" className="nav-link">Map&lt;/Link>
+                                &lt;Link to="/trains/all" className="nav-link">Trains&lt;/Link>
+                            &lt;/div>
+                        ) : (
+                            &lt;div className="nav-icons">
+                                &lt;Link to="/home" className="nav-icon-link">
+                                    &lt;IoHomeOutline size={30} />
+                                &lt;/Link>
+                                &lt;Link to="/map" className="nav-icon-link">
+                                    &lt;FaMapLocationDot size={30} />
+                                &lt;/Link>
+                                &lt;Link to="/trains/all" className="nav-icon-link">
+                                    &lt;IoTrainOutline size={30} />
+                                &lt;/Link>
+                            &lt;/div>
+                        )}
+                    &lt;/div>
+                )}
+
+                &lt;div className={`content ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`} id="main">
+                    &lt;Routes>
+                        &lt;Route path="/" element={&lt;HomePage />} />
+                        &lt;Route path="/home" element={&lt;HomePage />} />
+                        &lt;Route path="/trains/:trainInfo" element={&lt;TrainPage allTrains={allTrains} />} />
+                        &lt;Route path="/map" element={&lt;MapPageComponent />} />
+                    &lt;/Routes>
+                &lt;/div>
+            &lt;/div>
+        &lt;/HashRouter>
+    );
+}
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,9 +1,17 @@
 import React from 'react';
 import './styles/TrainList.css';
 
+/**
+ * Component displaying list of trains.
+ * @component
+ * @module TrainList
+ * @param {object[]} trains - The list of train objects to display.
+ * @param {function} handleTrainClick - The train click handler, which opens an app-wide popup.
+ * @returns {JSX.Element} The train list component.
+ */
 function TrainList({trains, handleTrainClick}){
 
-    function MakeTrain({train}){
+    function TrainRow({train}){
         const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
         let punctualityClassName = train.punctuality?.endsWith('LATE') ? 'late' : 'ontime';
@@ -38,7 +46,7 @@ function TrainList({trains, handleTrainClick}){
                     </thead>
                     <tbody>
                         {trains.map(t =>
-                            <MakeTrain train={t} 
+                            <TrainRow train={t} 
                             key={`${t.heading} ${t.number} ${t.lastVisitedStation}`}/>
                         )}
                     </tbody>
@@ -64,5 +72,4 @@ function TrainList({trains, handleTrainClick}){
         )
     }
 }
-
 export default TrainList;

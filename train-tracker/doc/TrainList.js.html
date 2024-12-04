@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: TrainList.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: TrainList.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import './styles/TrainList.css';
+
+/**
+ * Component displaying list of trains.
+ * @component
+ * @module TrainList
+ * @param {object[]} trains - The list of train objects to display.
+ * @param {function} handleTrainClick - The train click handler, which opens an app-wide popup.
+ * @returns {JSX.Element} The train list component.
+ */
+function TrainList({trains, handleTrainClick}){
+
+    function TrainRow({train}){
+        const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
+
+        let punctualityClassName = train.punctuality?.endsWith('LATE') ? 'late' : 'ontime';
+
+        const handleClick = () => {
+            handleTrainClick(train);
+        }
+
+        return (
+            &lt;tr onClick={handleClick} className="train-row">
+                &lt;td>#{train.number}&lt;/td>
+                &lt;td>{train.routeName}&lt;/td>
+                &lt;td>{train.from}&lt;/td>
+                &lt;td>{train.to}&lt;/td>
+                &lt;td className={punctualityClassName}>{status}&lt;/td>
+            &lt;/tr>
+        );
+    }
+
+    if (trains.length !== 0){
+        return (
+            &lt;div className="train-list-container">
+                &lt;table className="train-list">
+                    &lt;thead>
+                        &lt;tr>
+                            &lt;th>Train Number&lt;/th>
+                            &lt;th>Line Name&lt;/th>
+                            &lt;th>From&lt;/th>
+                            &lt;th>To&lt;/th>
+                            &lt;th>Status&lt;/th>
+                        &lt;/tr>
+                    &lt;/thead>
+                    &lt;tbody>
+                        {trains.map(t =>
+                            &lt;TrainRow train={t} 
+                            key={`${t.heading} ${t.number} ${t.lastVisitedStation}`}/>
+                        )}
+                    &lt;/tbody>
+                &lt;/table>
+            &lt;/div>
+        );
+    } else {
+        return (
+            &lt;div>
+                &lt;table className="train-list">
+                &lt;thead>
+                        &lt;tr>
+                            &lt;th>Train Number&lt;/th>
+                            &lt;th>Line Name&lt;/th>
+                            &lt;th>From&lt;/th>
+                            &lt;th>To&lt;/th>
+                            &lt;th>Status&lt;/th>
+                        &lt;/tr>
+                    &lt;/thead>
+                &lt;/table>
+                &lt;h3>Oops! It looks like we couldn't find the train you were looking for &amp;#128647;&lt;/h3>
+            &lt;/div>
+        )
+    }
+}
+export default TrainList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

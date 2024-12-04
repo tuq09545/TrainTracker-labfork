@@ -16,8 +16,16 @@ import { IoTrainOutline } from "react-icons/io5";
 
 import { filterTrains } from './functionality/app';
 
+/**
+ * Component displaying the entire app.
+ * It renders the main components of the app using React Router.
+ * It renders 3 different pages in the form of components: Home, MapPage, and TrainPage.
+ * It also includes a sidebar/ nav bar on mobile.
+ * @component
+ * @module App
+ * @returns {JSX.Element} The app component.
+ */
 function App() {
-    // load api data
     const api = new Amtrak.APIInstance();
     const [refreshState, setRefreshState] = useState(false);
     const [refreshPopup, setRefreshPopup] = useState(false);
@@ -36,7 +44,6 @@ function App() {
         let trains = filterTrains(allTrains, searchObject);
         setCurrentTrains(trains);
     }
-    const [mapRoute, setMapRoute] = useState("");
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
@@ -182,5 +189,4 @@ function App() {
         </HashRouter>
     );
 }
-
 export default App;

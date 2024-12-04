@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Search.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Search.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './styles/Search.css';
+import { useState, useEffect } from 'react'
+
+import { IoSearch } from "react-icons/io5";
+import { MdClear, MdRefresh, MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { getLocalCache, setRouteToCache, isFavorited, removeRouteFromCache } from './functionality/LocalCache';
+
+/** Class representing a search object, which contains search criteria. */
+export class SearchObject {
+    /**
+     * Create a search object.
+     * @param {string} number - The value for train number.
+     * @param {string} route - The value for route.
+     * @param {string} station - The value for station.
+     * @param {boolean} upcoming - If the station search should only select trains that have not yet arrived at the station.
+     * @param {string} fromStation - The departure station.
+     * @param {string} toStation - The arrival station.
+     * @param {string} date - The departure date of the train.
+     */
+    constructor() {
+        this.number = "";
+        this.route = "";
+        this.station = "";
+        this.upcoming = false;
+        this.fromStation = "";
+        this.toStation = "";
+        this.date = "";
+    }
+}
+
+/**
+ * Component allowing searching of trains.
+ * @component
+ * @module Search
+ * @param {object[]} routes - The list of all Amtrak routes available.
+ * @param {object[]} stations - The list of all Amtrak stations available.
+ * @param {function} setRefreshState - The function that toggles refresh state for the app.
+ * @param {object} globalSearchObject - The state object containing app-wide searching criteria.
+ * @param {function} setGlobalSearchObject - The setter function for the state object containing app-wide searching criteria.
+ * @returns {JSX.Element} The search component.
+ */
+function Search({routes, stations, setRefreshState, globalSearchObject, setGlobalSearchObject
+}){
+    const [searchObject,setSearchObject] = useState(new SearchObject());
+    const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
+
+    // update local search object when global search is changed
+    useEffect(() => {
+        setSearchObject(globalSearchObject);
+    },[globalSearchObject]);
+
+    useEffect(() => {
+        // update favorite button
+        if(isFavorited(searchObject.route)){
+            setCurrentRouteFavorited(true);
+        } else {
+            setCurrentRouteFavorited(false);
+        }
+    },[searchObject.route]);
+
+    const nonFavoriteIcon = &lt;MdFavoriteBorder style={{color:'black'}}/>;
+    const favoriteIcon = &lt;MdFavorite style={{color:'red'}}/>;
+    
+    function handleFavoriteSelection(e){
+        if (e.target.value !== "---"){
+            setSearchObject({...searchObject, "route": e.target.value})
+        }   
+    }
+
+    function setToFavorites(){
+        if(currentRouteFavorited){
+            let res = removeRouteFromCache(searchObject.route)
+            if(res===0){
+                setCurrentRouteFavorited(false);
+            }
+        } else {
+            let res = setRouteToCache(searchObject.route);
+            if(res===0){
+                setCurrentRouteFavorited(true);
+            }
+        }
+    }
+
+    const favoriteOptions = () => {
+        let favNames = ["---"]
+        const cachedTrains = getLocalCache();
+        Object.keys(cachedTrains.data).forEach(trainName => {
+            favNames.push(trainName)
+        });
+        const mapping = favNames.map((element, index) => {
+            return &lt;option value={element} key={index}>{element}&lt;/option>})
+        return mapping;
+    }
+
+    // search just sets global 
+    const search = (event) =>{
+        event.preventDefault();
+        setGlobalSearchObject(searchObject);
+    }
+
+    const clear = () => {
+        setGlobalSearchObject(new SearchObject());
+    }
+
+    const refresh = () => {
+        setRefreshState(true);
+    }
+
+    return (
+        &lt;form className='form' onSubmit={search}>
+                &lt;label className="select-label">
+                        &lt;span className="select-label">
+                        Favorites:
+                        &lt;select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}&lt;/select>
+                        &lt;/span>
+                    &lt;/label>
+
+                &lt;div className='top-label'>
+                    Search Options: 
+                &lt;/div>
+                &lt;span className="select-label">
+                        Number:
+                        &lt;input className="select-box" value={searchObject.number} type="number" min='1' onChange=
+                            // onChange: set local search object to a copy of itself with the property changed
+                            {e => setSearchObject({...searchObject, "number": e.target.value})}
+                        />
+                    &lt;/span>
+                &lt;span className="select-label">
+                        Route:
+                        &lt;select className="select-box" value={searchObject.route} children={routes} onChange=
+                            {e => setSearchObject({...searchObject, "route": e.target.value})}
+                        />
+                        &lt;div onClick={setToFavorites} className='form-button' style={{border:'none'}}>{currentRouteFavorited ? favoriteIcon : nonFavoriteIcon}&lt;/div>
+                    &lt;/span>
+                &lt;span className="select-label">
+                        Station:
+                        &lt;select className='select-box' value={searchObject.station} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "station": e.target.value})}
+                        />
+                    &lt;/span>
+                &lt;span className="select-label">
+                        Upcoming trains only: 
+                        &lt;input checked={searchObject.upcoming} type="checkbox" onChange=
+                            {e => setSearchObject({...searchObject, "upcoming": e.target.checked})}
+                        />
+                    &lt;/span>
+
+                &lt;span className="select-label">
+                        To:
+                        &lt;select className="select-box" value={searchObject.toStation} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "toStation": e.target.value})}
+                        />
+                    &lt;/span>
+                
+                &lt;span className="select-label">
+                        From:
+                        &lt;select className="select-box" value={searchObject.fromStation} children={stations} onChange=
+                            {e => setSearchObject({...searchObject, "fromStation": e.target.value})}
+                        />
+                    &lt;/span>
+
+                &lt;span className='button-container'>
+                    &lt;div onClick={search} className='form-button'>Search &lt;IoSearch/>&lt;/div>
+                    &lt;div onClick={clear} className='form-button'>Clear &lt;MdClear/>&lt;/div>
+                    &lt;div onClick={refresh} className='form-button'>Refresh &lt;MdRefresh/>&lt;/div>
+                &lt;/span>
+              &lt;/form>
+    );
+    
+}
+export default Search;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

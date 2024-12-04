@@ -7,6 +7,13 @@ import { filterTrains } from './functionality/app';
 
 import TrainInfo from './TrainInfo';
 
+/**
+ * Component displaying train specific page.
+ * @component
+ * @module TrainPage
+ * @param {object[]} allTrains - The list of all Amtrak trains running
+ * @returns {JSX.Element}
+ */
 function TrainPage({allTrains}){
     const location = useLocation();
     const [isLoading,setIsLoading] = useState(true);
@@ -67,7 +74,7 @@ function TrainPage({allTrains}){
         content = <Tiebreaker trains={selectedTrains}/>
     } 
     
-    if (selectedTrains.length == 1){
+    if (selectedTrains.length === 1){
         content = <TrainInfo train={selectedTrains[0]}/>
     }
 

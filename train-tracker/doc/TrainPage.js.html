@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: TrainPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: TrainPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './styles/TrainList.css';
+
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { SearchObject } from './Search';
+import { filterTrains } from './functionality/app';
+
+import TrainInfo from './TrainInfo';
+
+/**
+ * Component displaying train specific page.
+ * @component
+ * @module TrainPage
+ * @param {object[]} allTrains - The list of all Amtrak trains running
+ * @returns {JSX.Element}
+ */
+function TrainPage({allTrains}){
+    const location = useLocation();
+    const [isLoading,setIsLoading] = useState(true);
+
+    const [number,setNumber] = useState("");
+    const [date,setDate] = useState("");
+
+    const [selectedTrains,setSelectedTrains] = useState([]);
+
+    function findTrain(){
+        let search = new SearchObject();
+        search.number = number;
+        search.date = date;
+        let trains = filterTrains(allTrains,search);
+        setSelectedTrains(trains);
+    }
+
+    // wait for allTrains to load
+    if(isLoading){
+        if(allTrains.length > 0){
+            findTrain();
+            setIsLoading(false);
+        }
+    }
+
+    // updates on window location change
+    useEffect(() =>{
+        let url = window.location.href;
+        let split = url.split("/");
+        let params = split[split.length -1];
+
+        if (params.includes("?date=")){
+            let [n,d] = params.split("?date=");
+            setNumber(n);
+            setDate(decodeURIComponent(d));
+        } else {
+            setNumber(params);
+            setDate("");
+        }
+    },[location])
+
+    // updates on number or date change
+    useEffect(() => {
+        if(!isLoading){
+            findTrain();
+        } 
+    },[number,date])
+
+    let content = &lt;h2>No Trains Found&lt;/h2>
+    
+
+    if(isLoading){
+        content=&lt;h2>Loading...&lt;/h2>
+    }
+
+    // Multiple Results
+    if (selectedTrains.length > 1){
+        content = &lt;Tiebreaker trains={selectedTrains}/>
+    } 
+    
+    if (selectedTrains.length === 1){
+        content = &lt;TrainInfo train={selectedTrains[0]}/>
+    }
+
+    return(
+        &lt;div className="train-page">
+            {content}
+        &lt;/div>
+    )
+}
+
+function Tiebreaker(t){
+    function MakeTrain({train}){
+        const navigate = useNavigate();
+
+        const handleClick = () => {
+            navigate("/trains/"+train.number+"?date="+encodeURIComponent(train.scheduledDeparture));
+        }
+
+        return (
+            &lt;tr onClick={handleClick} className="train-row">
+                &lt;td>{train.routeName} #{train.number}&lt;/td>
+                &lt;td>{train.scheduledDeparture}&lt;/td>
+                &lt;td>{train.from}&lt;/td>
+                &lt;td>{train.to}&lt;/td>
+            &lt;/tr>
+        );
+    }
+    return(
+        &lt;div className='tiebreaker'>
+            &lt;h2>Multiple Results ({t.trains.length}):&lt;/h2>
+            &lt;div className="train-list-container">
+                &lt;table className="train-list">
+                    &lt;thead>
+                        &lt;tr>
+                            &lt;th>Train Name&lt;/th>
+                            &lt;th>Departed At&lt;/th>
+                            &lt;th>From&lt;/th>
+                            &lt;th>To&lt;/th>
+                        &lt;/tr>
+                    &lt;/thead>
+                    &lt;tbody>
+                        {t.trains.map((t,index) =>
+                            &lt;MakeTrain train={t} key={index}/>
+                        )}
+                    &lt;/tbody>
+                &lt;/table>
+            &lt;/div>
+        &lt;/div>
+    )
+}
+
+export default TrainPage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

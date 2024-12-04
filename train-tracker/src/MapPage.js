@@ -1,10 +1,23 @@
 import './styles/MapPage.css';
 import React from 'react'
 import Search from './Search';
-import TrainMap from './TrainMap';
+import TrainMap from './Map/TrainMap';
 
 import {convertStationCodeToStation} from './functionality/app';
 
+/**
+ * Component displaying map page.
+ * @component
+ * @module MapPage
+ * @param {object[]} allRoutes - The list of objects representing all available Amtrak routes.
+ * @param {object[]} allStations - The list of objects representing all available Amtrak stations.
+ * @param {object} userLocation - The object representing the user's location.
+ * @param {function} setRefresh - The function allowing app-wide toggling of refresh state.
+ * @param {object[]} currentTrains - The list of objects representing trains matching the current search criteria.
+ * @param {object} globalSearchObject - The state object containing app-wide searching criteria.
+ * @param {function} setGlobalSearchObject - The setter function for the state object containing app-wide searching criteria.
+ * @returns {JSX.Element} The map page component.
+ */
 function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrains, globalSearchObject, setGlobalSearchObject
 }){
 
@@ -49,5 +62,4 @@ function MapPage({allRoutes, allStations, userLocation, setRefresh, currentTrain
         </div>
     )
 }
-
 export default MapPage;

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Map/RouteLines.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Map/RouteLines.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import colormap from "colormap";
+import { Polyline, Popup} from "react-leaflet";
+
+/**
+ * Component displaying routes as leaflet Polylines.
+ * @component
+ * @module RouteLines
+ * @param {object[]} routes - The route location information.
+ * @param {string} mapRoute - The currently selected route in search, to be displayed on the map.
+ * @returns {JSX.Element} The route lines component.
+ */
+const RouteLines = ({routes, mapRoute}) =>{
+    if (routes){
+        let colors = colormap({
+            colormap: 'jet',
+            nshades: routes.length,
+            format: 'hex',
+            alpha: 1
+        });
+        let routesToDisplay = routes.features;
+        const name_map = new Map([
+            ['Amtrak Cascades', 'Cascades'],
+            ['Carolinian / Piedmont', 'Carolinian'],
+            ['Downeaster', 'The Downeaster'],
+            ['Hiawatha', 'Hiawathas'],
+            ['Illinois Service', 'Illini (Illinois_Service)'],
+            ['Keystone', 'Keystone Service'],
+            ['Lincoln Service Missouri River Runner', 'Kansas City - St. Louis (Missouri River Runner)'],
+            ['Missouri River Runner', 'Kansas City - St. Louis (Missouri River Runner)'],
+            ['Michigan Services', 'Wolverines (Michigan_Services)'],
+            ['Northeast Regional', 'Regional'],
+            ['Silver Service / Palmetto', 'Palmetto'],
+        ]);
+
+        if (mapRoute){
+            if (name_map.has(mapRoute)){
+                routesToDisplay = routes.features.filter((feature) => feature.properties.name === name_map.get(mapRoute));
+            }
+            else{
+                routesToDisplay = routes.features.filter((feature) => feature.properties.name === mapRoute)
+            }
+            
+        }
+        if (routesToDisplay){
+            return (&lt;div>
+                {routesToDisplay.map((feature) => {
+                    return(&lt;Polyline positions={feature.geometry.coordinates} pathOptions={{ color: colors[feature.id-1], weight:'5'}} key={feature.properties.name}>
+                        {&lt;Popup>
+                            {feature.properties.name}
+                        &lt;/Popup>}
+                    &lt;/Polyline>)
+                })} 
+            &lt;/div>)
+        }     
+    }
+    else{
+        return &lt;div>&lt;/div>
+    }
+}
+export default RouteLines;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-MapPage.html">MapPage</a></li><li><a href="module-RouteLines.html">RouteLines</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-SelectedStationMarker.html">SelectedStationMarker</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-TrainInfo.html">TrainInfo</a></li><li><a href="module-TrainList.html">TrainList</a></li><li><a href="module-TrainMap.html">TrainMap</a></li><li><a href="module-TrainMarkers.html">TrainMarkers</a></li><li><a href="module-TrainPage.html">TrainPage</a></li><li><a href="module-TrainPopup.html">TrainPopup</a></li><li><a href="module-UserLocationMarker.html">UserLocationMarker</a></li><li><a href="module-convertStationCodeToStation.html">convertStationCodeToStation</a></li><li><a href="module-filterTrains.html">filterTrains</a></li><li><a href="module-getClosestStation.html">getClosestStation</a></li><li><a href="module-getLocalCache.html">getLocalCache</a></li><li><a href="module-isFavorited.html">isFavorited</a></li><li><a href="module-removeRouteFromCache.html">removeRouteFromCache</a></li><li><a href="module-setRouteToCache.html">setRouteToCache</a></li></ul><h3>Classes</h3><ul><li><a href="APIInstance.html">APIInstance</a></li><li><a href="SearchObject.html">SearchObject</a></li><li><a href="Station.html">Station</a></li><li><a href="Stop.html">Stop</a></li><li><a href="Train.html">Train</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutesJSONData">getRoutesJSONData</a></li><li><a href="global.html#getStationsJSONData">getStationsJSONData</a></li><li><a href="global.html#getTrainList">getTrainList</a></li><li><a href="global.html#getTrainsJSONData">getTrainsJSONData</a></li><li><a href="global.html#stationFromRaw">stationFromRaw</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 03 2024 22:17:43 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

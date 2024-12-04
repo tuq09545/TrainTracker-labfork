@@ -3,6 +3,16 @@ import {useEffect} from 'react';
 import './styles/TrainPopup.css'
 import TrainInfo from "./TrainInfo";
 
+/**
+ * Component which creates a modal in which to show train-specific information.
+ * @component
+ * @module TrainPopup
+ * @param {function} onClose - The function that handles closing the popup.
+ * @param {JSX.Element[]} children - The list of children to include in the popup.
+ * @param {JSX.Element} actionBar - The component allowing user interaction, in this case the close button.
+ * @param {object} train - The specific train object to display.
+ * @returns {JSX.Element} The train popup component.
+ */
 function TrainPopup({onClose, children, actionBar, train}){
 
     useEffect(() => {
@@ -29,5 +39,4 @@ function TrainPopup({onClose, children, actionBar, train}){
     document.querySelector('.modal-container')
     );
 }
-
 export default TrainPopup;

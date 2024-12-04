@@ -1,9 +1,20 @@
+/**
+ * @module Server
+ */
+
 const MAP_HEX = {
     0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6,
     7: 7, 8: 8, 9: 9, a: 10, b: 11, c: 12, d: 13,
     e: 14, f: 15, A: 10, B: 11, C: 12, D: 13,
     E: 14, F: 15
 };
+
+/**
+ * Converts hex string to Uint8Array
+ * @function
+ * @param {String} hexString String of hex characters: "FFFFEE232BB", etc
+ * @returns {Uint8Array} Unsigned integer representation
+ */
 function fromHex(hexString) {
     const bytes = new Uint8Array(Math.floor((hexString || "").length / 2));
     let i;
@@ -24,6 +35,12 @@ let cryptoParams = null;
 const trainsDataURL = "https://maps.amtrak.com/services/MapDataService/trains/getTrainsData";
 const stationsDataURL = "https://maps.amtrak.com/services/MapDataService/stations/trainStations";
 
+/**
+ * Function to get decrypted response from Amtrak URL
+ * @function
+ * @param {String} url - The list of train objects to display.
+ * @returns {String} The decrypted response
+ */
 async function getDecryptedJSONData(url) {
     const rawDataBase64 = await fetch(url)
         .then(
@@ -116,6 +133,11 @@ async function getDecryptedJSONData(url) {
         .then(m => new TextDecoder().decode(m));
 }
 
+/**
+ * fetches response from Amtrak routes page
+ * @function
+ * @returns {Promise<string>} String from Amtrak routes page
+ */
 async function getRoutesJSONData() {
     return fetch("https://maps.amtrak.com/rttl/js/RoutesList.json").then(
         res => res.text()
@@ -123,6 +145,14 @@ async function getRoutesJSONData() {
 }
 
 export default {
+    /**
+     * Incoming request handler.
+     * Acts as tandem CORS proxy / decrypting service for frontend
+     * @param {Request} req request object
+     * @param env unused environment
+     * @param ctx unused context
+     * @returns {Promise<Response>}
+     */
     async fetch(req, env, ctx) {
         const successHeaders = {
             "Content-Type": "text/json",

@@ -1,5 +1,12 @@
 const LOCAL_CACHE="LOCAL"
 
+
+/**
+ * Function allowing the retrieval of the local cache values associated with this project.
+ * @function
+ * @returns {object[]} The list of the key value pairs found in the local cache.
+ * @exports getLocalCache
+ */
 export const getLocalCache=()=>{
 
     let localCache={
@@ -20,6 +27,13 @@ export const getLocalCache=()=>{
     return localCache
 }
 
+/**
+ * Function allowing the removal of a route name found in the local cache.
+ * @function
+ * @param {string} selectedRoute - A string containing a unique route name.
+ * @returns {number} A value representing success or failure of the function 
+ * @exports removeRouteFromCache
+ */
 export const removeRouteFromCache=(selectedRoute)=>{
     if (selectedRoute === ""){
         alert("No route selected");
@@ -38,6 +52,13 @@ export const removeRouteFromCache=(selectedRoute)=>{
     return 0;
 }
 
+/**
+ * Function allowing the setting of a route name to the local cache on the device.
+ * @function
+ * @param {string} selectedRoute - A string containing a unique route name.
+ * @returns {number} A value representing success or failure of the function.
+ * @exports setRouteToCache
+ */
 export const setRouteToCache=(selectedRoute)=>{
     if (selectedRoute === ""){
         alert("No route selected");
@@ -64,6 +85,13 @@ export const setRouteToCache=(selectedRoute)=>{
 
 }
 
+/**
+ * Function facilitating the confirmation of whether a particular route is found in the local cache.
+ * @function
+ * @param {string} routeName - A string containing a unique route name.
+ * @returns {boolean} The list of the key value pairs found in the local cache.
+ * @exports isFavorited
+ */
 export const isFavorited=(routeName)=>{
     const localCache = getLocalCache();
     const data = localCache.data;
