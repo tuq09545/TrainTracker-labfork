@@ -28,6 +28,12 @@ Inside the folder that has the .tar file, run the following command:
 
 # Usage
 
+## Non-Development (Web / User)
+
+To use this online, go to [https://cis3296f24.github.io/TrainTracker/](https://cis3296f24.github.io/TrainTracker/)
+
+## Development
+
 In the project directory, navigate to the folder 'train-tracker', then you can run:
 
 ### `npm install`
