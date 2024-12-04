@@ -108,10 +108,10 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
 
     return (
         <form className='form' onSubmit={search}>
-                <label className="favorites-dropdown-selection">
+                <label className="select-label">
                         <span className="select-label">
                         Favorites:
-                        <select className="favorites-dropdown" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
+                        <select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
                         </span>
                     </label>
 
