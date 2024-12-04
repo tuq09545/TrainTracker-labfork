@@ -7,6 +7,7 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying user location icon.
  * @component
+ * @memberOf module:UserLocationMarker
  * @returns {JSX.Element} The user location icon component.
  */
 const UserLocationIcon = () => (

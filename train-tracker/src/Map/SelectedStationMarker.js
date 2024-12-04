@@ -6,6 +6,7 @@ import { renderToString } from "react-dom/server";
 /**
  * Component displaying station icon.
  * @component
+ * @memberOf module:SelectedStationMarker
  * @returns {JSX.Element} The selected station icon component.
  */
 const SelectedStationIcon = () => (
