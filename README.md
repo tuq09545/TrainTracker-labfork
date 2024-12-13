@@ -41,7 +41,7 @@ Follow this [project board](https://github.com/orgs/cis3296f24/projects/105) to 
 ## How to build
 1. Use this [github repository](https://github.com/cis3296f24/TrainTracker/) (https://github.com/cis3296f24/TrainTracker/)
 2. Clone this repository to your local system (git clone)
-3. If you haven't, download Node.js for your respective system [here](https://nodejs.org/en/download/package-manager/current)\
+3. If you haven't, download Node.js for your respective system [here](https://nodejs.org/en/download/prebuilt-installer/current)\
      i. `npm -v`\
      ii. `node -v`
 4. Navigate to the folder train-tracker: `cd train-tracker`
