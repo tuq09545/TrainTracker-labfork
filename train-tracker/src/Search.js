@@ -43,6 +43,7 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
 }){
     const [searchObject,setSearchObject] = useState(new SearchObject());
     const [currentRouteFavorited, setCurrentRouteFavorited] = useState(false);
+    const [searchHistory, setSearchHistory] = useState([]);
 
     // update local search object when global search is changed
     useEffect(() => {
@@ -96,6 +97,13 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
     const search = (event) =>{
         event.preventDefault();
         setGlobalSearchObject(searchObject);
+        
+        // Add to search history
+        const searchString = `${searchObject.route || searchObject.number || searchObject.station || 'All Trains'}`;
+        if (searchString && !searchHistory.includes(searchString)) {
+            const newHistory = [searchString, ...searchHistory.slice(0, 4)]; // Keep last 5 searches
+            setSearchHistory(newHistory);
+        }
     }
 
     const clear = () => {
@@ -114,6 +122,24 @@ function Search({routes, stations, setRefreshState, globalSearchObject, setGloba
                         <select className="select-box" onClick={handleFavoriteSelection}>{favoriteOptions()}</select>
                         </span>
                     </label>
+
+                {searchHistory.length > 0 && (
+                    <label className="select-label">
+                        <span className="select-label">
+                        Recent Searches:
+                        <select className="select-box" onChange={(e) => {
+                            if (e.target.value !== "---") {
+                                setSearchObject({...searchObject, "route": e.target.value});
+                            }
+                        }}>
+                            <option value="---">---</option>
+                            {searchHistory.map((item, index) => (
+                                <option key={index} value={item}>{item}</option>
+                            ))}
+                        </select>
+                        </span>
+                    </label>
+                )}
 
                 <div className='top-label'>
                     Search Options: 

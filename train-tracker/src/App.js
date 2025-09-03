@@ -13,6 +13,8 @@ import { IoIosArrowDropright } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { IoTrainOutline } from "react-icons/io5";
+import { IoSunnyOutline } from "react-icons/io5";
+import { IoMoonOutline } from "react-icons/io5";
 
 import { filterTrains } from './functionality/app';
 
@@ -47,6 +49,7 @@ function App() {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+    const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
         const handleResize = () => {
@@ -72,6 +75,10 @@ function App() {
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
+    }
+
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
     }
 
     useEffect(() => {
@@ -132,13 +139,16 @@ function App() {
 
     return (
         <HashRouter>
-            <div className="App">
+            <div className={`App ${!isDarkMode ? 'light-theme' : ''}`}>
                 {refreshPopup && <div className="refresh-popup">Refreshed</div>}
                 {isMobile ? (
                     <div className="topbar">
                         <Link to="/home" className="nav-icon-link"><IoHomeOutline size={30} /></Link>
                         <Link to="/map" className="nav-icon-link"><FaMapLocationDot size={30} /></Link>
                         <Link to="/trains/all" className="nav-icon-link"><IoTrainOutline size={30} /></Link>
+                        <button className="nav-icon-link theme-toggle" onClick={toggleTheme}>
+                            {isDarkMode ? <IoSunnyOutline size={30} /> : <IoMoonOutline size={30} />}
+                        </button>
                     </div>
                 ) : (
                     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="mySidebar">
@@ -160,6 +170,10 @@ function App() {
                                 <Link to="/home" className="nav-link">Home</Link>
                                 <Link to="/map" className="nav-link">Map</Link>
                                 <Link to="/trains/all" className="nav-link">Trains</Link>
+                                <button className="nav-link theme-toggle" onClick={toggleTheme}>
+                                    {isDarkMode ? <IoSunnyOutline size={30} /> : <IoMoonOutline size={30} />}
+                                    {sidebarOpen && <span style={{marginLeft: '10px'}}>{isDarkMode ? 'Light' : 'Dark'}</span>}
+                                </button>
                             </div>
                         ) : (
                             <div className="nav-icons">
@@ -172,6 +186,9 @@ function App() {
                                 <Link to="/trains/all" className="nav-icon-link">
                                     <IoTrainOutline size={30} />
                                 </Link>
+                                <button className="nav-icon-link theme-toggle" onClick={toggleTheme}>
+                                    {isDarkMode ? <IoSunnyOutline size={30} /> : <IoMoonOutline size={30} />}
+                                </button>
                             </div>
                         )}
                     </div>

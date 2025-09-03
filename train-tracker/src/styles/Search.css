@@ -4,17 +4,19 @@
     align-items: flex-start;
     gap: 0.5rem;
     padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(145deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 2px solid #6b46c1;
     max-width: 500px;
     margin: 0 auto;
+    color: #e5e5e5;
 }
 
 .top-label {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #333;
+    color: #e5e5e5;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -24,12 +26,12 @@
     display: flex;
     flex-direction: column;
     font-size: 1.5rem;
-    color: #333;
+    color: #e5e5e5;
 }
 
 .select-label {
     font-size: 1.2rem; 
-    color: #222;
+    color: #e5e5e5;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -44,15 +46,18 @@
 
 .form select {
     padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #6b46c1;
+    border-radius: 8px;
     font-size: 1rem;
     outline: none;
+    background-color: #2a2a2a;
+    color: #e5e5e5;
     transition: border-color 0.2s ease;
 }
 
 .form select:focus {
-    border-color: #83bcf9;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
 }
 
 .optional-criteria-label {
@@ -69,15 +74,17 @@
 }
 
 .form-button:hover {
-    border-color: #83bcf9;
-    background-color: #a7c8eb;
+    border-color: #8b5cf6;
+    background-color: #6b46c1;
     cursor: pointer;
+    color: white;
 }
 
 .form-button:active {
-    border-color: #5fa8f5;
-    background-color: #85b6eb;
+    border-color: #6b46c1;
+    background-color: #5b21b6;
     cursor: pointer;
+    color: white;
 }
 
 .button-container {
@@ -86,6 +93,42 @@
 
 .magenta-icon {
     color: #ed156f;
+}
+
+/* Light Theme Styles */
+.App.light-theme .form {
+    background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+    border: 2px solid #3b82f6;
+    color: #1a202c;
+}
+
+.App.light-theme .form .top-label,
+.App.light-theme .form label,
+.App.light-theme .form .select-label {
+    color: #1a202c;
+}
+
+.App.light-theme .form select {
+    background-color: #ffffff;
+    color: #1a202c;
+    border: 1px solid #3b82f6;
+}
+
+.App.light-theme .form select:focus {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 10px rgba(29, 78, 216, 0.3);
+}
+
+.App.light-theme .form-button:hover {
+    border-color: #1d4ed8;
+    background-color: #3b82f6;
+    color: white;
+}
+
+.App.light-theme .form-button:active {
+    border-color: #1e40af;
+    background-color: #1d4ed8;
+    color: white;
 }
 
 /*Over 768 form should go vertical */
