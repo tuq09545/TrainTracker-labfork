@@ -41,6 +41,10 @@ const TrainMarkers = ({trains}) => {
                         <Popup>
                             <strong>{train.routeName}</strong> - Train #{train.number}
                             <br />
+                            Departed from: {train.from}
+                            <br />
+                            En Route to: {train.to}
+                            <br />
                             Speed: {Math.round(train.speed)} mph
                             <br />
                             Punctuality: {train.punctuality}
