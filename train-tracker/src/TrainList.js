@@ -14,7 +14,17 @@ function TrainList({trains, handleTrainClick}){
     function TrainRow({train}){
         const status = train.punctuality?.replace('MI', 'min.').replace('HR', 'hr.').toLowerCase();
 
-        let punctualityClassName = train.punctuality?.endsWith('LATE') ? 'late' : 'ontime';
+        // Determine status badge class
+        let statusBadgeClass = 'status-ontime';
+        if (train.punctuality?.includes('LATE')) {
+            statusBadgeClass = 'status-late';
+        } else if (train.punctuality?.includes('EARLY')) {
+            statusBadgeClass = 'status-early';
+        } else if (train.punctuality?.includes('DELAYED')) {
+            statusBadgeClass = 'status-delayed';
+        } else if (train.punctuality?.includes('CANCELLED')) {
+            statusBadgeClass = 'status-cancelled';
+        }
 
         const handleClick = () => {
             handleTrainClick(train);
@@ -26,7 +36,16 @@ function TrainList({trains, handleTrainClick}){
                 <td>{train.routeName}</td>
                 <td>{train.from}</td>
                 <td>{train.to}</td>
-                <td className={punctualityClassName}>{status}</td>
+                <td>
+                    <span className={`status-badge ${statusBadgeClass}`}>
+                        {status}
+                    </span>
+                </td>
+                <td>
+                    <span className="speed-display">
+                        {train.speed ? `${Math.round(train.speed)} mph` : 'N/A'}
+                    </span>
+                </td>
             </tr>
         );
     }
@@ -42,6 +61,7 @@ function TrainList({trains, handleTrainClick}){
                             <th>From</th>
                             <th>To</th>
                             <th>Status</th>
+                            <th>Speed</th>
                         </tr>
                     </thead>
                     <tbody>
