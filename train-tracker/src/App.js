@@ -1,6 +1,6 @@
 import './styles/App.css';
 import Amtrak from './AmtrakAPI';
-import train_icon from './images/train_icon.png';
+import train_icon from './images/amtrak_logo.png';
 import React, {useState, useEffect} from 'react'
 import { Routes, Route, HashRouter, Link } from 'react-router-dom';
 
