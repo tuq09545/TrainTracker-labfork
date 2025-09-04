@@ -2,9 +2,8 @@
   text-align: center;
   display: flex;
   flex-direction: row;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background-color: #aeaeaf;
   overflow-x: hidden;
-  min-height: 100vh;
 }
 
 .content {
@@ -12,27 +11,24 @@
   padding: 20px;
   height: 100%;
   transition: margin-left 0.5s;
-  margin-left: 120px;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  color: #e5e5e5;
+  margin-left: 80px;
+  background-color: #dcdcdc;
 }
 
 .sidebar {
   height: 100%;
-  width: 120px;
+  width: 80px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
-  background: linear-gradient(180deg, #6b46c1 0%, #8b5cf6 100%);
+  background-color: #000000;
   transition: width 0.5s;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px 0;
   overflow: hidden;
-  border-radius: 0 20px 20px 0;
-  box-shadow: 4px 0 15px rgba(107, 70, 193, 0.3);
 }
 
 .sidebar.open {
@@ -130,7 +126,7 @@
 }
 
 .content.sidebar-closed {
-  margin-left: 120px;
+  margin-left: 80px;
 }
 
 .content.sidebar-open {
@@ -143,13 +139,11 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #6b46c1 0%, #8b5cf6 100%);
+  background-color: #97ccf0;
   height: 60px;
   align-items: center;
   justify-content: space-around;
   z-index: 1000;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 4px 15px rgba(107, 70, 193, 0.3);
 }
 
 .topbar .nav-icon-link {
@@ -162,18 +156,6 @@
 
 .topbar .nav-icon-link:hover {
   color: #001f3d;
-}
-
-.theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-  color: #ffd700 !important;
 }
 
 @media (max-width: 600px) {
@@ -216,22 +198,4 @@
   .sidebar-heading {
     display: none;
   }
-}
-
-/* Light Theme Styles */
-.App.light-theme {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.App.light-theme .content {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  color: #1a202c;
-}
-
-.App.light-theme .sidebar {
-  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
-}
-
-.App.light-theme .topbar {
-  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
 }
